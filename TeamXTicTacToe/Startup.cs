@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TeamXTicTacToe.DAO;
 
 namespace TeamXTicTacToe
 {
@@ -22,6 +23,7 @@ namespace TeamXTicTacToe
         {
 
             services.AddControllersWithViews();
+            services.AddSingleton<IPlayDao, DummyPlayDao>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -44,17 +46,15 @@ namespace TeamXTicTacToe
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
+            app.UseHttpsRedirection(); //makes it encrypted - redirect to https
+            app.UseStaticFiles();   //services serves up static website files
+            app.UseSpaStaticFiles();    
 
-            app.UseRouting();
+            app.UseRouting();   //define how to route requests to controllers
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
 
             app.UseSpa(spa =>

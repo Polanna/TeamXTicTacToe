@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace TeamXTicTacToe.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("weatherforecast")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
