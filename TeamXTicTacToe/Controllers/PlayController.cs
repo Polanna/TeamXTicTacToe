@@ -23,7 +23,7 @@ namespace TeamXTicTacToe.Controllers
             return View();
         }
 
-        //GET api/PlayController/Bob
+        //GET play/Bob
         [HttpGet("{name}")]
         public PlayerStats Get(string name)
         {
