@@ -21,13 +21,6 @@ namespace TeamXTicTacToe.Controllers
             this.playerDAO = playerDAO;
         }
 
-        // GET: api/<PlayerController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         //GET players/Bob
         [HttpGet("{id}")]
         public Player GetPlayer(string id)
