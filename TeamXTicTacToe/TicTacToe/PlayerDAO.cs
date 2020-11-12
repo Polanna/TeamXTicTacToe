@@ -32,5 +32,24 @@ namespace TeamXTicTacToe.TicTacToe
                 return false;
             }
         }
+
+        bool IPlayerDAO.UpdatePlayer(Player player)
+        {
+            var existing = players.Find(x => x.Id == player.Id);
+            if (existing == null)
+            {
+                // No player with that name exists - indicated failure
+                return false;
+            }
+            else
+            {
+                // Update the player and indicate successs
+                existing.WinCount = player.WinCount;
+                existing.LoseCount = player.LoseCount;
+                existing.DrawCount = player.DrawCount;
+                return true;
+            }
+        }
+
     }
 }

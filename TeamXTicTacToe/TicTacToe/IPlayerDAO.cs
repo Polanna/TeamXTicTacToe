@@ -9,5 +9,6 @@ namespace TeamXTicTacToe.TicTacToe
     {
         public Player GetPlayer(string id);
         public bool CreatePlayer(Player player);
+        public bool UpdatePlayer(Player player);
     }
 }
