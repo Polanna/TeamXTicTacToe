@@ -28,14 +28,14 @@ namespace TeamXTicTacToe.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<PlayerController>/5
+        //GET players/Bob
         [HttpGet("{id}")]
         public Player GetPlayer(string id)
         {
             Player result = playerDAO.GetPlayer(id);
             return result;
         }
-
+        
         // POST api/<PlayerController>
         [HttpPost()]
         public IActionResult CreatePlayer([FromBody] string id)
