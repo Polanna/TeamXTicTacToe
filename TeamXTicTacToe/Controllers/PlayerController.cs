@@ -42,7 +42,7 @@ namespace TeamXTicTacToe.Controllers
         {
             Player player = new Player();
             player.Id = id;
-            if (playerDAO.CreatePlayer(player)) // Player succesfully created
+            if (playerDAO.CreatePlayer(player)) // Player successfully created
             {
                 return Ok(player);
             }
@@ -54,9 +54,18 @@ namespace TeamXTicTacToe.Controllers
 
         // PUT api/<PlayerController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] string value)
+        public IActionResult UpdatePlayer(string id, [FromBody] Player player)
         {
-            return Ok();
+            if (id != player.Id) return BadRequest(); //ID from URI and payload don't match
+
+            if (playerDAO.UpdatePlayer(player)) // Player successfully updated
+            {
+                return Ok(player);
+            }
+            else // Failed to update player
+            {
+                return BadRequest();
+            }
         }
 
         // DELETE api/<PlayerController>/5
