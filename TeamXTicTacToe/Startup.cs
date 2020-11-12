@@ -24,6 +24,8 @@ namespace TeamXTicTacToe
 
             services.AddControllersWithViews();
             services.AddSingleton<IPlayTicTacToe, PlayTicTacToe>();
+            services.AddSingleton<IPlayerDAO, PlayerDAO>();
+
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
