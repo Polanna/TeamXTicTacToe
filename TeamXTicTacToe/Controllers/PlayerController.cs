@@ -60,11 +60,5 @@ namespace TeamXTicTacToe.Controllers
                 return BadRequest();
             }
         }
-
-        // DELETE api/<PlayerController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
