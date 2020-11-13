@@ -21,21 +21,14 @@ namespace TeamXTicTacToe.Controllers
             this.playerDAO = playerDAO;
         }
 
-        // GET: api/<PlayerController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<PlayerController>/5
+        //GET players/Bob
         [HttpGet("{id}")]
         public Player GetPlayer(string id)
         {
             Player result = playerDAO.GetPlayer(id);
             return result;
         }
-
+        
         // POST api/<PlayerController>
         [HttpPost()]
         public IActionResult CreatePlayer([FromBody] string id)
@@ -66,12 +59,6 @@ namespace TeamXTicTacToe.Controllers
             {
                 return BadRequest();
             }
-        }
-
-        // DELETE api/<PlayerController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

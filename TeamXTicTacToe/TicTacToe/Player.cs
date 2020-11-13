@@ -7,7 +7,7 @@ namespace TeamXTicTacToe.TicTacToe
 {
     public class Player
     {
-        private String id;
+        private string id;  
         private int winCount;
         private int loseCount;
         private int drawCount;
