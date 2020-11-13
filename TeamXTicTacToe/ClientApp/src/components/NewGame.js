@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 export class NewGame extends Component {
     static displayName = NewGame.name;
 
-
-
     render() {
         return (
             <Fragment>
