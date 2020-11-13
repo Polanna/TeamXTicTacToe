@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 // import the pictures used as pieces on board
-import pieceX from './pig.png';
-import pieceO from './chick.png'; 
+import pieceX from '../pig.png';
+import pieceO from '../chick.png'; 
 
 
 
