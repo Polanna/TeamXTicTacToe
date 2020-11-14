@@ -4,8 +4,6 @@ import React, { Component } from 'react';
 import pieceX from '../pig.png';
 import pieceO from '../chick.png'; 
 
-
-
 class Square extends React.Component {  
     constructor(props) {
         super(props);
@@ -24,15 +22,6 @@ class Square extends React.Component {
         );
     }
 }
-
-
-
-
-
-
-
-
-
 
 class Board extends React.Component {
 
@@ -54,7 +43,6 @@ class Board extends React.Component {
 
 
     render() { 
-
         return (
             <div>
                 <div className="board-row">
@@ -115,9 +103,7 @@ class Game extends React.Component {
         });
         
     }
-
-    
-
+  
     jumpTo(step) {
         this.setState({
             stepNumber: step,
@@ -135,7 +121,6 @@ class Game extends React.Component {
             winner = result.winner;
             winningLine = result.match;
         }
-
 
         const moves = history.map((step, move) => {
             const desc = move ?

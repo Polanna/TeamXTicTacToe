@@ -1,0 +1,25 @@
+.scoreCounter {
+   display: grid; 
+   grid-template-columns: 1fr 1fr 1fr;
+   grid-template-rows: 1fr;
+   font-size: 4rem;
+   font-family: 'Goldman', cursive;
+}
+
+.container2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.player {
+    grid-column: 1;
+}
+
+.tie {
+    grid-column: 2;
+}
+
+.opponent {
+    grid-column: 3;
+}
