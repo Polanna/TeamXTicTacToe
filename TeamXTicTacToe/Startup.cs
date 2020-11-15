@@ -22,7 +22,6 @@ namespace TeamXTicTacToe
         {
 
             services.AddControllersWithViews();
-            services.AddSingleton<IPlayDao, DummyPlayDao>();
 
             services.AddSingleton<IPlayerDAO, PlayerDAO>();  
 
