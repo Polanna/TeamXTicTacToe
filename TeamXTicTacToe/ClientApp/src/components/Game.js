@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
 // import the pictures used as pieces on board
-import pieceX from '../pig.png';
-import pieceO from '../chick.png'; 
+import pieceX from '../img/pig.png';
+import pieceO from '../img/chick.png';
+import blank from '../img/blank.png';
 
 class Square extends React.Component {  
     constructor(props) {
@@ -10,7 +11,7 @@ class Square extends React.Component {
     }
 
     render() {
-        let piece = null
+        let piece = <img className="blankPiece" src={blank} alt="empty" width="100" height="100" />
         if (this.props.value) {
             piece = this.props.value === "X" ? <img className="player1" src={pieceX} alt="pieceX" width="100" height="100"/> : <img className="player2" src={pieceO} alt="pieceO" width="100" height="100" />
         }
@@ -65,7 +66,7 @@ class Board extends React.Component {
     }
 }
 
-class Game extends React.Component {
+export class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -157,28 +158,6 @@ class Game extends React.Component {
             </div>
         );
     }
-}
-
-export class Counter extends Component {
-  static displayName = Counter.name;
-
-  constructor(props) {
-    super(props);
-    this.state = { currentCount: 0 };
-    this.incrementCounter = this.incrementCounter.bind(this);
-  }
-
-  incrementCounter() {
-    this.setState({
-      currentCount: this.state.currentCount + 1
-    });
-  }
-
-  render() {
-    return (
-        <Game />
-    );
-  }
 }
 
 function calculateWinner(squares) {
