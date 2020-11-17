@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import pieceX from '../img/pig.png';
 import pieceO from '../img/chick.png';
 import blank from '../img/blank.png';
+import './Game.css';
 
 class Square extends React.Component {  
     constructor(props) {
@@ -11,13 +12,13 @@ class Square extends React.Component {
     }
 
     render() {
-        let piece = <img className="blankPiece" src={blank} alt="empty" width="100" height="100" />
+        let piece = <img className="blankPiece" src={blank} alt="empty" />
         if (this.props.value) {
-            piece = this.props.value === "X" ? <img className="player1" src={pieceX} alt="pieceX" width="100" height="100"/> : <img className="player2" src={pieceO} alt="pieceO" width="100" height="100" />
+            piece = this.props.value === "X" ? <img className="player1" src={pieceX} alt="pieceX" /> : <img className="player2" src={pieceO} alt="pieceO" />
         }
 
         return (
-            <button className="square" data-pro={this.props.value} data-win={this.props.win} onClick={this.props.onClick}>
+            <button className="squareInGame" data-pro={this.props.value} data-win={this.props.win} onClick={this.props.onClick}>
                 {piece}
             </button>
         );
@@ -129,7 +130,7 @@ export class Game extends React.Component {
                 'Go to game start';
             return (
                 <li key={move}>
-                    <button onClick={() => this.jumpTo(move)}>{desc}</button>
+                    <button className="move" onClick={() => this.jumpTo(move)}>{desc}</button>
                 </li>
             );
         });
@@ -152,7 +153,7 @@ export class Game extends React.Component {
                     />
                 </div>
                 <div className="game-info">
-                    <div>{status}</div>
+                    <div className = "status">{status}</div>
                     <ol>{moves}</ol>
                 </div>
             </div>
