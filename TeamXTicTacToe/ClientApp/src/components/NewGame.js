@@ -1,65 +1,49 @@
-import React, { Component, Fragment } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TopTen } from './TopTen';
+import { useSpring, animated } from 'react-spring';
+import './NewGame.css';
 
-export class NewGame extends Component {
-    static displayName = NewGame.name;
+const NewGame = () => {
+    const displayName = NewGame.name;
 
-    state = {
-        seen: false
-    };
+    const [seen, setSeen] = useState(false);
 
-    toggleTopTen = () => {
+    function toggleTopTen() {
         console.log("flip state!!!")
-        this.setState({
-            seen: !this.state.seen
-        });
+        setSeen(!seen)
     };
 
-    render() {
-        return (
-            <Fragment>
-                <div className="jumbotron">
-                    <h1 className="display-1 text-center"> Tic Tac Toe </h1>
-                </div>
+    return (
+        <div className="container">
+            <h1 className="title-newgame">Tic Tac Toe</h1>
+            <h2 className="subtitle-newgame">Team X</h2>
 
-                <div className="row">
-                    <div className="col">
-                        <TopTen isOpen={this.state.seen} toggle={this.toggleTopTen} />
-                    </div>
-                </div>
+            <TopTen isOpen={seen} toggle={toggleTopTen} />
 
-                <div className="row justify-content-start">
-                    <div className="col align-self-start">
-                        <button
-                            type="button"
-                            onClick={this.toggleTopTen}
-                            className="btn btn-primary rounded-circle">Stats</button>
-                    </div>
+            <animated.div>
+                <button type="button" onClick={toggleTopTen} className="btn-newgame">Stats</button>
+            </animated.div>
 
-                    <div className="col  align-self-end text-right">
-                        <Link to='/settings'>
-                            <button
-                                type="button"
-                                className="btn btn-primary rounded-circle">Settings</button>
-                        </Link>
-                    </div>
-                </div>
+            <Link to='/settings'>
+                <animated.div>
+                    <button type="button" className="btn-newgame">Settings</button>
+                </animated.div>
+            </Link>
 
-                <div className="row align-items-center h-50 ">
-                    <div className="col-md-12 text-center mt-4">
-                        <Link to='/boardpage'>
-                            <button type="button" className="btn btn-lrg btn-primary shadow-large  rounded-pill w-25 h-50">One Player</button>
-                        </Link>
-                    </div>
+            <Link to='/boardpage'>
+                <animated.div>
+                    <button type="button" className="btn-newgame">One Player</button>
+                </animated.div>
+            </Link>
 
-                    <div className="col-md-12 text-center mt-4">
-                        <Link to='/boardpage'>
-                            <button type="button" className="btn btn-lrg btn-primary shadow-large rounded-pill w-25 h-50">Two Player</button>
-                        </Link>
-                    </div>
-                </div>
-            </Fragment>
-        );
-    }
+            <Link to='/boardpage'>
+                <animated.div>
+                    <button type="button" className="btn-newgame">Two Player</button>
+                </animated.div>
+            </Link>
+        </div>
+    );
 }
+
+export default NewGame;

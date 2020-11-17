@@ -1,0 +1,31 @@
+html {
+    height: 100vh;
+    background-color: #1A1A1D;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    background-color: #1A1A1D;
+    align-items: center;
+}
+
+.title-newgame {
+    margin-top: 8rem;
+    font-size: 10rem;
+    color: #C3073F;
+    font-family: 'Big Shoulders Stencil Display', cursive;
+}
+
+.subtitle-newgame {
+    font-size: 6rem;
+    color: #4E4E50;
+    font-family: 'Big Shoulders Stencil Display', cursive;
+}
+
+.btn-newgame {
+    border: 2px solid black;
+    background-color: #C3073F;
+    height: 2rem;
+    width: 5rem;
+}
