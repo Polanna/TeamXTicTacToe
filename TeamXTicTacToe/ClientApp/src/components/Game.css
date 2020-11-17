@@ -1,0 +1,46 @@
+﻿body {
+    font: 14px "Century Gothic", Futura, sans-serif;
+}
+
+.squareInGame {
+    background: #FCF3CF;
+    border: 1.6px solid #B2BABB;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.blankPiece {
+    height: 100px;
+    width: 100px;
+}
+
+.player1 {
+    height: 100px;
+    width: 100px;
+}
+
+.player2 {
+    height: 100px;
+    width: 100px;
+}
+
+/*change winning line's background color*/
+button.squareInGame[data-win=true] {
+    background: #F1C40F;
+}
+
+.status { 
+    font-size: 30px; 
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: bold;
+}
+
+.move {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
