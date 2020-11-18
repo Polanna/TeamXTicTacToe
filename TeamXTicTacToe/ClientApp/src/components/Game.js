@@ -104,8 +104,12 @@ export class Game extends React.Component {
             xIsNext: !this.state.xIsNext
         });
 
+        // Demo code showing AI functionality and how to call the minimax function
         //var AIPlayer = squares[i] === "O" ? "X" : "O";
         //var AIMove = minimax(squares.slice(), AIPlayer, AIPlayer).index;
+        //if (AIMove != undefined) {
+        //    alert(AIMove);
+        //}
     }
   
     jumpTo(step) {
