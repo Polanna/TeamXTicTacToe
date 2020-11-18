@@ -103,7 +103,9 @@ export class Game extends React.Component {
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext
         });
-        
+
+        //var AIPlayer = squares[i] === "O" ? "X" : "O";
+        //var AIMove = minimax(squares.slice(), AIPlayer, AIPlayer).index;
     }
   
     jumpTo(step) {
@@ -202,7 +204,7 @@ function minimax(reboard, player, winningPlayer) {
     var moves = [];
     for (var i = 0; i < array.length; i++) {
         var move = {};
-        move.index = reboard[array[i]];
+        move.index = array[i];
         reboard[array[i]] = player;
 
         if (player == winningPlayer) {
@@ -212,7 +214,7 @@ function minimax(reboard, player, winningPlayer) {
             var g = minimax(reboard, winningPlayer, winningPlayer);
             move.score = g.score;
         }
-        reboard[array[i]] = move.index;
+        reboard[array[i]] = null;
         moves.push(move);
     }
 
@@ -239,13 +241,13 @@ function minimax(reboard, player, winningPlayer) {
 
 //available spots
 function avail(reboard) {
-    var indiciesAvailable = [];
-    for (int i = 0; i < reboard.length; i++) {
+    var indicesAvailable = [];
+    for (let i = 0; i < reboard.length; i++) {
         if (reboard[i] == null) {
-            indiciesAvailable.push(i);
+            indicesAvailable.push(i);
         }
     }
-    return indiciesAvailable;
+    return indicesAvailable;
 }
 
 // winning combinations
