@@ -7,8 +7,8 @@ namespace TeamXTicTacToe.TicTacToe
 {
     public interface IPlayerDAO
     {
-        public Player GetPlayer(string id);
-        public bool CreatePlayer(Player player);
-        public bool UpdatePlayer(Player player);
+        public Task<Player> GetPlayer(string id);
+        public Task<bool> CreatePlayer(Player player);
+        public Task<bool> UpdatePlayer(Player player);
     }
 }

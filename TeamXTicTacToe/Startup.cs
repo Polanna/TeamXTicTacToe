@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using TeamXTicTacToe.DAO;
 using TeamXTicTacToe.TicTacToe;
 
 namespace TeamXTicTacToe
@@ -22,7 +24,8 @@ namespace TeamXTicTacToe
         {
 
             services.AddControllersWithViews();
-
+            string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+            services.AddSingleton(new TicTacBlobClient<Player>(connectionString, "players"));
             services.AddSingleton<IPlayerDAO, PlayerDAO>();  
 
 

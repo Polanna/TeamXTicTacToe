@@ -23,19 +23,18 @@ namespace TeamXTicTacToe.Controllers
 
         //GET players/Bob
         [HttpGet("{id}")]
-        public Player GetPlayer(string id)
-        {
-            Player result = playerDAO.GetPlayer(id);
-            return result;
+        public Task<Player> GetPlayer(string id)
+        {           
+            return playerDAO.GetPlayer(id); ;
         }
         
         // POST api/<PlayerController>
         [HttpPost()]
-        public IActionResult CreatePlayer([FromBody] string id)
+        public async Task<IActionResult> CreatePlayer([FromBody] string id)
         {
             Player player = new Player();
             player.Id = id;
-            if (playerDAO.CreatePlayer(player)) // Player successfully created
+            if (await playerDAO.CreatePlayer(player)) // Player successfully created
             {
                 return Ok(player);
             }
@@ -47,11 +46,11 @@ namespace TeamXTicTacToe.Controllers
 
         // PUT api/<PlayerController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdatePlayer(string id, [FromBody] Player player)
+        public async Task<IActionResult> UpdatePlayer(string id, [FromBody] Player player)
         {
             if (id != player.Id) return BadRequest(); //ID from URI and payload don't match
 
-            if (playerDAO.UpdatePlayer(player)) // Player successfully updated
+            if (await playerDAO.UpdatePlayer(player)) // Player successfully updated
             {
                 return Ok(player);
             }

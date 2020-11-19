@@ -2,29 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TeamXTicTacToe.DAO;
 
 namespace TeamXTicTacToe.TicTacToe
 {
     public class PlayerDAO : IPlayerDAO
     {
-        private List<Player> players = new List<Player>
-        {
-            new Player("Bob", 1, 2, 3),
-            new Player("Linda", 3, 2, 1)
-        };
+        private TicTacBlobClient<Player> blobClient;
 
-        Player IPlayerDAO.GetPlayer(string id)
+        public PlayerDAO(TicTacBlobClient<Player> blobClient)
         {
-            var record = players.Find(x => x.Id == id);
-            return record;
+            this.blobClient = blobClient;
         }
 
-        bool IPlayerDAO.CreatePlayer(Player player)
+        public Task<Player> GetPlayer(string id)
         {
-            var existing = players.Find(x => x.Id == player.Id);
+            return blobClient.GetAsync(id);
+
+        }
+
+        public async Task<bool> CreatePlayer(Player player)
+        {
+
+            var existing = blobClient.GetIds().FirstOrDefault(id => player.Id == id);
             if (existing == null) // No player with that name exists yet
             {
-                players.Add(player);
+                await blobClient.SaveAsync(player, player.Id);
                 return true;
             }
             else // Player with that name already exists
@@ -33,9 +36,9 @@ namespace TeamXTicTacToe.TicTacToe
             }
         }
 
-        bool IPlayerDAO.UpdatePlayer(Player player)
+        public async Task<bool> UpdatePlayer(Player player)
         {
-            var existing = players.Find(x => x.Id == player.Id);
+            var existing = blobClient.GetIds().FirstOrDefault(id => player.Id == id);
             if (existing == null)
             {
                 // No player with that name exists - indicated failure
@@ -44,9 +47,7 @@ namespace TeamXTicTacToe.TicTacToe
             else
             {
                 // Update the player and indicate successs
-                existing.WinCount = player.WinCount;
-                existing.LoseCount = player.LoseCount;
-                existing.DrawCount = player.DrawCount;
+                await blobClient.SaveAsync(player, player.Id);
                 return true;
             }
         }

@@ -8,6 +8,7 @@ import { NewGame } from './components/NewGame';
 import { Settings } from './components/Settings';
 import { FAQPage } from './components/FAQPage';
 import { BoardPage } from './components/BoardPage';
+import { About } from './components/About';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -22,6 +23,7 @@ export default class App extends Component {
                     <Route path='/settings' component={Settings} />
                     <Route path='/faq' component={FAQPage} />
                     <Route path='/boardpage' component={BoardPage} />
+                    <Route path='/about' component={About} />
                 </Layout>
             </Fragment>
         );
