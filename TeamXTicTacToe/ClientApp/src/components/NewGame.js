@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TopTen } from './TopTen';
-import { useSpring, animated } from 'react-spring';
 import './NewGame.css';
 
 const NewGame = () => {
@@ -23,26 +22,18 @@ const NewGame = () => {
 
             <div className="subcontainer-newgame">
                 <Link to='/boardpage'>
-                    <animated.div>
                         <button type="button" className="btn-newgame">One Player</button>
-                    </animated.div>
                 </Link>
                 <Link to='/boardpage'>
-                    <animated.div>
                         <button type="button" className="btn-newgame">Two Player</button>
-                    </animated.div>
                 </Link>
             </div>
 
             <div className="subcontainer-newgame">
-                <animated.div>
                     <button type="button" onClick={toggleTopTen} className="btn-newgame">Stats</button>
-                </animated.div>
 
                 <Link to='/settings'>
-                    <animated.div>
                         <button type="button" className="btn-newgame">Settings</button>
-                    </animated.div>
                 </Link>
             </div>
 
