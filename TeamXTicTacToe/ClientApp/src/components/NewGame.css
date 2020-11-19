@@ -1,0 +1,43 @@
+html {
+    height: 100vh;
+    background-color: #eae7dc;
+}
+
+.container-newgame {
+    display: flex;
+    flex-direction: column;
+    background-color: #eae7dc;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-newgame {
+    margin-top: 8rem;
+    font-size: 10rem;
+    color: #e85a4f;
+    font-family: 'Big Shoulders Stencil Display', cursive;
+}
+
+.subtitle-newgame {
+    font-size: 6rem;
+    margin-bottom: 3rem;
+    color: #8e8d8a;
+    font-family: 'Big Shoulders Stencil Display', cursive;
+}
+
+.subcontainer-newgame {
+    display: flex;
+    flex-direction: row;
+}
+
+.btn-newgame {
+    margin: 1rem 1rem;
+    border: 1px solid #e85a4f;
+    background-color: #edc7b7;
+    font-size: 1.3rem;
+    font-family: 'Big Shoulders Stencil Display', cursive;
+    color: #e85a4f;
+    height: 80px;
+    width: 170px;
+}
+

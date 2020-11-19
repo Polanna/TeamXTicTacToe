@@ -27,7 +27,6 @@ export class NavMenu extends Component {
             <header>
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
                     <Container>
-
                         <a href="#" class="navbar-brand">
                             <img src={logo} height="40" alt="Team X" />
                         </a>
@@ -43,10 +42,6 @@ export class NavMenu extends Component {
                                 </NavItem>
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/faq">FAQ</NavLink>
-                                </NavItem>
-
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
                                 </NavItem>
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/new-game">New Game</NavLink>
