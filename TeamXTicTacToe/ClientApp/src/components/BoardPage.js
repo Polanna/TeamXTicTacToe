@@ -2,22 +2,36 @@
 import { Link } from 'react-router-dom';
 import { Game } from './Game';
 
+
+// 1. create a socket and successfully connect to the server: DONE
+// 2. 
+
+
 export class BoardPage extends Component {
     static displayName = BoardPage.name;
-    state = {
-        player1: '',
-        player2: ''
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            player1: "You",
+            player2: "Them"
+        }
     }
+    
+
+
 
     componentDidMount() {
-        const nick1 = window.prompt('Player 1:', 'Player1');
-        const nick2 = window.prompt('Player 2:', 'Player2');
-        this.setState({ player1: nick1, player2: nick2 })
+        //const name = window.prompt('the other player:', 'type ID');
+
+        //this.setState({ player2: name })
     }
 
     render() {
         return (
             <Fragment>
+                
+
                 <div class="row">
                     <div class="col-md-2 text-center">
                         <h2>{this.state.player1}</h2>
@@ -43,7 +57,8 @@ export class BoardPage extends Component {
                         <h3>Player scores component here </h3>
                     </div>
                     <div class="col-md-8 text-center align-items-center">
-                        <Game/>
+                        <Game />
+                        
                     </div>
                     <div class="col-md-2">
                         <h3>Player scores  component here </h3>

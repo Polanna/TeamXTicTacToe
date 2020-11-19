@@ -67,19 +67,62 @@ class Board extends React.Component {
     }
 }
 
+// 1. create a socket and successfully connect to the server: DONE
+
+const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+const wsUri = protocol + "//" + window.location.host;
+
 export class Game extends React.Component {
     constructor(props) {
         super(props);
+
+
+
         this.state = {
+
+            socket: new WebSocket(wsUri),
+            myName:"unknownUser",
+            myID:"",
+            friendID: "unknown",
             history: [{
                 squares: Array(9).fill(null),
             }],
             stepNumber: 0,
             xIsNext: true,
         };
+
+        this.state.socket.onclose = ((e) => {
+            console.log("socket closed", e);
+        });
+
+        this.state.socket.onmessage = ((e) => {
+            // receive message
+            let message = e.data
+            let str = message.split(":")
+            if (str[0] === "yourID" && str[1].length == 36) { this.setState({ myID: str[1] }) }
+            if (str[0] === "playGame" && str.length == 2) {
+                var move = str[1].split("/")
+                var opponentChoose = parseInt(move[0])
+                this.handleClick(opponentChoose)
+            }
+            //$('#msgs').append(e.data + '<br />');
+        });
+
+        this.state.socket.onerror = ((e) => {
+            console.error(e.data);
+        });
+        this.handleKeyDown = this.handleKeyDown.bind(this)
     }
 
-    handleClick(i) {
+    componentDidMount() {
+        this.state.socket.onopen = e => {
+            console.log("socket opened", e);
+        };
+        
+
+    }
+    
+    handleClick(i) { // THIS IS THE ONE FOR PRIVATE MESSAGING 
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
@@ -94,6 +137,9 @@ export class Game extends React.Component {
         }
 
         squares[i] = this.state.xIsNext ? "X" : "O"
+
+        this.state.socket.send("playGame"+":" + this.state.myID + ":" + this.state.friendID + ":" + i + "/" + squares[i]);
+
         this.setState({
             history: history.concat([
                 {
@@ -119,6 +165,9 @@ export class Game extends React.Component {
         });
     }
 
+    handleKeyDown(e) {
+        if (e.key === 'Enter') { this.setState({ friendID: e.target.value }) }
+    }
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -147,7 +196,7 @@ export class Game extends React.Component {
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'Player 1' : 'Player 2');
         }
-
+        
         return (
             <div className="game">
                 <div className="game-board">
@@ -155,9 +204,19 @@ export class Game extends React.Component {
                         squares={current.squares}
                         //passing down the winning line info for highlighting winningLine
                         winningLine={winningLine}
-                        onClick={(i) => this.handleClick(i)}
+                        onClick={(i) => this.handleClick(i)} 
                     />
                 </div>
+                <div>
+                    <p>Your ID: {this.state.myID}</p>
+                </div>
+                {this.state.friendID === "unknown" ?
+                    (<input placeholder="type Friend ID"
+                        name="FriendID"
+                        onKeyDown={this.handleKeyDown} />)
+                    : (<p>Friend ID: {this.state.friendID}</p>)
+                    }
+                
                 <div className="game-info">
                     <div className = "status">{status}</div>
                     <ol>{moves}</ol>

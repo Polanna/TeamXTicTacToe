@@ -21,7 +21,6 @@ namespace TeamXTicTacToe.Controllers
             this.playerDAO = playerDAO;
         }
 
-        //GET players/Bob
         [HttpGet("{id}")]
         public Player GetPlayer(string id)
         {
@@ -29,7 +28,6 @@ namespace TeamXTicTacToe.Controllers
             return result;
         }
         
-        // POST api/<PlayerController>
         [HttpPost()]
         public IActionResult CreatePlayer([FromBody] string id)
         {
@@ -45,7 +43,6 @@ namespace TeamXTicTacToe.Controllers
             }
         }
 
-        // PUT api/<PlayerController>/5
         [HttpPut("{id}")]
         public IActionResult UpdatePlayer(string id, [FromBody] Player player)
         {
@@ -59,6 +56,27 @@ namespace TeamXTicTacToe.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpGet]
+        [Route("getTopScores")]
+        public IEnumerable<Player> GetTopScores()
+        {
+            //TODO: connect to storage here
+            List<Player> players = new List<Player>();
+            players.Add(new Player() { Id = "Bob", WinCount = 5, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Id = "Jill", WinCount = 5, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Id = "Jack", WinCount = 3, LoseCount = 1, DrawCount = 0 });
+            players.Add(new Player() { Id = "Jane", WinCount = 4, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Id = "Phil", WinCount = 1, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Id = "Anna", WinCount = 3, LoseCount = 3, DrawCount = 1 });
+            players.Add(new Player() { Id = "Joe", WinCount = 4, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Id = "Tim", WinCount = 2, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Id = "Lucy", WinCount = 2, LoseCount = 3, DrawCount = 1 });
+            players.Add(new Player() { Id = "Sam", WinCount = 1, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Id = "Linda", WinCount = 2, LoseCount = 3, DrawCount = 1 });
+
+            return players.OrderByDescending(x => x.WinCount ).ThenBy(x => x.LoseCount).ThenBy(x => x.DrawCount).Take(10);
         }
     }
 }

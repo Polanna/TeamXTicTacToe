@@ -53,6 +53,9 @@ namespace TeamXTicTacToe
 
             app.UseRouting();   //define how to route requests to controllers
 
+            app.UseWebSockets();                            // for multiplayer
+            app.UseMiddleware<GameWebSocketMiddleware>();   // for multiplayer
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
