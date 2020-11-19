@@ -1,45 +1,65 @@
-import React, { useState } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { TopTen } from './TopTen';
-import './NewGame.css';
 
-const NewGame = () => {
-    const displayName = NewGame.name;
+export class NewGame extends Component {
+    static displayName = NewGame.name;
 
-    const [seen, setSeen] = useState(false);
-
-    function toggleTopTen() {
-        console.log("flip state!!!")
-        setSeen(!seen)
+    state = {
+        seen: false
     };
 
-    return (
-        <div className="container-newgame">
-            <h1 className="title-newgame">Tic Tac Toe</h1>
-            <h2 className="subtitle-newgame">Team X</h2>
+    toggleTopTen = () => {
+        console.log("flip state!!!")
+        this.setState({
+            seen: !this.state.seen
+        });
+    };
 
-            <TopTen isOpen={seen} toggle={toggleTopTen} />
+    render() {
+        return (
+            <Fragment>
+                <div className="jumbotron">
+                    <h1 className="display-1 text-center"> Tic Tac Toe </h1>
+                </div>
 
-            <div className="subcontainer-newgame">
-                <Link to='/boardpage'>
-                        <button type="button" className="btn-newgame">One Player</button>
-                </Link>
-                <Link to='/boardpage'>
-                        <button type="button" className="btn-newgame">Two Player</button>
-                </Link>
-            </div>
+                <div className="row">
+                    <div className="col">
+                        <TopTen isOpen={this.state.seen} toggle={this.toggleTopTen} />
+                    </div>
+                </div>
 
-            <div className="subcontainer-newgame">
-                    <button type="button" onClick={toggleTopTen} className="btn-newgame">Stats</button>
+                <div className="row justify-content-start">
+                    <div className="col align-self-start">
+                        <button
+                            type="button"
+                            onClick={this.toggleTopTen}
+                            className="btn btn-primary rounded-circle">Stats</button>
+                    </div>
 
-                <Link to='/settings'>
-                        <button type="button" className="btn-newgame">Settings</button>
-                </Link>
-            </div>
+                    <div className="col  align-self-end text-right">
+                        <Link to='/settings'>
+                            <button
+                                type="button"
+                                className="btn btn-primary rounded-circle">Settings</button>
+                        </Link>
+                    </div>
+                </div>
 
+                <div className="row align-items-center h-50 ">
+                    <div className="col-md-12 text-center mt-4">
+                        <Link to='/boardpage'>
+                            <button type="button" className="btn btn-lrg btn-primary shadow-large  rounded-pill w-25 h-50">One Player</button>
+                        </Link>
+                    </div>
 
-        </div>
-    );
+                    <div className="col-md-12 text-center mt-4">
+                        <Link to='/boardpage'>
+                            <button type="button" className="btn btn-lrg btn-primary shadow-large rounded-pill w-25 h-50">Two Player</button>
+                        </Link>
+                    </div>
+                </div>
+            </Fragment>
+        );
+    }
 }
-
-export default NewGame;
