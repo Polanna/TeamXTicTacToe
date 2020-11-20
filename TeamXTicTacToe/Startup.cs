@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using TeamXTicTacToe.DAO;
-using TeamXTicTacToe.TicTacToe;
+using TeamXTicTacToe.Models;
 
 namespace TeamXTicTacToe
 {

@@ -66,6 +66,17 @@ namespace TeamXTicTacToe.DAO
             //TODO: drop .json (see get above)
             return containerClient.GetBlobs().Select(b => b.Name);
         }
+        public async Task<IEnumerable<T>> GetAllAsync()
+        {
+            List<T> items = new List<T>();
+            await foreach (BlobItem blobItem in containerClient.GetBlobsAsync())
+            {
+                BlobClient blobClient = containerClient.GetBlobClient(blobItem.Name);
+                BlobDownloadInfo download = await blobClient.DownloadAsync();
+                items.Add(Deserialize(download.Content));
+            }
+            return items;
+        }
 
         private static async Task Serialize(T value, BlobClient blobClient)
         {

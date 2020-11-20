@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TeamXTicTacToe.DAO;
+using TeamXTicTacToe.Models;
 
-namespace TeamXTicTacToe.TicTacToe
+namespace TeamXTicTacToe.DAO
 {
     public class PlayerDAO : IPlayerDAO
     {
@@ -20,14 +20,19 @@ namespace TeamXTicTacToe.TicTacToe
             return blobClient.GetAsync(id);
 
         }
+        public async Task<IEnumerable<Player>> GetPlayers()
+        {
+            return await blobClient.GetAllAsync();
+        }
+
 
         public async Task<bool> CreatePlayer(Player player)
         {
 
-            var existing = blobClient.GetIds().FirstOrDefault(id => player.Id == id);
+            var existing = blobClient.GetIds().FirstOrDefault(id => player.Name == id);
             if (existing == null) // No player with that name exists yet
             {
-                await blobClient.SaveAsync(player, player.Id);
+                await blobClient.SaveAsync(player, player.Name);
                 return true;
             }
             else // Player with that name already exists
@@ -38,7 +43,7 @@ namespace TeamXTicTacToe.TicTacToe
 
         public async Task<bool> UpdatePlayer(Player player)
         {
-            var existing = blobClient.GetIds().FirstOrDefault(id => player.Id == id);
+            var existing = blobClient.GetIds().FirstOrDefault(id => player.Name == id);
             if (existing == null)
             {
                 // No player with that name exists - indicated failure
@@ -47,7 +52,7 @@ namespace TeamXTicTacToe.TicTacToe
             else
             {
                 // Update the player and indicate successs
-                await blobClient.SaveAsync(player, player.Id);
+                await blobClient.SaveAsync(player, player.Name);
                 return true;
             }
         }
