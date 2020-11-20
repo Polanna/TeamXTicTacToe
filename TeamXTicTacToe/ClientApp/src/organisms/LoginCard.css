@@ -1,0 +1,12 @@
+.loginCard {
+    height: 170px;
+    width: 400px;
+    padding: 1rem;
+    background-color: #edf5e1; 
+    border-radius: 2rem;
+}
+
+#jumbotron {
+    font-size: 10rem;
+    color: #05386b;
+}
