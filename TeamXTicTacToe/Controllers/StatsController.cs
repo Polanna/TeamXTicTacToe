@@ -18,11 +18,11 @@ namespace TeamXTicTacToe.Controllers
             //TODO: connect to storage here
             return new List<PlayerStat>
             {
-                new PlayerStat{Name = "Jack", Score = 5},
-                new PlayerStat{Name = "Jane", Score = 4},
-                new PlayerStat{Name = "Peter", Score = 3},
-                new PlayerStat{Name = "Nancy", Score = 2},
-                new PlayerStat{Name = "Julia", Score = 1}
+                new PlayerStat{Name = "Jack", Wins = 5},
+                new PlayerStat{Name = "Jane", Wins = 4},
+                new PlayerStat{Name = "Peter", Wins = 3},
+                new PlayerStat{Name = "Nancy", Wins = 2},
+                new PlayerStat{Name = "Julia", Wins = 1}
             };
         }
     }

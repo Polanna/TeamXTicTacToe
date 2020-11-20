@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace TeamXTicTacToe.Models
 {
-    public class PlayerStat
+    public class Player
     {
         public string Name { get; set; }
-        public int Wins { get; set; }
-        public int Losses { get; set; }
-        public int Draws { get; set; }
+        public int WinCount { get; set; }
+        public int LoseCount { get; set; }
+        public int DrawCount { get; set; }
     }
 }
