@@ -70,17 +70,17 @@ namespace TeamXTicTacToe.Controllers
         {
             //TODO: connect to storage here
             List<Player> players = new List<Player>();
-            players.Add(new Player() { Id = "Bob", WinCount = 5, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Id = "Jill", WinCount = 5, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Id = "Jack", WinCount = 3, LoseCount = 1, DrawCount = 0 });
-            players.Add(new Player() { Id = "Jane", WinCount = 4, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Id = "Phil", WinCount = 1, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Id = "Anna", WinCount = 3, LoseCount = 3, DrawCount = 1 });
-            players.Add(new Player() { Id = "Joe", WinCount = 4, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Id = "Tim", WinCount = 2, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Id = "Lucy", WinCount = 2, LoseCount = 3, DrawCount = 1 });
-            players.Add(new Player() { Id = "Sam", WinCount = 1, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Id = "Linda", WinCount = 2, LoseCount = 3, DrawCount = 1 });
+            players.Add(new Player() { Name = "Bob", WinCount = 5, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Name = "Jill", WinCount = 5, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Name = "Jack", WinCount = 3, LoseCount = 1, DrawCount = 0 });
+            players.Add(new Player() { Name = "Jane", WinCount = 4, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Name = "Phil", WinCount = 1, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Name = "Anna", WinCount = 3, LoseCount = 3, DrawCount = 1 });
+            players.Add(new Player() { Name = "Joe", WinCount = 4, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Name = "Tim", WinCount = 2, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Name = "Lucy", WinCount = 2, LoseCount = 3, DrawCount = 1 });
+            players.Add(new Player() { Name = "Sam", WinCount = 1, LoseCount = 3, DrawCount = 0 });
+            players.Add(new Player() { Name = "Linda", WinCount = 2, LoseCount = 3, DrawCount = 1 });
 
             return players.OrderByDescending(x => x.WinCount ).ThenBy(x => x.LoseCount).ThenBy(x => x.DrawCount).Take(10);
         }

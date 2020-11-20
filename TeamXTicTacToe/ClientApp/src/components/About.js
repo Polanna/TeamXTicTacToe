@@ -39,6 +39,7 @@ export class About extends Component {
                     <div className="col-md-12 ">
                         <h3> Tutorial: <a href="https://reactjs.org/tutorial/tutorial.html" target="_blank">https://reactjs.org/tutorial/tutorial.html</a> </h3>
                         <h3> Image sources: <a href="https://pngtree.com/so/hand-drawn-style" target="_blank"> https://pngtree.com/so/hand-drawn-style</a> </h3>
+                        <h3> MiniMax Tutorial: <a href="https://www.freecodecamp.org/news/how-to-make-your-tic-tac-toe-game-unbeatable-by-using-the-minimax-algorithm-9d690bad4b37/" target="_blank"> https://www.freecodecamp.org/news/how-to-make-your-tic-tac-toe-game-unbeatable-by-using-the-minimax-algorithm-9d690bad4b37/ </a> </h3>
                     </div>
                 </div>
 
