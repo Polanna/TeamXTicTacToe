@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Tutorial } from './Tutorial';
 import pieceX from '../img/pig.png';
 import pieceO from '../img/chick.png';
+import { OnePlayer } from './OnePlayer';
 
 
 export class OnePlayerPage extends Component {
@@ -23,7 +24,7 @@ export class OnePlayerPage extends Component {
             <Fragment>
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <h1>Tutorial</h1>
+                        <h1>One Player Mode</h1>
                     </div>
                 </div>
                 <div class="row">
@@ -43,7 +44,7 @@ export class OnePlayerPage extends Component {
                         <h2></h2>
                     </div>
                     <div class="col-md-2 text-center">
-                        <h2>O</h2>
+                        <h2>AI Player</h2>
                     </div>
                     <div class="col-md-2 text-center">
                         <h2><img className="player1" src={pieceX} alt="pieceX" /></h2>
@@ -60,7 +61,7 @@ export class OnePlayerPage extends Component {
                         <h3>Information here </h3>
                     </div>
                     <div class="col-md-8 text-center align-items-center">
-                        <Tutorial />
+                        <OnePlayer />
                     </div>
                     <div class="col-md-2">
                         <h3>Information here </h3>

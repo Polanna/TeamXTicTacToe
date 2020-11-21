@@ -16,9 +16,12 @@ class Square extends React.Component {
     render() {
         let piece = <img className="blankPiece" src={blank} alt="empty" />
 
-        //if (this.props.isSuggestion) {
-        //    piece = <img className="blankPiece" src={suggest} alt="suggestion" />
-       // }
+        /*
+        // if we have suggestion, render it on board
+        if (this.props.isSuggestion) {
+            piece = <img className="suggestionPiece" src={suggest} alt="suggestion" />
+        }
+        */
 
         if (this.props.value) {
             piece = this.props.value === "X" ? <img className="player1" src={pieceX} alt="pieceX" /> : <img className="player2" src={pieceO} alt="pieceO" />
@@ -46,7 +49,7 @@ class Board extends React.Component {
                 value={this.props.squares[i]}
                 onClick={() => this.props.onClick(i)}
                 win={win}
-                isSuggestion={i === this.props.suggestion}
+                //isSuggestion={i === this.props.suggestion}
             />
         );
     }
@@ -88,6 +91,7 @@ export class OnePlayer extends React.Component {
         };
     }
 
+    /*
     componentDidMount() {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
@@ -101,10 +105,21 @@ export class OnePlayer extends React.Component {
             suggestion = AIMove;
         }
 
+        // not only change suggestion, also change history to actually put the AI piece and acutally update current state
+        squares[suggestion] = this.state.xIsNext ? "X" : "O"
         this.setState({
+            history: history.concat([
+                {
+                    squares: squares
+                }
+            ]),
+            stepNumber: history.length,
+            xIsNext: !this.state.xIsNext,
             suggestion: suggestion
         });
+
     }
+    */
 
     handleClick(i) {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
@@ -127,8 +142,10 @@ export class OnePlayer extends React.Component {
         var AIMove = MiniMaxAI.minimax(squares.slice(), AIPlayer, AIPlayer).index;
         if (AIMove != undefined) {
             suggestion = AIMove;
-        }
+        } 
 
+        // not only change suggestion, also change history to actually put the AI piece and acutally update current state
+        squares[suggestion] = !this.state.xIsNext ? "X" : "O"
         this.setState({
             history: history.concat([
                 {
@@ -136,17 +153,18 @@ export class OnePlayer extends React.Component {
                 }
             ]),
             stepNumber: history.length,
-            xIsNext: !this.state.xIsNext,
+            //player moved and then AI moved, therefore now it's player's turn again, no need to flip xIsNext
+            //xIsNext: !this.state.xIsNext,
             suggestion: suggestion
         });
-
 
     }
 
     jumpTo(step) {
         this.setState({
-            stepNumber: step,
-            xIsNext: (step % 2) === 0,
+            stepNumber: step
+            // do not change xIsNext since it's always player1's turn
+            // xIsNext: (step % 2) === 0,
         });
     }
 
@@ -187,7 +205,8 @@ export class OnePlayer extends React.Component {
                         //passing down the winning line info for highlighting winningLine
                         winningLine={winningLine}
                         onClick={(i) => this.handleClick(i)}
-                        suggestion={this.state.suggestion}
+                        //no need to pass suggestion since we already updated the current state of the board
+                        //suggestion={this.state.suggestion}
                     />
                 </div>
                 <div className="game-info">
