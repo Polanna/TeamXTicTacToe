@@ -14,7 +14,7 @@ class Square extends React.Component {
     }
 
     render() {
-        let piece = <img className="blankPiece" src={blank} alt="empty" />
+        let piece = <img className="suggestionPiece" src={blank} alt="empty" />
 
         if (this.props.isSuggestion) {
             piece = <img className="blankPiece" src={suggest} alt="suggestion" />
