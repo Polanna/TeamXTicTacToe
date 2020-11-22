@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 // import the pictures used as pieces on board
 import pieceX from '../img/pig.png';
@@ -6,7 +6,7 @@ import pieceO from '../img/chick.png';
 import blank from '../img/blank.png';
 import './Game.css';
 
-class Square extends React.Component {  
+class Square extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -29,11 +29,11 @@ class Board extends React.Component {
 
     renderSquare(i) {
         let win = false;
-        
+
         if (this.props.winningLine && this.props.winningLine.includes(i)) {
             win = true;
         }
-        
+
         return (
             <Square
                 value={this.props.squares[i]}
@@ -44,7 +44,7 @@ class Board extends React.Component {
     }
 
 
-    render() { 
+    render() {
         return (
             <div>
                 <div className="board-row">
@@ -76,6 +76,8 @@ export class Game extends React.Component {
             }],
             stepNumber: 0,
             xIsNext: true,
+            winner: null,
+            winningLine: null
         };
     }
 
@@ -83,17 +85,22 @@ export class Game extends React.Component {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
-        const result = calculateWinner(squares);
-        let winner = null;
-        if (result) {
-            winner = result.winner;
-        }
 
-        if (winner || squares[i]) {
+        if (this.state.winner || squares[i]) {
             return;
         }
 
         squares[i] = this.state.xIsNext ? "X" : "O"
+        const result = calculateWinner(squares);
+        let winner = null;
+        let winningLine = null;
+        if (result) {
+            console.log("Winner is " + result.winner);
+            winner = result.winner;
+            winningLine = result.match;
+            this.props.updatePlayers(winner);
+        }
+
         this.setState({
             history: history.concat([
                 {
@@ -101,7 +108,9 @@ export class Game extends React.Component {
                 }
             ]),
             stepNumber: history.length,
-            xIsNext: !this.state.xIsNext
+            xIsNext: !this.state.xIsNext,
+            winner: winner,
+            winningLine: winningLine
         });
 
         // Demo code showing AI functionality and how to call the minimax function
@@ -111,7 +120,7 @@ export class Game extends React.Component {
         //    alert(AIMove);
         //}
     }
-  
+
     jumpTo(step) {
         this.setState({
             stepNumber: step,
@@ -122,13 +131,6 @@ export class Game extends React.Component {
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
-        const result = calculateWinner(current.squares);
-        let winner = null;
-        let winningLine = null;
-        if (result) {
-            winner = result.winner;
-            winningLine = result.match;
-        }
 
         const moves = history.map((step, move) => {
             const desc = move ?
@@ -142,8 +144,13 @@ export class Game extends React.Component {
         });
 
         let status;
-        if (winner) {
-            status = 'Winner: ' + winner;
+        if (this.state.winner) {
+            if (this.state.winner === "D") {
+                status = 'Draw';
+            }
+            else {
+                status = 'Winner: ' + this.state.winner;
+            }
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'Player 1' : 'Player 2');
         }
@@ -154,12 +161,12 @@ export class Game extends React.Component {
                     <Board
                         squares={current.squares}
                         //passing down the winning line info for highlighting winningLine
-                        winningLine={winningLine}
+                        winningLine={this.state.winningLine}
                         onClick={(i) => this.handleClick(i)}
                     />
                 </div>
                 <div className="game-info">
-                    <div className = "status">{status}</div>
+                    <div className="status">{status}</div>
                     <ol>{moves}</ol>
                 </div>
             </div>
@@ -181,109 +188,16 @@ function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            console.log("WIN")
             return { winner: squares[a], match: lines[i] };
         }
     }
-    return null;
+    //check for draw
+    for (let i = 0; i < squares.length; i++) {
+        if (squares[i] !== "X" && squares[i] !== "O")
+            return null;
+    }
+    console.log("DRAW")
+    return { winner: "D", match: null };
 }
 
-/** @function minimax
- * @brief AI function that finds the best move according to the MiniMax algorithm.
- * @param {string[]} reboard - The current TicTacToe board (this array is modified in the function).
- * @param {string} player - The player whose turn it currently is (should be "X" or "O").
- * @param {string} winningPlayer - The player that the algorithm is trying to make win.
- * @returns {score | move} - If reboard is in a terminal state (win/lose/draw) when passed in,
- *      returns an object with a property "score" that represents the MiniMax score. If reboard
- *      has available spaces for moves, a move object representing the best move will be returned.
- *      This object has two properties:
- *          index - The index of the move
- *          score - The associated MiniMax score
- */
-function minimax(reboard, player, winningPlayer) {
-    // Get a list of the available moves
-    let availableMoves = avail(reboard);
-
-    // Check for win/lose/draw
-    var losingPlayer = winningPlayer === "X" ? "O" : "X";
-    if (winning(reboard, losingPlayer)) {
-        return {
-            score: -10
-        };
-    } else if (winning(reboard, winningPlayer)) {
-        return {
-            score: 10
-        };
-    } else if (availableMoves.length === 0) {
-        return {
-            score: 0
-        };
-    }
-
-    // Calculate minimax scores for every available move
-    var moves = [];
-    for (var i = 0; i < availableMoves.length; i++) {
-        var move = {};
-        move.index = availableMoves[i];
-        reboard[availableMoves[i]] = player;
-
-        if (player == winningPlayer) {
-            var g = minimax(reboard, losingPlayer, winningPlayer);
-            move.score = g.score;
-        } else {
-            var g = minimax(reboard, winningPlayer, winningPlayer);
-            move.score = g.score;
-        }
-        reboard[availableMoves[i]] = null;
-        moves.push(move);
-    }
-
-    // Find the move with the best score from the list of moves
-    var bestMove;
-    if (player === winningPlayer) {
-        var bestScore = -10000;
-        for (var i = 0; i < moves.length; i++) {
-            if (moves[i].score > bestScore) {
-                bestScore = moves[i].score;
-                bestMove = i;
-            }
-        }
-    } else {
-        var bestScore = 10000;
-        for (var i = 0; i < moves.length; i++) {
-            if (moves[i].score < bestScore) {
-                bestScore = moves[i].score;
-                bestMove = i;
-            }
-        }
-    }
-    return moves[bestMove];
-}
-
-//available spots
-function avail(reboard) {
-    var indicesAvailable = [];
-    for (let i = 0; i < reboard.length; i++) {
-        if (reboard[i] == null) {
-            indicesAvailable.push(i);
-        }
-    }
-    return indicesAvailable;
-}
-
-// winning combinations
-function winning(board, player) {
-    if (
-        (board[0] == player && board[1] == player && board[2] == player) ||
-        (board[3] == player && board[4] == player && board[5] == player) ||
-        (board[6] == player && board[7] == player && board[8] == player) ||
-        (board[0] == player && board[3] == player && board[6] == player) ||
-        (board[1] == player && board[4] == player && board[7] == player) ||
-        (board[2] == player && board[5] == player && board[8] == player) ||
-        (board[0] == player && board[4] == player && board[8] == player) ||
-        (board[2] == player && board[4] == player && board[6] == player)
-    ) {
-        return true;
-    } else {
-        return false;
-    }
-}
