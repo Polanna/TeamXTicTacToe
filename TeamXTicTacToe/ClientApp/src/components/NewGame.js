@@ -48,7 +48,12 @@ export class NewGame extends Component {
 
                 <div className="row align-items-center h-50 ">
                     <div className="col-md-12 text-center mt-4">
-                        <Link to='/boardpage'>
+                        <Link to='/tutorialpage'>
+                            <button type="button" className="btn btn-lrg btn-primary shadow-large  rounded-pill w-25 h-50">Tutorial</button>
+                        </Link>
+                    </div>
+                    <div className="col-md-12 text-center mt-4">
+                        <Link to='/oneplayerpage'>
                             <button type="button" className="btn btn-lrg btn-primary shadow-large  rounded-pill w-25 h-50">One Player</button>
                         </Link>
                     </div>
@@ -58,8 +63,15 @@ export class NewGame extends Component {
                             <button type="button" className="btn btn-lrg btn-primary shadow-large rounded-pill w-25 h-50">Two Player</button>
                         </Link>
                     </div>
+                    <div className="col-md-12 text-center mt-4">
+                        <Link to='/onlinepage'>
+                            <button type="button" className="btn btn-lrg btn-primary shadow-large  rounded-pill w-25 h-50">Online</button>
+                        </Link>
+                    </div>
+
                 </div>
             </Fragment>
         );
     }
 }
+export default NewGame;

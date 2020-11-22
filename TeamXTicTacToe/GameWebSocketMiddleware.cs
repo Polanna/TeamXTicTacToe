@@ -6,8 +6,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+
 //using Microsoft.AspNetCore.WebSockets;
 //using System.Collections.Generic.IList;
+
 namespace TeamXTicTacToe
 {
     public class GameWebSocketMiddleware
@@ -15,7 +17,9 @@ namespace TeamXTicTacToe
         private static ConcurrentDictionary<string, WebSocket> _sockets = new ConcurrentDictionary<string, WebSocket>();
 
         private readonly RequestDelegate _next;
+
         private System.Collections.Generic.HashSet<string> connectionIDs = new System.Collections.Generic.HashSet<string>();
+
 
         public GameWebSocketMiddleware(RequestDelegate next)
         {
@@ -29,12 +33,15 @@ namespace TeamXTicTacToe
                 await _next.Invoke(context);
                 return;
             }
+
             System.Diagnostics.Debug.WriteLine("here0");
+
             CancellationToken ct = context.RequestAborted;
             WebSocket currentSocket = await context.WebSockets.AcceptWebSocketAsync();
 
             var socketId = Guid.NewGuid().ToString();
             bool success = _sockets.TryAdd(socketId, currentSocket);
+
             System.Diagnostics.Debug.WriteLine("here1");
             if (success)
             {
@@ -57,12 +64,14 @@ namespace TeamXTicTacToe
             
             
 
+
             while (true)
             {
                 if (ct.IsCancellationRequested)
                 {
                     break;
                 }
+
                 System.Diagnostics.Debug.WriteLine("here2");
                 var response = await ReceiveStringAsync(currentSocket, ct);
                 System.Diagnostics.Debug.WriteLine(response);
@@ -77,12 +86,15 @@ namespace TeamXTicTacToe
                     System.Diagnostics.Debug.WriteLine("shutting 1 down");
                     System.Diagnostics.Debug.WriteLine(currentSocket.State);
                     System.Diagnostics.Debug.WriteLine(response);
+
                     if (currentSocket.State != WebSocketState.Open)
                     {
                         break;
                     }
 
+
                     break;
+
                 }
 
                 /// <- here the server receive a message from one of the clients
@@ -105,6 +117,7 @@ namespace TeamXTicTacToe
                     await SendStringAsync(to, private_message, ct);
 
                 }
+
                 if (val.Length == 3 && val[0].Trim(' ') == "Lobby")
                 {
                     if (val[1].Trim(' ') == "Add")
@@ -148,6 +161,7 @@ namespace TeamXTicTacToe
             await currentSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", ct);
             currentSocket.Dispose();
             System.Diagnostics.Debug.WriteLine("here4");
+
         }
 
         private static Task SendStringAsync(WebSocket socket, string data, CancellationToken ct = default(CancellationToken))
@@ -155,6 +169,7 @@ namespace TeamXTicTacToe
 
             var buffer = Encoding.UTF8.GetBytes(data);
             var segment = new ArraySegment<byte>(buffer);
+
             
             return socket.SendAsync(segment, WebSocketMessageType.Text, true, ct);
         }
@@ -195,6 +210,7 @@ namespace TeamXTicTacToe
             {
                 return null;
             }
+
 
         }
     }

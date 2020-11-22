@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 
 // import the pictures used as pieces on board
 import pieceX from '../img/pig.png';
@@ -72,22 +72,17 @@ class Board extends React.Component {
 const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
 const wsUri = protocol + "//" + window.location.host;
 
-export class Game extends React.Component {
+export class OnlineGame extends React.Component {
     constructor(props) {
         super(props);
 
-        this.LobbyContainer = [];
+
 
         this.state = {
 
-            showLobby:true,
-
-            Lobby:[],
-
-
             socket: new WebSocket(wsUri),
-            myName:"unknownUser",
-            myID:"",
+            myName: "unknownUser",
+            myID: "",
             friendID: "unknown",
             history: [{
                 squares: Array(9).fill(null),
@@ -97,40 +92,20 @@ export class Game extends React.Component {
             winner: null,
             winningLine: null
         };
-        this.state.socket.onopen = e => {
-            //console.log("socket opened", e);
-            this.state.socket.send("Lobby:" + "Add:" + this.state.myID);
-
-        };
 
         this.state.socket.onclose = ((e) => {
             console.log("socket closed", e);
-            this.state.socket.send("Lobby:" + "Remove:" + this.state.myID);
         });
 
         this.state.socket.onmessage = ((e) => {
             // receive message
             let message = e.data
             let str = message.split(":")
-            console.log(str)
             if (str[0] === "yourID" && str[1].length == 36) { this.setState({ myID: str[1] }) }
             if (str[0] === "playGame" && str.length == 2) {
-                var move = str[1].split("/");
-                var opponentChoose = parseInt(move[0]);
-                this.handleClick(opponentChoose);
-            }
-            if (str[0] === "Lobby") {
-                 
-                if (str[1] === "Remove") {
-                    this.setState({ Lobby: this.state.Lobby.filter((val) => { val != str[2] }) })
-                    //var filtered = this.state.Lobby.filter(function (value, index, arr) {
-                    //    return value != str[2];
-                    //});
-                    //this.setState({ Lobby: filtered });
-                }
-                if (str[1] === "Add") {
-                    this.setState({ Lobby: this.state.Lobby.concat([str[2]])})
-                }
+                var move = str[1].split("/")
+                var opponentChoose = parseInt(move[0])
+                this.handleClick(opponentChoose)
             }
             //$('#msgs').append(e.data + '<br />');
         });
@@ -138,23 +113,17 @@ export class Game extends React.Component {
         this.state.socket.onerror = ((e) => {
             console.error(e.data);
         });
-        //this.state.socket.onDisconnected = ((e) => {
-        //    console.log("bye");
-        //})
         this.handleKeyDown = this.handleKeyDown.bind(this)
-        this.buildLobby = this.buildLobby.bind(this);
-        //this.handleWindowClose = this.handleWindowClose.bind(this);
     }
 
-    componentWillUnMount() {
-        window.addEventListener("beforeunload", (ev) => {
-            ev.preventDefault();
-            this.state.socket.send("Lobby:Remove:"+this.state.myID);
-            //return ev.returnValue = 'Are you sure you want to close?';
-        });
+    componentDidMount() {
+        this.state.socket.onopen = e => {
+            console.log("socket opened", e);
+        };
+
 
     }
-    
+
     handleClick(i) { // THIS IS THE ONE FOR PRIVATE MESSAGING 
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
@@ -175,15 +144,13 @@ export class Game extends React.Component {
             this.props.updatePlayers(winner);
         }
 
-
         if (winner || squares[i]) {
             return;
         }
 
         squares[i] = this.state.xIsNext ? "X" : "O"
 
-        this.state.socket.send("playGame"+":" + this.state.myID + ":" + this.state.friendID + ":" + i + "/" + squares[i]);
-
+        this.state.socket.send("playGame" + ":" + this.state.myID + ":" + this.state.friendID + ":" + i + "/" + squares[i]);
 
         this.setState({
             history: history.concat([
@@ -196,13 +163,6 @@ export class Game extends React.Component {
             winner: winner,
             winningLine: winningLine
         });
-        
-        // Demo code showing AI functionality and how to call the minimax function
-        //var AIPlayer = squares[i] === "O" ? "X" : "O";
-        //var AIMove = minimax(squares.slice(), AIPlayer, AIPlayer).index;
-        //if (AIMove != undefined) {
-        //    alert(AIMove);
-        //}
     }
 
     jumpTo(step) {
@@ -212,24 +172,10 @@ export class Game extends React.Component {
         });
     }
 
-    buildLobby() {
-        this.LobbyContainer = []
-        this.state.Lobby.forEach((val) => {
-            if (val != this.state.myID) {
-                this.LobbyContainer.push(<div>{val}</div>);
-            }
-        })
-    }
-
     handleKeyDown(e) {
         if (e.key === 'Enter') { this.setState({ friendID: e.target.value }) }
     }
     render() {
-
-        if (this.state.showLobby) { this.buildLobby() }
-        console.log(this.state.Lobby)
-        //console.log("this.state.showLobby is "+this.state.showLobby)
-
         const history = this.state.history;
         const current = history[this.state.stepNumber];
 
@@ -255,14 +201,13 @@ export class Game extends React.Component {
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'Player 1' : 'Player 2');
         }
-        
+
         return (
             <div className="game">
                 <div className="game-board">
                     <Board
                         squares={current.squares}
                         //passing down the winning line info for highlighting winningLine
-
                         winningLine={this.state.winningLine}
                         onClick={(i) => this.handleClick(i)}
 
@@ -272,25 +217,12 @@ export class Game extends React.Component {
                     <p>Your ID: {this.state.myID}</p>
                 </div>
                 {this.state.friendID === "unknown" ?
-                    (<input placeholder="type Friend ID here and then Enter"
+                    (<input placeholder="type Friend ID"
                         name="FriendID"
                         onKeyDown={this.handleKeyDown} />)
                     : (<p>Friend ID: {this.state.friendID}</p>)
-                    }
-                <div>
-                    {
-                        this.state.showLobby ?
-                            <button onClick={() => {
-                                this.setState({ showLobby: false })
-                            }}>
-                    Hide Lobby
-                    </button>
-                        : (<button onClick= {() => {this.setState({ showLobby: true })}}>Show Lobby</button>)
-                    }
-                </div>
-                <div>
-                    {this.state.showLobby?this.LobbyContainer:null}
-                </div>
+                }
+
                 <div className="game-info">
                     <div className="status">{status}</div>
                     <ol>{moves}</ol>

@@ -1,6 +1,6 @@
 ﻿import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Game } from './Game';
+import { OnlineGame } from './OnlineGame';
 import Client from './Client';
 
 
@@ -8,30 +8,17 @@ import Client from './Client';
 // 2. 
 
 
-export class BoardPage extends Component {
-    static displayName = BoardPage.name;
+export class OnlineBoardPage extends Component {
+    static displayName = OnlineBoardPage.name;
+
 
     constructor(props) {
         super(props);
         this.state = {
-            player1: "You",
-            player2: "Them",
+            player1: {},
+            player2: {}
         }
-        this.handleMessageFromGame = this.handleMessageFromGame.bind(this);
     }
-    
-    handleMessageFromGame(message) {
-        // Action:ClientID 
-        var str = message.split(":");
-        var action = str[0];
-        var client = str[1];
-
-        if (action == "ADD") {
-            // add client
-
-        }
-        if (action == "REMOVE") {
-            // remove client
 
 
 
@@ -42,7 +29,6 @@ export class BoardPage extends Component {
         const nick2 = window.prompt('Player 2:', 'Player2');
         Client.getPlayer(nick1, (player) => { this.setState({ player1: player }) })
         Client.getPlayer(nick2, (player) => { this.setState({ player2: player }) })
-
     }
 
     updatePlayers = (result) => {
@@ -83,7 +69,6 @@ export class BoardPage extends Component {
                 <div className="row">
                     <div className="col-md-2 text-center">
                         <h2>{this.state.player1.name}</h2>
-
                     </div>
                     <div className="col-md-8 text-center">
                         <h2>vs</h2>
@@ -107,8 +92,7 @@ export class BoardPage extends Component {
                     </div>
 
                     <div className="col-md-8 text-center align-items-center">
-                        <Game updatePlayers={this.updatePlayers}/>
-
+                        <OnlineGame updatePlayers={this.updatePlayers} />
                     </div>
                     <div className="col-md-2">
                         <h3>Player scores  component here </h3>
