@@ -7,6 +7,7 @@ import { NewGame } from './components/NewGame';
 import { Settings } from './components/Settings';
 import { FAQPage } from './components/FAQPage';
 import { BoardPage } from './components/BoardPage';
+import { OnlineBoardPage } from './components/OnlineBoardPage';
 import { TutorialPage } from './components/TutorialPage';
 import { OnePlayerPage } from './components/OnePlayerPage';
 import { About } from './components/About';
@@ -26,6 +27,7 @@ export default class App extends Component {
                     <Route path='/tutorialpage' component={TutorialPage} />
                     <Route path='/about' component={About} />
                     <Route path='/oneplayerpage' component={OnePlayerPage} />
+                    <Route path='/onlinepage' component={OnlineBoardPage} />
                 </Layout>
             </Fragment>
         );

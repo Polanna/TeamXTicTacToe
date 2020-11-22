@@ -64,8 +64,8 @@ export class NewGame extends Component {
                         </Link>
                     </div>
                     <div className="col-md-12 text-center mt-4">
-                        <Link to='/boardpage'>
-                            <button type="button" disabled={true} className="btn btn-lrg btn-primary shadow-large  rounded-pill w-25 h-50">Invite</button>
+                        <Link to='/onlinepage'>
+                            <button type="button" className="btn btn-lrg btn-primary shadow-large  rounded-pill w-25 h-50">Online</button>
                         </Link>
                     </div>
 
