@@ -11,14 +11,28 @@ export class BoardPage extends Component {
     static displayName = BoardPage.name;
     constructor(props) {
         super(props);
-
         this.state = {
             player1: "You",
-            player2: "Them"
+            player2: "Them",
         }
+        this.handleMessageFromGame = this.handleMessageFromGame.bind(this);
     }
     
+    handleMessageFromGame(message) {
+        // Action:ClientID 
+        var str = message.split(":");
+        var action = str[0];
+        var client = str[1];
 
+        if (action == "ADD") {
+            // add client
+
+        }
+        if (action == "REMOVE") {
+            // remove client
+
+        }
+    }
 
 
     componentDidMount() {

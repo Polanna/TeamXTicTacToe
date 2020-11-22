@@ -76,9 +76,14 @@ export class Game extends React.Component {
     constructor(props) {
         super(props);
 
-
+        this.LobbyContainer = [];
 
         this.state = {
+
+            showLobby:true,
+
+            Lobby:[],
+
 
             socket: new WebSocket(wsUri),
             myName:"unknownUser",
@@ -90,20 +95,40 @@ export class Game extends React.Component {
             stepNumber: 0,
             xIsNext: true,
         };
+        this.state.socket.onopen = e => {
+            //console.log("socket opened", e);
+            this.state.socket.send("Lobby:" + "Add:" + this.state.myID);
+
+        };
 
         this.state.socket.onclose = ((e) => {
             console.log("socket closed", e);
+            this.state.socket.send("Lobby:" + "Remove:" + this.state.myID);
         });
 
         this.state.socket.onmessage = ((e) => {
             // receive message
             let message = e.data
             let str = message.split(":")
+            console.log(str)
             if (str[0] === "yourID" && str[1].length == 36) { this.setState({ myID: str[1] }) }
             if (str[0] === "playGame" && str.length == 2) {
-                var move = str[1].split("/")
-                var opponentChoose = parseInt(move[0])
-                this.handleClick(opponentChoose)
+                var move = str[1].split("/");
+                var opponentChoose = parseInt(move[0]);
+                this.handleClick(opponentChoose);
+            }
+            if (str[0] === "Lobby") {
+                 
+                if (str[1] === "Remove") {
+                    this.setState({ Lobby: this.state.Lobby.filter((val) => { val != str[2] }) })
+                    //var filtered = this.state.Lobby.filter(function (value, index, arr) {
+                    //    return value != str[2];
+                    //});
+                    //this.setState({ Lobby: filtered });
+                }
+                if (str[1] === "Add") {
+                    this.setState({ Lobby: this.state.Lobby.concat([str[2]])})
+                }
             }
             //$('#msgs').append(e.data + '<br />');
         });
@@ -111,14 +136,20 @@ export class Game extends React.Component {
         this.state.socket.onerror = ((e) => {
             console.error(e.data);
         });
+        //this.state.socket.onDisconnected = ((e) => {
+        //    console.log("bye");
+        //})
         this.handleKeyDown = this.handleKeyDown.bind(this)
+        this.buildLobby = this.buildLobby.bind(this);
+        //this.handleWindowClose = this.handleWindowClose.bind(this);
     }
 
-    componentDidMount() {
-        this.state.socket.onopen = e => {
-            console.log("socket opened", e);
-        };
-        
+    componentWillUnMount() {
+        window.addEventListener("beforeunload", (ev) => {
+            ev.preventDefault();
+            this.state.socket.send("Lobby:Remove:"+this.state.myID);
+            //return ev.returnValue = 'Are you sure you want to close?';
+        });
 
     }
     
@@ -149,7 +180,7 @@ export class Game extends React.Component {
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext
         });
-
+        
         // Demo code showing AI functionality and how to call the minimax function
         //var AIPlayer = squares[i] === "O" ? "X" : "O";
         //var AIMove = minimax(squares.slice(), AIPlayer, AIPlayer).index;
@@ -165,10 +196,24 @@ export class Game extends React.Component {
         });
     }
 
+    buildLobby() {
+        this.LobbyContainer = []
+        this.state.Lobby.forEach((val) => {
+            if (val != this.state.myID) {
+                this.LobbyContainer.push(<div>{val}</div>);
+            }
+        })
+    }
+
     handleKeyDown(e) {
         if (e.key === 'Enter') { this.setState({ friendID: e.target.value }) }
     }
     render() {
+
+        if (this.state.showLobby) { this.buildLobby() }
+        console.log(this.state.Lobby)
+        //console.log("this.state.showLobby is "+this.state.showLobby)
+
         const history = this.state.history;
         const current = history[this.state.stepNumber];
         const result = calculateWinner(current.squares);
@@ -211,12 +256,25 @@ export class Game extends React.Component {
                     <p>Your ID: {this.state.myID}</p>
                 </div>
                 {this.state.friendID === "unknown" ?
-                    (<input placeholder="type Friend ID"
+                    (<input placeholder="type Friend ID here and then Enter"
                         name="FriendID"
                         onKeyDown={this.handleKeyDown} />)
                     : (<p>Friend ID: {this.state.friendID}</p>)
                     }
-                
+                <div>
+                    {
+                        this.state.showLobby ?
+                            <button onClick={() => {
+                                this.setState({ showLobby: false })
+                            }}>
+                    Hide Lobby
+                    </button>
+                        : (<button onClick= {() => {this.setState({ showLobby: true })}}>Show Lobby</button>)
+                    }
+                </div>
+                <div>
+                    {this.state.showLobby?this.LobbyContainer:null}
+                </div>
                 <div className="game-info">
                     <div className = "status">{status}</div>
                     <ol>{moves}</ol>
