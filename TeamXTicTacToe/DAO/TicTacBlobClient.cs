@@ -33,7 +33,7 @@ namespace TeamXTicTacToe.DAO
             // Create a BlobServiceClient object which will be used to create a container client
             BlobServiceClient blobServiceClient = new BlobServiceClient(this.connectionString);
             BlobContainerItem item = blobServiceClient.GetBlobContainers(prefix: this.containerName).FirstOrDefault();
-            
+
             if (item == null)
             {
                 this.containerClient = await blobServiceClient.CreateBlobContainerAsync(this.containerName);
@@ -63,8 +63,7 @@ namespace TeamXTicTacToe.DAO
 
         public IEnumerable<string> GetIds()
         {
-            //TODO: drop .json (see get above)
-            return containerClient.GetBlobs().Select(b => b.Name);
+            return containerClient.GetBlobs().Select(b => b.Name.Substring(0, b.Name.Length - 5));
         }
         public async Task<IEnumerable<T>> GetAllAsync()
         {

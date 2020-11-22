@@ -35,7 +35,7 @@ namespace TeamXTicTacToe.Controllers
         {
             return playerDAO.GetPlayer(id);
         }
-        
+
         [HttpPost()]
         public async Task<IActionResult> CreatePlayer([FromBody] Player player)
         {
@@ -43,9 +43,9 @@ namespace TeamXTicTacToe.Controllers
             {
                 return Ok(player);
             }
-            else // Failed to create player
+            else //player exists so get player
             {
-                return BadRequest();
+                return Ok(await playerDAO.GetPlayer(player.Name));
             }
         }
 
@@ -82,7 +82,7 @@ namespace TeamXTicTacToe.Controllers
             players.Add(new Player() { Name = "Sam", WinCount = 1, LoseCount = 3, DrawCount = 0 });
             players.Add(new Player() { Name = "Linda", WinCount = 2, LoseCount = 3, DrawCount = 1 });
 
-            return players.OrderByDescending(x => x.WinCount ).ThenBy(x => x.LoseCount).ThenBy(x => x.DrawCount).Take(10);
+            return players.OrderByDescending(x => x.WinCount).ThenBy(x => x.LoseCount).ThenBy(x => x.DrawCount).Take(10);
         }
     }
 }

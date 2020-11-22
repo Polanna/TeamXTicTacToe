@@ -1,4 +1,4 @@
-﻿import React, { Component } from 'react';
+﻿import React from 'react';
 import MiniMaxAI from './MiniMaxAI';
 // import the pictures used as pieces on board
 import pieceX from '../img/pig.png';
@@ -97,7 +97,7 @@ export class Tutorial extends React.Component {
 
         var suggestion;
         var AIMove = MiniMaxAI.minimax(squares.slice(), AIPlayer, AIPlayer).index;
-        if (AIMove != undefined) {
+        if (AIMove !== undefined) {
             suggestion = AIMove;
         }
 
@@ -125,7 +125,7 @@ export class Tutorial extends React.Component {
         var AIPlayer = squares[i] === "O" ? "X" : "O";
         var suggestion;
         var AIMove = MiniMaxAI.minimax(squares.slice(), AIPlayer, AIPlayer).index;
-        if (AIMove != undefined) {
+        if (AIMove !== undefined) {
             suggestion = AIMove;
         }
 

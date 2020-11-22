@@ -1,10 +1,10 @@
 import React from 'react';
-import Gameboard from '../organisms/Gameboard';
+import NewGame from './NewGame';
 
 const Home = () => {
   return (
     <div>
-          <Gameboard/>
+          <NewGame/>
     </div>
   );
 }
