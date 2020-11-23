@@ -57,5 +57,10 @@ namespace TeamXTicTacToe.DAO
             }
         }
 
+        public async Task<IEnumerable<Player>> GetTopPlayers(int count)
+        {
+            return await blobClient.GetTopResultsAsync(count);
+        }
+
     }
 }
