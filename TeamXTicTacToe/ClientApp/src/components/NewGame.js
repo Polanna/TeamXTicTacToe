@@ -6,7 +6,7 @@ export class NewGame extends Component {
     static displayName = NewGame.name;
 
     state = {
-        seen: false
+        seen: false,
     };
 
     toggleTopTen = () => {

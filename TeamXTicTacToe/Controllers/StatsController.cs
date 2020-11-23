@@ -13,16 +13,16 @@ namespace TeamXTicTacToe.Controllers
     public class StatsController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<PlayerStat> Get(int count)
+        public IEnumerable<Player> Get(int count)
         {
             //TODO: connect to storage here
-            return new List<PlayerStat>
+            return new List<Player>
             {
-                new PlayerStat{Name = "Jack", Wins = 5},
-                new PlayerStat{Name = "Jane", Wins = 4},
-                new PlayerStat{Name = "Peter", Wins = 3},
-                new PlayerStat{Name = "Nancy", Wins = 2},
-                new PlayerStat{Name = "Julia", Wins = 1}
+                new Player{Name = "Jack", WinCount = 5},
+                new Player{Name = "Jane", WinCount = 4},
+                new Player{Name = "Peter", WinCount = 3},
+                new Player{Name = "Nancy", WinCount = 2},
+                new Player{Name = "Julia", WinCount = 1}
             };
         }
     }
