@@ -16,14 +16,21 @@ export class TopTen extends Component {
     }
 
 
-    render() {
+    render() { 
+
         const players = this.state.players.map((player) => (
             <div className="row">
                 <div className="col">
                     {player.name}
                 </div>
                 <div className="col  align-self-end text-right">
-                    {player.score}
+                    {player.winCount}
+                </div>
+                <div className="col  align-self-end text-right">
+                    {player.loseCount}
+                </div>
+                <div className="col  align-self-end text-right">
+                    {player.drawCount}
                 </div>
             </div>
 
@@ -32,8 +39,22 @@ export class TopTen extends Component {
 
             <div>
                 <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
-                    <ModalHeader toggle={this.props.toggle}>Top 10 Players</ModalHeader>
+                    <ModalHeader toggle={this.props.toggle}>Top 10 Players</ModalHeader> 
                     <ModalBody>
+                        <div className="row">
+                            <div className="col">
+                                <b>Name</b>
+                            </div>
+                            <div className="col  align-self-end text-right">
+                                <b>WinCount</b>
+                            </div>
+                            <div className="col  align-self-end text-right">
+                                <b>LoseCount</b>
+                            </div>
+                            <div className="col  align-self-end text-right">
+                                <b>DrawCount</b>
+                            </div>
+                        </div>
                         {players}
                     </ModalBody>
                     <ModalFooter>
