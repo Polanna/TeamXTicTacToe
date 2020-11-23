@@ -1,5 +1,5 @@
 ﻿function getTopPlayers(count, cb) {
-    return fetch(`/stats?count=${count}`, {
+    return fetch(`/players/getTopScores?count=${count}`, {
         accept: 'application/json',
     }).then(checkStatus)
         .then(parseJSON)
