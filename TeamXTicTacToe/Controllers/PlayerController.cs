@@ -65,7 +65,7 @@ namespace TeamXTicTacToe.Controllers
         }
 
         [HttpGet]
-        [Route("getTopScores/{count}")]
+        [Route("getTopScores")]
         public async Task<IEnumerable<Player>> GetTopScores(int count)
         {
             return await playerDAO.GetTopPlayers(count);
