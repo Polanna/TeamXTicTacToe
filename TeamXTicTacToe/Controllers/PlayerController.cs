@@ -65,24 +65,10 @@ namespace TeamXTicTacToe.Controllers
         }
 
         [HttpGet]
-        [Route("getTopScores")]
-        public IEnumerable<Player> GetTopScores()
+        [Route("getTopScores/{count}")]
+        public async Task<IEnumerable<Player>> GetTopScores(int count)
         {
-            //TODO: connect to storage here
-            List<Player> players = new List<Player>();
-            players.Add(new Player() { Name = "Bob", WinCount = 5, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Name = "Jill", WinCount = 5, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Name = "Jack", WinCount = 3, LoseCount = 1, DrawCount = 0 });
-            players.Add(new Player() { Name = "Jane", WinCount = 4, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Name = "Phil", WinCount = 1, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Name = "Anna", WinCount = 3, LoseCount = 3, DrawCount = 1 });
-            players.Add(new Player() { Name = "Joe", WinCount = 4, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Name = "Tim", WinCount = 2, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Name = "Lucy", WinCount = 2, LoseCount = 3, DrawCount = 1 });
-            players.Add(new Player() { Name = "Sam", WinCount = 1, LoseCount = 3, DrawCount = 0 });
-            players.Add(new Player() { Name = "Linda", WinCount = 2, LoseCount = 3, DrawCount = 1 });
-
-            return players.OrderByDescending(x => x.WinCount).ThenBy(x => x.LoseCount).ThenBy(x => x.DrawCount).Take(10);
+            return await playerDAO.GetTopPlayers(count);
         }
     }
 }

@@ -65,6 +65,7 @@ namespace TeamXTicTacToe.DAO
         {
             return containerClient.GetBlobs().Select(b => b.Name.Substring(0, b.Name.Length - 5));
         }
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             List<T> items = new List<T>();
@@ -75,6 +76,23 @@ namespace TeamXTicTacToe.DAO
                 items.Add(Deserialize(download.Content));
             }
             return items;
+        }
+
+        public async Task<IEnumerable<T>> GetTopResultsAsync(int count)
+        {
+            // Get a list of all the items in the container
+            List<T> items = new List<T>();
+            await foreach (BlobItem blobItem in containerClient.GetBlobsAsync())
+            {
+                BlobClient blobClient = containerClient.GetBlobClient(blobItem.Name);
+                BlobDownloadInfo download = await blobClient.DownloadAsync();
+                items.Add(Deserialize(download.Content));
+            }
+
+            // Get the top {count} entries and return them
+            items.Sort();
+            items.Reverse();
+            return items.Take(count);
         }
 
         private static async Task Serialize(T value, BlobClient blobClient)
