@@ -12,5 +12,6 @@ namespace TeamXTicTacToe.DAO
         public Task<IEnumerable<Player>> GetPlayers();
         public Task<bool> CreatePlayer(Player player);
         public Task<bool> UpdatePlayer(Player player);
+        public Task<IEnumerable<Player>> GetTopPlayers(int count);
     }
 }
