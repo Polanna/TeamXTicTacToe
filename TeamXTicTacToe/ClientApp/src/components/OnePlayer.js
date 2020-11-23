@@ -1,10 +1,9 @@
-﻿import React, { Component } from 'react';
+﻿import React from 'react';
 import MiniMaxAI from './MiniMaxAI';
 // import the pictures used as pieces on board
 import pieceX from '../img/pig.png';
 import pieceO from '../img/chick.png';
 import blank from '../img/blank.png';
-import suggest from '../img/suggestion.png';
 import './Game.css';
 
 
@@ -24,7 +23,9 @@ class Square extends React.Component {
         */
 
         if (this.props.value) {
-            piece = this.props.value === "X" ? <img className="player1" src={pieceX} alt="pieceX" /> : <img className="player2" src={pieceO} alt="pieceO" />
+            piece = this.props.value === "X" ?
+                <img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="pieceX" />
+                : <img className="player2" src={require('../img/' + this.props.tokenO + '.png')} alt="pieceO" />
         }
 
         return (
@@ -50,6 +51,8 @@ class Board extends React.Component {
                 onClick={() => this.props.onClick(i)}
                 win={win}
                 //isSuggestion={i === this.props.suggestion}
+                tokenX={this.props.tokenX}
+                tokenO={this.props.tokenO}
             />
         );
     }
@@ -207,6 +210,8 @@ export class OnePlayer extends React.Component {
                         onClick={(i) => this.handleClick(i)}
                         //no need to pass suggestion since we already updated the current state of the board
                         //suggestion={this.state.suggestion}
+                        tokenX={this.props.tokenX}
+                        tokenO={this.props.tokenO}
                     />
                 </div>
                 <div className="game-info">

@@ -14,7 +14,8 @@ class Square extends React.Component {
     render() {
         let piece = <img className="blankPiece" src={blank} alt="empty" />
         if (this.props.value) {
-            piece = this.props.value === "X" ? <img className="player1" src={pieceX} alt="pieceX" /> : <img className="player2" src={pieceO} alt="pieceO" />
+            piece = this.props.value === "X" ? <img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="X" />
+                : <img className="player2" src={require('../img/' + this.props.tokenO + '.png')} alt="O" />
         }
 
         return (
@@ -39,6 +40,8 @@ class Board extends React.Component {
                 value={this.props.squares[i]}
                 onClick={() => this.props.onClick(i)}
                 win={win}
+                tokenX={this.props.tokenX}
+                tokenO={this.props.tokenO}
             />
         );
     }
@@ -210,7 +213,8 @@ export class OnlineGame extends React.Component {
                         //passing down the winning line info for highlighting winningLine
                         winningLine={this.state.winningLine}
                         onClick={(i) => this.handleClick(i)}
-
+                        tokenX={this.props.tokenX}
+                        tokenO={this.props.tokenO}
                     />
                 </div>
                 <div>

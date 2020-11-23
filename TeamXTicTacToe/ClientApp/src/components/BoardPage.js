@@ -15,6 +15,7 @@ export class BoardPage extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.location);
         const nick1 = window.prompt('Player 1:', 'Player1');
         const nick2 = window.prompt('Player 2:', 'Player2');
         Client.getPlayer(nick1, (player) => { this.setState({ player1: player }) })
@@ -74,13 +75,24 @@ export class BoardPage extends Component {
                     <div className="col-md-2 text-center">
                         <h2>O</h2>
                     </div>
+
+                    <div className="col-md-2 text-center">
+                        <h2><img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="pieceX" /></h2>
+                    </div>
+                    <div className="col-md-8 text-center">
+                        <h2></h2>
+                    </div>
+                    <div className="col-md-2 text-center">
+                        <h2><img className="player2" src={require('../img/' + this.props.tokenO + '.png')} alt="pieceO" /></h2>
+                    </div>
+
                 </div>
                 <div className="row">
                     <div className="col-md-2">
                         <h3>Player scores component here </h3>
                     </div>
                     <div className="col-md-8 text-center align-items-center">
-                        <Game updatePlayers={this.updatePlayers}/>
+                        <Game updatePlayers={this.updatePlayers} tokenX={this.props.tokenX} tokenO={this.props.tokenO} />
                     </div>
                     <div className="col-md-2">
                         <h3>Player scores  component here </h3>

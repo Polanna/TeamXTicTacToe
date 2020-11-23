@@ -21,56 +21,59 @@ export class TutorialPage extends Component {
     render() {
         return (
             <Fragment>
-                <div class="row">
-                    <div class="col-md-12 text-center">
+                <div className="row">
+                    <div className="col-md-12 text-center">
                         <h1>Tutorial</h1>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-2 text-center">
+                <div className="row">
+                    <div className="col-md-2 text-center">
                         <h2>{this.state.player1}</h2>
                     </div>
-                    <div class="col-md-8 text-center">
+                    <div className="col-md-8 text-center">
                         <h2>vs</h2>
                     </div>
-                    <div class="col-md-2 text-center">
+                    <div className="col-md-2 text-center">
                         <h2>{this.state.player2}</h2>
                     </div>
-                    <div class="col-md-2 text-center">
+
+                    <div className="col-md-2 text-center">
                         <h2>X</h2>
                     </div>
-                    <div class="col-md-8 text-center">
+                    <div className="col-md-8 text-center">
                         <h2></h2>
                     </div>
-                    <div class="col-md-2 text-center">
+                    <div className="col-md-2 text-center">
                         <h2>O</h2>
                     </div>
-                    <div class="col-md-2 text-center">
-                        <h2><img className="player1" src={pieceX} alt="pieceX" /></h2>
+
+                    <div className="col-md-2 text-center">
+                        <h2><img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="pieceX" /></h2>
                     </div>
-                    <div class="col-md-8 text-center">
+                    <div className="col-md-8 text-center">
                         <h2></h2>
                     </div>
-                    <div class="col-md-2 text-center">
-                        <h2><img className="player2" src={pieceO} alt="pieceO" /></h2>
+                    <div className="col-md-2 text-center">
+                        <h2><img className="player2" require src={require('../img/' + this.props.tokenO + '.png')} alt="pieceO" /></h2>
                     </div>
+
                 </div>
-                <div class="row">
-                    <div class="col-md-2">
+                <div className="row">
+                    <div className="col-md-2">
                         <h3>Information here </h3>
                     </div>
-                    <div class="col-md-8 text-center align-items-center">
-                        <Tutorial />
+                    <div className="col-md-8 text-center align-items-center">
+                        <Tutorial tokenX={this.props.tokenX} tokenO={this.props.tokenO}/>
                     </div>
-                    <div class="col-md-2">
+                    <div className="col-md-2">
                         <h3>Information here </h3>
                     </div>
                 </div>
 
-                <div class="row align-items-center h-50 ">
-                    <div class="col-md-12 text-center mt-4">
+                <div className="row align-items-center h-50 ">
+                    <div className="col-md-12 text-center mt-4">
                         <Link to='/'>
-                            <button type="button" class="btn btn-lrg btn-primary active  shadow-large  rounded-pill w-25 h-50">Quit</button>
+                            <button type="button" className="btn btn-lrg btn-primary active  shadow-large  rounded-pill w-25 h-50">Quit</button>
                         </Link>
                     </div>
                 </div>
