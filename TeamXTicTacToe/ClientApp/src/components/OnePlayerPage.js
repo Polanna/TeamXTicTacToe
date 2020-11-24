@@ -15,8 +15,13 @@ export class OnePlayerPage extends Component {
 
     componentDidMount() {
         const nick1 = window.prompt('Player 1:', 'Player1');
-        const nick2 = 'AI';
-        this.setState({ player1: nick1, player2: nick2 })
+        if (nick1) {
+            const nick2 = 'AI';
+            this.setState({ player1: nick1, player2: nick2 })
+        }
+        else {
+            window.location.href = '/';
+        }
     }
 
     render() {

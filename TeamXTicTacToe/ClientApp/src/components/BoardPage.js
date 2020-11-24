@@ -17,9 +17,20 @@ export class BoardPage extends Component {
     componentDidMount() {
         console.log(this.props.location);
         const nick1 = window.prompt('Player 1:', 'Player1');
-        const nick2 = window.prompt('Player 2:', 'Player2');
-        Client.getPlayer(nick1, (player) => { this.setState({ player1: player }) })
-        Client.getPlayer(nick2, (player) => { this.setState({ player2: player }) })
+        if (nick1) {
+            const nick2 = window.prompt('Player 2:', 'Player2');
+            if (nick2) {
+                Client.getPlayer(nick1, (player) => { this.setState({ player1: player }) })
+                Client.getPlayer(nick2, (player) => { this.setState({ player2: player }) })
+            }
+            else {
+                window.location.href = '/';
+            }
+        }
+        else {
+            window.location.href = '/';
+        }
+        
     }
 
     updatePlayers = (result) => {
