@@ -16,7 +16,7 @@ export class OnePlayerPage extends Component {
     componentDidMount() {
         const nick1 = window.prompt('Player 1:', 'Player1');
         const nick2 = 'AI';
-        this.setState({ player1: nick1, player2: nick2 });
+        this.setState({ player1: nick1, player2: nick2 })
     }
 
     render() {
@@ -44,16 +44,16 @@ export class OnePlayerPage extends Component {
                         <h2></h2>
                     </div>
                     <div class="col-md-2 text-center">
-                        <h2>O</h2>
+                        <h2>AI Player</h2>
                     </div>
                     <div class="col-md-2 text-center">
-                        <h2><img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="pieceX" /></h2>
+                        <h2><img className="player1" src={pieceX} alt="pieceX" /></h2>
                     </div>
                     <div class="col-md-8 text-center">
                         <h2></h2>
                     </div>
                     <div class="col-md-2 text-center">
-                        <h2><img className="player2" require src={require('../img/'+this.props.tokenO+'.png')} alt="pieceO" /></h2>
+                        <h2><img className="player2" src={pieceO} alt="pieceO" /></h2>
                     </div>
                 </div>
                 <div class="row">
@@ -61,7 +61,7 @@ export class OnePlayerPage extends Component {
                         <h3>Information here </h3>
                     </div>
                     <div class="col-md-8 text-center align-items-center">
-                        <OnePlayer tokenX={this.props.tokenX} tokenO={this.props.tokenO}/>
+                        <OnePlayer />
                     </div>
                     <div class="col-md-2">
                         <h3>Information here </h3>

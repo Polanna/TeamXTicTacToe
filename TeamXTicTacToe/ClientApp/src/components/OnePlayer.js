@@ -1,9 +1,10 @@
-﻿import React from 'react';
+﻿import React, { Component } from 'react';
 import MiniMaxAI from './MiniMaxAI';
 // import the pictures used as pieces on board
 import pieceX from '../img/pig.png';
 import pieceO from '../img/chick.png';
 import blank from '../img/blank.png';
+import suggest from '../img/suggestion.png';
 import './Game.css';
 
 
@@ -23,9 +24,7 @@ class Square extends React.Component {
         */
 
         if (this.props.value) {
-            piece = this.props.value === "X" ?
-                <img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="pieceX" />
-                : <img className="player2" src={require('../img/' + this.props.tokenO + '.png')} alt="pieceO" />
+            piece = this.props.value === "X" ? <img className="player1" src={pieceX} alt="pieceX" /> : <img className="player2" src={pieceO} alt="pieceO" />
         }
 
         return (
@@ -51,8 +50,6 @@ class Board extends React.Component {
                 onClick={() => this.props.onClick(i)}
                 win={win}
                 //isSuggestion={i === this.props.suggestion}
-                tokenX={this.props.tokenX}
-                tokenO={this.props.tokenO}
             />
         );
     }
@@ -171,6 +168,14 @@ export class OnePlayer extends React.Component {
         });
     }
 
+    // Implementation of undo button
+    goBack() {
+        if (this.state.stepNumber === 0) {
+            return;
+        }
+        { this.jumpTo(this.state.stepNumber-1)}
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -182,7 +187,7 @@ export class OnePlayer extends React.Component {
             winningLine = result.match;
         }
 
-        const moves = history.map((step, move) => {
+        /*const moves = history.map((step, move) => {
             const desc = move ?
                 'Go to move #' + move :
                 'Go to game start';
@@ -191,7 +196,7 @@ export class OnePlayer extends React.Component {
                     <button className="move" onClick={() => this.jumpTo(move)}>{desc}</button>
                 </li>
             );
-        });
+        });*/
 
         let status;
         if (winner) {
@@ -210,13 +215,15 @@ export class OnePlayer extends React.Component {
                         onClick={(i) => this.handleClick(i)}
                         //no need to pass suggestion since we already updated the current state of the board
                         //suggestion={this.state.suggestion}
-                        tokenX={this.props.tokenX}
-                        tokenO={this.props.tokenO}
                     />
                 </div>
                 <div className="game-info">
                     <div className="status">{status}</div>
-                    <ol>{moves}</ol>
+                </div>
+                <div class="row align-items-center h-50 ">
+                    <div class="col-md-12 text-center mt-4">
+                        <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.goBack()}>undo</button>
+                    </div>
                 </div>
             </div>
         );
