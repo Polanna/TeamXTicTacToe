@@ -5,8 +5,9 @@ import pieceX from '../img/pig.png';
 import pieceO from '../img/chick.png';
 import blank from '../img/blank.png';
 import './Game.css';
+import Scoreboard from './Scoreboard';
 
-class Square extends React.Component {  
+class Square extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -29,11 +30,11 @@ class Board extends React.Component {
 
     renderSquare(i) {
         let win = false;
-        
+
         if (this.props.winningLine && this.props.winningLine.includes(i)) {
             win = true;
         }
-        
+
         return (
             <Square
                 value={this.props.squares[i]}
@@ -44,7 +45,7 @@ class Board extends React.Component {
     }
 
 
-    render() { 
+    render() {
         return (
             <div>
                 <div className="board-row">
@@ -76,6 +77,16 @@ export class Game extends React.Component {
             }],
             stepNumber: 0,
             xIsNext: true,
+            player1Score: [{
+                win: 0,
+                loss: 0,
+                draw: 0
+            }],
+            player2Score: [{
+                win: 0,
+                loss: 0,
+                draw: 0
+            }]
         };
     }
 
@@ -111,7 +122,7 @@ export class Game extends React.Component {
         //    alert(AIMove);
         //}
     }
-  
+
     jumpTo(step) {
         this.setState({
             stepNumber: step,
@@ -144,12 +155,23 @@ export class Game extends React.Component {
         let status;
         if (winner) {
             status = 'Winner: ' + winner;
+            if (winner == "X") {
+                let arr = this.state.player1Score.slice();
+                arr[0].win++;
+                this.setState({player1Score: arr});
+            }
+            else if (winner = "O") {
+                let arr = this.state.player2Score.slice();
+                arr[0].win++;
+                this.setState({player2Score});
+            }
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'Player 1' : 'Player 2');
         }
 
         return (
             <div className="game">
+                <Scoreboard win={this.state.player1Score} loss="" draw="" playerName={this.props.player1} playerShape="X" />
                 <div className="game-board">
                     <Board
                         squares={current.squares}
@@ -157,11 +179,12 @@ export class Game extends React.Component {
                         winningLine={winningLine}
                         onClick={(i) => this.handleClick(i)}
                     />
+                    <div className="game-info">
+                        <div className="status">{status}</div>
+                        <ol>{moves}</ol>
+                    </div>
                 </div>
-                <div className="game-info">
-                    <div className = "status">{status}</div>
-                    <ol>{moves}</ol>
-                </div>
+                <Scoreboard win="" loss="" draw="" playerName={this.props.player2} playerShape="O" />
             </div>
         );
     }

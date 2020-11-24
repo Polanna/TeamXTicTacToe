@@ -4,9 +4,13 @@ import { Game } from './Game';
 
 export class BoardPage extends Component {
     static displayName = BoardPage.name;
-    state = {
-        player1: '',
-        player2: ''
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            player1: '',
+            player2: '',
+        }
     }
 
     componentDidMount() {
@@ -16,40 +20,11 @@ export class BoardPage extends Component {
     }
 
     render() {
+        const player1 = this.state.player1;
+        const player2 = this.state.player2;
         return (
             <Fragment>
-                <div class="row">
-                    <div class="col-md-2 text-center">
-                        <h2>{this.state.player1}</h2>
-                    </div>
-                    <div class="col-md-8 text-center">
-                        <h2>vs</h2>
-                    </div>
-                    <div class="col-md-2 text-center">
-                        <h2>{this.state.player2}</h2>
-                    </div>
-                    <div class="col-md-2 text-center">
-                        <h2>X</h2>
-                    </div>
-                    <div class="col-md-8 text-center">
-                        <h2></h2>
-                    </div>
-                    <div class="col-md-2 text-center">
-                        <h2>O</h2>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <h3>Player scores component here </h3>
-                    </div>
-                    <div class="col-md-8 text-center align-items-center">
-                        <Game/>
-                    </div>
-                    <div class="col-md-2">
-                        <h3>Player scores  component here </h3>
-                    </div>
-                </div>
-
+                <Game player1={player1} player2={player2} />
                 <div class="row align-items-center h-50 ">
                     <div class="col-md-12 text-center mt-4">
                         <Link to='/'>
