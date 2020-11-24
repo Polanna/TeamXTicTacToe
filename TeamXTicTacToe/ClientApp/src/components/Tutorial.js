@@ -1,9 +1,12 @@
-import React from 'react';
-
+﻿import React from 'react';
+import MiniMaxAI from './MiniMaxAI';
 // import the pictures used as pieces on board
+import pieceX from '../img/pig.png';
+import pieceO from '../img/chick.png';
 import blank from '../img/blank.png';
+import suggest from '../img/suggestion.png';
 import './Game.css';
-import Scoreboard from './Scoreboard';
+
 
 class Square extends React.Component {
     constructor(props) {
@@ -11,11 +14,16 @@ class Square extends React.Component {
     }
 
     render() {
-        let piece = <img className="blankPiece" src={blank} alt="empty" />
+        let piece = <img className="suggestionPiece" src={blank} alt="empty" />
+
+        if (this.props.isSuggestion) {
+            piece = <img className="blankPiece" src={suggest} alt="suggestion" />
+        }
+
         if (this.props.value) {
             piece = this.props.value === "X" ?
-                <img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="X" />
-                : <img className="player2" src={require('../img/' + this.props.tokenO + '.png')} alt="O" />
+                <img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="pieceX" />
+                : <img className="player2" src={require('../img/' + this.props.tokenO + '.png')} alt="pieceO" />
         }
 
         return (
@@ -40,6 +48,7 @@ class Board extends React.Component {
                 value={this.props.squares[i]}
                 onClick={() => this.props.onClick(i)}
                 win={win}
+                isSuggestion={i === this.props.suggestion}
                 tokenX={this.props.tokenX}
                 tokenO={this.props.tokenO}
             />
@@ -70,7 +79,7 @@ class Board extends React.Component {
     }
 }
 
-export class Game extends React.Component {
+export class Tutorial extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -79,39 +88,49 @@ export class Game extends React.Component {
             }],
             stepNumber: 0,
             xIsNext: true,
-            player1Score: [{
-                win: 0,
-                loss: 0,
-                draw: 0
-            }],
-            player2Score: [{
-                win: 0,
-                loss: 0,
-                draw: 0
-            }],
-            winner: null,
-            winningLine: null
+            suggestion: 0
         };
+    }
+
+    componentDidMount() {
+        const history = this.state.history.slice(0, this.state.stepNumber + 1);
+        const current = history[history.length - 1];
+        const squares = current.squares.slice();
+
+        var AIPlayer = this.state.xIsNext ? "X" : "O"
+
+        var suggestion;
+        var AIMove = MiniMaxAI.minimax(squares.slice(), AIPlayer, AIPlayer).index;
+        if (AIMove !== undefined) {
+            suggestion = AIMove;
+        }
+
+        this.setState({
+            suggestion: suggestion
+        });
     }
 
     handleClick(i) {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
+        const result = calculateWinner(squares);
+        let winner = null;
+        if (result) {
+            winner = result.winner;
+        }
 
-        if (this.state.winner || squares[i]) {
+        if (winner || squares[i]) {
             return;
         }
 
         squares[i] = this.state.xIsNext ? "X" : "O"
-        const result = calculateWinner(squares);
-        let winner = null;
-        let winningLine = null;
-        if (result) {
-            console.log("Winner is " + result.winner);
-            winner = result.winner;
-            winningLine = result.match;
-            this.props.updatePlayers(winner);
+        // Demo code showing AI functionality and how to call the minimax function
+        var AIPlayer = squares[i] === "O" ? "X" : "O";
+        var suggestion;
+        var AIMove = MiniMaxAI.minimax(squares.slice(), AIPlayer, AIPlayer).index;
+        if (AIMove !== undefined) {
+            suggestion = AIMove;
         }
 
         this.setState({
@@ -122,9 +141,11 @@ export class Game extends React.Component {
             ]),
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext,
-            winner: winner,
-            winningLine: winningLine
+            suggestion: suggestion
+
         });
+
+        
     }
 
     jumpTo(step) {
@@ -137,6 +158,13 @@ export class Game extends React.Component {
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
+        const result = calculateWinner(current.squares);
+        let winner = null;
+        let winningLine = null;
+        if (result) {
+            winner = result.winner;
+            winningLine = result.match;
+        }
 
         const moves = history.map((step, move) => {
             const desc = move ?
@@ -150,41 +178,29 @@ export class Game extends React.Component {
         });
 
         let status;
-        if (this.state.winner) {
-            status = 'Winner: ' + this.state.winner;
-            if (this.state.winner === "X") {
-                let arr = this.state.player1Score.slice();
-                arr[0].win++;
-                this.setState({player1Score: arr});
-            }
-            else if (this.state.winner === "O") {
-                let arr = this.state.player2Score.slice();
-                arr[0].win++;
-                this.setState({player2Score: arr});
-
-            }
+        if (winner) {
+            status = 'Winner: ' + winner;
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'Player 1' : 'Player 2');
         }
 
         return (
             <div className="game">
-                <Scoreboard win={this.state.player1Score} loss="" draw="" playerName={this.props.player1} playerShape="X" />
                 <div className="game-board">
                     <Board
                         squares={current.squares}
                         //passing down the winning line info for highlighting winningLine
-                        winningLine={this.state.winningLine}
+                        winningLine={winningLine}
                         onClick={(i) => this.handleClick(i)}
+                        suggestion={this.state.suggestion}
                         tokenX={this.props.tokenX}
                         tokenO={this.props.tokenO}
                     />
-                    <div className="game-info">
-                        <div className="status">{status}</div>
-                        <ol>{moves}</ol>
-                    </div>
                 </div>
-                <Scoreboard win="" loss="" draw="" playerName={this.props.player2} playerShape="O" />
+                <div className="game-info">
+                    <div className="status">{status}</div>
+                    <ol>{moves}</ol>
+                </div>
             </div>
         );
     }
@@ -204,16 +220,9 @@ function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            console.log("WIN")
             return { winner: squares[a], match: lines[i] };
         }
     }
-    //check for draw
-    for (let i = 0; i < squares.length; i++) {
-        if (squares[i] !== "X" && squares[i] !== "O")
-            return null;
-    }
-    console.log("DRAW")
-    return { winner: "D", match: null };
+    return null;
 }
 

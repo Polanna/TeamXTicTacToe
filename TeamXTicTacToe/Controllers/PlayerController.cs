@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using TeamXTicTacToe.TicTacToe;
+using TeamXTicTacToe.Models;
+using TeamXTicTacToe.DAO;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,37 +22,39 @@ namespace TeamXTicTacToe.Controllers
             this.playerDAO = playerDAO;
         }
 
+        //GET players/
+        [HttpGet()]
+        public Task<IEnumerable<Player>> GetPlayers()
+        {
+            return playerDAO.GetPlayers();
+        }
+
         //GET players/Bob
         [HttpGet("{id}")]
-        public Player GetPlayer(string id)
+        public Task<Player> GetPlayer(string id)
         {
-            Player result = playerDAO.GetPlayer(id);
-            return result;
+            return playerDAO.GetPlayer(id);
         }
-        
-        // POST api/<PlayerController>
+
         [HttpPost()]
-        public IActionResult CreatePlayer([FromBody] string id)
+        public async Task<IActionResult> CreatePlayer([FromBody] Player player)
         {
-            Player player = new Player();
-            player.Id = id;
-            if (playerDAO.CreatePlayer(player)) // Player successfully created
+            if (await playerDAO.CreatePlayer(player)) // Player successfully created
             {
                 return Ok(player);
             }
-            else // Failed to create player
+            else //player exists so get player
             {
-                return BadRequest();
+                return Ok(await playerDAO.GetPlayer(player.Name));
             }
         }
 
-        // PUT api/<PlayerController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdatePlayer(string id, [FromBody] Player player)
+        public async Task<IActionResult> UpdatePlayer(string id, [FromBody] Player player)
         {
-            if (id != player.Id) return BadRequest(); //ID from URI and payload don't match
+            if (id != player.Name) return BadRequest(); //ID from URI and payload don't match
 
-            if (playerDAO.UpdatePlayer(player)) // Player successfully updated
+            if (await playerDAO.UpdatePlayer(player)) // Player successfully updated
             {
                 return Ok(player);
             }
@@ -59,6 +62,13 @@ namespace TeamXTicTacToe.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpGet]
+        [Route("getTopScores")]
+        public async Task<IEnumerable<Player>> GetTopScores(int count)
+        {
+            return await playerDAO.GetTopPlayers(count);
         }
     }
 }

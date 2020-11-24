@@ -1,5 +1,5 @@
 ﻿function getTopPlayers(count, cb) {
-    return fetch(`/stats?count=${count}`, {
+    return fetch(`/players/getTopScores?count=${count}`, {
         accept: 'application/json',
     }).then(checkStatus)
         .then(parseJSON)
@@ -19,9 +19,36 @@ function checkStatus(response) {
     }
 }
 
+function getPlayer(name, cb) {
+    let player = { name: name };
+    return fetch(`/players`, {
+        method: 'post',
+        body: JSON.stringify(player),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+    }).then(checkStatus)
+        .then(parseJSON)
+        .then(cb)
+        .catch((error) => console.log(error.message));
+}
+
+function updatePlayer(player) {
+    return fetch(`/players/${player.name}`, {
+        method: 'put',
+        body: JSON.stringify(player),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+    }).then(checkStatus)
+        .catch((error) => console.log(error.message));
+}
+
 function parseJSON(response) {
     return response.json();
 }
 
-const Client = { getTopPlayers };
+const Client = { getTopPlayers, getPlayer, updatePlayer };
 export default Client;
