@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { TopTen } from './TopTen';
+import gear from '../img/icons8-settings-48W.png';
 
 export class NewGame extends Component {
     static displayName = NewGame.name;
@@ -41,7 +42,8 @@ export class NewGame extends Component {
                         <Link to='/settings'>
                             <button
                                 type="button"
-                                className="btn btn-primary rounded-circle">Settings</button>
+                                className="btn btn-primary rounded-circle " data-toggle="tooltip" data-placement="top" title="Settings" >
+                                <img className="settingImg img-fluid" src={gear} alt="Settings" /></button>
                         </Link>
                     </div>
                 </div>
