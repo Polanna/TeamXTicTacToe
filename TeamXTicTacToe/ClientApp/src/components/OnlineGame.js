@@ -79,9 +79,14 @@ export class OnlineGame extends React.Component {
     constructor(props) {
         super(props);
 
-
-
+        console.log(this.props.player1)
+        this.LobbyContainer = [];
         this.state = {
+            
+            showLobby: true,
+            LobbyIDs: [],
+            LobbyNames: [],
+            LobbyStatuses:[],
 
             socket: new WebSocket(wsUri),
             myName: "unknownUser",
@@ -104,33 +109,59 @@ export class OnlineGame extends React.Component {
             // receive message
             let message = e.data
             let str = message.split(":")
-            if (str[0] === "yourID" && str[1].length == 36) { this.setState({ myID: str[1] }) }
+            console.log(str)
+            if (str[0] === "yourID" && str[1].length == 36) {
+                this.state.socket.send("Lobby:" + "Add:" + this.props.player1 + ":" + str[1]);
+                this.setState({ myID: str[1] })
+            }
             if (str[0] === "playGame" && str.length == 2) {
                 var move = str[1].split("/")
                 var opponentChoose = parseInt(move[0])
                 this.handleClick(opponentChoose)
             }
+            if (str[0] === "Lobby") {
+                if (str[1] === "Add") {
+                    this.setState({
+                        LobbyIDs: this.state.LobbyIDs.concat([str[3]]),
+                        LobbyStatuses: this.state.LobbyStatuses.concat(str[4]),
+                        LobbyNames: this.state.LobbyNames.concat([str[2]])
+                    })
+                }
+                if (str[1] === "Update" && str.length == 6) {
+                    let inviter = str[2]
+                    let inviterStatus = str[3]
+                    let invitee = str[4]
+                    let inviteeStatus = str[5]
+                    this.state.LobbyStatuses[this.state.LobbyIDs.indexOf(inviter)] = inviterStatus
+                    this.state.LobbyStatuses[this.state.LobbyIDs.indexOf(invitee)] = inviteeStatus
+                    let arr = this.state.LobbyStatuses;
+                    this.setState({
+                        LobbyStatuses: arr
+                    })
+                }
+                
+            }
+            
             //$('#msgs').append(e.data + '<br />');
         });
 
         this.state.socket.onerror = ((e) => {
             console.error(e.data);
         });
-        this.handleKeyDown = this.handleKeyDown.bind(this)
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.buildLobby = this.buildLobby.bind(this);
     }
 
-    componentDidMount() {
-        this.state.socket.onopen = e => {
-            console.log("socket opened", e);
-        };
 
-
-    }
 
     handleClick(i) { // THIS IS THE ONE FOR PRIVATE MESSAGING 
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
+
+        if (this.state.friendID === "unknown") {
+            return;
+        }
 
         if (this.state.winner || squares[i]) {
             return;
@@ -147,11 +178,11 @@ export class OnlineGame extends React.Component {
             this.props.updatePlayers(winner);
         }
 
-        if (winner || squares[i]) {
-            return;
-        }
+        //if (winner || squares[i]) {
+        //    return;
+        //}
 
-        squares[i] = this.state.xIsNext ? "X" : "O"
+        //squares[i] = this.state.xIsNext ? "X" : "O"
 
         this.state.socket.send("playGame" + ":" + this.state.myID + ":" + this.state.friendID + ":" + i + "/" + squares[i]);
 
@@ -175,10 +206,34 @@ export class OnlineGame extends React.Component {
         });
     }
 
+    buildLobby() {
+        this.LobbyContainer = []
+        this.state.LobbyNames.forEach((val, idx) => {
+            if (this.state.LobbyIDs[idx] != this.state.myID) {
+                this.LobbyContainer.push(<div>{val}  with status 
+                   [ {this.state.LobbyStatuses[idx]} ] ---
+                    <button onClick={() => {
+                        if (this.state.LobbyStatuses[idx] === "Inviting") {
+                            // set flag go first
+                            this.state.socket.send("Lobby:In-Game:" + this.state.myID + ":" + this.state.LobbyIDs[idx]);
+                        }
+                        else { // i m getting the invitation, i go second
+                            this.state.socket.send("Lobby:Invite:" + this.state.myID + ":" + this.state.LobbyIDs[idx]);
+                        }
+                        //this.state.socket.send("Lobby:Update:" + this.state.myID + "inviting...");
+                        this.setState({ friendID: this.state.LobbyIDs[idx] })
+                    }} disabled={this.state.LobbyStatuses[idx] === "In-Game"}>Invite</button> </div>);
+            }
+        })
+    }
+
     handleKeyDown(e) {
         if (e.key === 'Enter') { this.setState({ friendID: e.target.value }) }
     }
     render() {
+
+        if (this.state.showLobby) { this.buildLobby() }
+
         const history = this.state.history;
         const current = history[this.state.stepNumber];
 
@@ -226,6 +281,21 @@ export class OnlineGame extends React.Component {
                         onKeyDown={this.handleKeyDown} />)
                     : (<p>Friend ID: {this.state.friendID}</p>)
                 }
+
+                <div>
+                    {
+                        this.state.showLobby ?
+                            <button onClick={() => {
+                                this.setState({ showLobby: false })
+                            }}>
+                                Hide Lobby
+                    </button>
+                            : (<button onClick={() => { this.setState({ showLobby: true }) }}>Show Lobby</button>)
+                    }
+                </div>
+                <div>
+                    {this.state.showLobby ? this.LobbyContainer : null}
+                </div>
 
                 <div className="game-info">
                     <div className="status">{status}</div>
