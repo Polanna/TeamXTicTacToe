@@ -3,6 +3,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, Ca
 import { Link } from 'react-router-dom';
 import { TokenChoice } from './TokenChoice';
 
+
 export class Settings extends Component {
     static displayName = Settings.name;
 
@@ -16,14 +17,14 @@ export class Settings extends Component {
             <Fragment>
                 <Nav tabs>
                     <NavItem>
-                        <NavLink
+                        <NavLink className={this.state.activeTab === 'X' ? "active":""}
                             onClick={() => this.setState({ activeTab: 'X' })}
                         >
                             X Token
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink
+                        <NavLink className={this.state.activeTab === 'O' ? "active" : ""}
                             onClick={() => this.setState({ activeTab: 'O' })}
                         >
                             O Token
