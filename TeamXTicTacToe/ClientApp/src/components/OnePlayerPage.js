@@ -4,24 +4,38 @@ import { Tutorial } from './Tutorial';
 import pieceX from '../img/pig.png';
 import pieceO from '../img/chick.png';
 import { OnePlayer } from './OnePlayer';
+import { OneNamePrompt } from './OneNamePrompt';
 
 
 export class OnePlayerPage extends Component {
     static displayName = OnePlayerPage.name;
     state = {
         player1: '',
-        player2: ''
+        player2: 'AI',
+        namePromptSeen: true,
     }
 
-    componentDidMount() {
-        const nick1 = window.prompt('Player 1:', 'Player1');
-        const nick2 = 'AI';
-        this.setState({ player1: nick1, player2: nick2 });
+    toggleNamePrompt = () => {
+        console.log("flip state!!!")
+        this.setState({
+            namePromptSeen: !this.state.namePromptSeen
+        });
+    }
+
+    setPlayer = (nick1) => {
+        this.setState({
+            player1: nick1,
+        });
     }
 
     render() {
         return (
             <Fragment>
+                <div className="row">
+                    <div className="col">
+                        <OneNamePrompt isOpen={this.state.namePromptSeen} toggle={this.toggleNamePrompt} onSubmit={this.setPlayer} />
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <h1>One Player Mode</h1>
