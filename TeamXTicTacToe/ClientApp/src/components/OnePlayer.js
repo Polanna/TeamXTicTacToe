@@ -5,6 +5,7 @@ import pieceX from '../img/pig.png';
 import pieceO from '../img/chick.png';
 import blank from '../img/blank.png';
 import './Game.css';
+import Scoreboard from './Scoreboard';
 
 
 class Square extends React.Component {
@@ -90,7 +91,9 @@ export class OnePlayer extends React.Component {
             }],
             stepNumber: 0,
             xIsNext: true,
-            suggestion: 0
+            suggestion: 0,
+            p1Score: [0, 0, 0],
+            p2Score: [0, 0, 0],
         };
     }
 
@@ -132,6 +135,28 @@ export class OnePlayer extends React.Component {
         let winner = null;
         if (result) {
             winner = result.winner;
+            if (winner === "O") {
+                let p1 = this.state.p1Score.slice();
+                let p2 = this.state.p2Score.slice();
+                p1[1] += 1;
+                p2[0] += 1;
+
+                this.setState({ 
+                    p1Score: p1,
+                    p2Score: p2 
+                });
+            }
+            else if (winner === "X") {
+                let p1 = this.state.p1Score.slice();
+                let p2 = this.state.p2Score.slice();
+                p1[0] += 1;
+                p2[1] += 1;
+
+                this.setState({ 
+                    p1Score: p1,
+                    p2Score: p2 
+                });
+            }
         }
 
         if (winner || squares[i]) {
@@ -145,7 +170,7 @@ export class OnePlayer extends React.Component {
         var AIMove = MiniMaxAI.minimax(squares.slice(), AIPlayer, AIPlayer).index;
         if (AIMove != undefined) {
             suggestion = AIMove;
-        } 
+        }
 
         // not only change suggestion, also change history to actually put the AI piece and acutally update current state
         squares[suggestion] = !this.state.xIsNext ? "X" : "O"
@@ -201,22 +226,38 @@ export class OnePlayer extends React.Component {
         }
 
         return (
-            <div className="game">
-                <div className="game-board">
-                    <Board
-                        squares={current.squares}
-                        //passing down the winning line info for highlighting winningLine
-                        winningLine={winningLine}
-                        onClick={(i) => this.handleClick(i)}
-                        //no need to pass suggestion since we already updated the current state of the board
-                        //suggestion={this.state.suggestion}
-                        tokenX={this.props.tokenX}
-                        tokenO={this.props.tokenO}
+            <div className="row">
+                <div className="col-md">
+                    <Scoreboard
+                        playerName={this.props.p1Name}
+                        playerImage={this.props.p1Image}
+                        score={this.state.p1Score}
                     />
                 </div>
-                <div className="game-info">
-                    <div className="status">{status}</div>
-                    <ol>{moves}</ol>
+                <div className="col-md-8 text-center">
+                    <div className="game-board">
+                        <Board
+                            squares={current.squares}
+                            //passing down the winning line info for highlighting winningLine
+                            winningLine={winningLine}
+                            onClick={(i) => this.handleClick(i)}
+                            //no need to pass suggestion since we already updated the current state of the board
+                            //suggestion={this.state.suggestion}
+                            tokenX={this.props.tokenX}
+                            tokenO={this.props.tokenO}
+                        />
+                    </div>
+                    <div className="game-info">
+                        <div className="status">{status}</div>
+                        <ol>{moves}</ol>
+                    </div>
+                </div>
+                <div className="col-md">
+                    <Scoreboard
+                        playerName={this.props.p2Name}
+                        playerImage={this.props.p2Image}
+                        score={this.state.p2Score}
+                    />
                 </div>
             </div>
         );

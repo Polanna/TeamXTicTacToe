@@ -4,6 +4,7 @@ import { Tutorial } from './Tutorial';
 import pieceX from '../img/pig.png';
 import pieceO from '../img/chick.png';
 import { OnePlayer } from './OnePlayer';
+import Scoreboard from './Scoreboard';
 
 
 export class OnePlayerPage extends Component {
@@ -27,46 +28,14 @@ export class OnePlayerPage extends Component {
                         <h1>One Player Mode</h1>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-2 text-center">
-                        <h2>{this.state.player1}</h2>
-                    </div>
-                    <div class="col-md-8 text-center">
-                        <h2>vs</h2>
-                    </div>
-                    <div class="col-md-2 text-center">
-                        <h2>{this.state.player2}</h2>
-                    </div>
-                    <div class="col-md-2 text-center">
-                        <h2>X</h2>
-                    </div>
-                    <div class="col-md-8 text-center">
-                        <h2></h2>
-                    </div>
-                    <div class="col-md-2 text-center">
-                        <h2>O</h2>
-                    </div>
-                    <div class="col-md-2 text-center">
-                        <h2><img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="pieceX" /></h2>
-                    </div>
-                    <div class="col-md-8 text-center">
-                        <h2></h2>
-                    </div>
-                    <div class="col-md-2 text-center">
-                        <h2><img className="player2" require src={require('../img/'+this.props.tokenO+'.png')} alt="pieceO" /></h2>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <h3>Information here </h3>
-                    </div>
-                    <div class="col-md-8 text-center align-items-center">
-                        <OnePlayer tokenX={this.props.tokenX} tokenO={this.props.tokenO}/>
-                    </div>
-                    <div class="col-md-2">
-                        <h3>Information here </h3>
-                    </div>
-                </div>
+                <OnePlayer
+                    tokenX={this.props.tokenX}
+                    tokenO={this.props.tokenO}
+                    p1Name={this.state.player1}
+                    p2Name={this.state.player2}
+                    p1Image={require('../img/' + this.props.tokenX + '.png')}
+                    p2Image={require('../img/' + this.props.tokenO + '.png')}
+                />
 
                 <div class="row align-items-center h-50 ">
                     <div class="col-md-12 text-center mt-4">

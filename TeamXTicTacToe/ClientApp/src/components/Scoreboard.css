@@ -1,0 +1,14 @@
+.playerImage {
+    height: 100px;
+    width: 100px;
+}
+
+.container-scoreboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-scoreboard > div {
+    margin-top: 1rem;
+}
