@@ -86,7 +86,8 @@ export class OnlineGame extends React.Component {
             showLobby: true,
             LobbyIDs: [],
             LobbyNames: [],
-            LobbyStatuses:[],
+            LobbyStatuses: [],
+            myTurn: false,
 
             socket: new WebSocket(wsUri),
             myName: "unknownUser",
@@ -192,6 +193,7 @@ export class OnlineGame extends React.Component {
                     squares: squares
                 }
             ]),
+            myTurn: !this.state.myTurn,
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext,
             winner: winner,
@@ -214,10 +216,14 @@ export class OnlineGame extends React.Component {
                    [ {this.state.LobbyStatuses[idx]} ] ---
                     <button onClick={() => {
                         if (this.state.LobbyStatuses[idx] === "Inviting") {
-                            // set flag go first
+                            
+                            // i m getting the invitation, i go second
+                            
                             this.state.socket.send("Lobby:In-Game:" + this.state.myID + ":" + this.state.LobbyIDs[idx]);
                         }
-                        else { // i m getting the invitation, i go second
+                        else { 
+                            // set flag go first
+                            this.setState({ myTurn: true })
                             this.state.socket.send("Lobby:Invite:" + this.state.myID + ":" + this.state.LobbyIDs[idx]);
                         }
                         //this.state.socket.send("Lobby:Update:" + this.state.myID + "inviting...");
@@ -267,7 +273,7 @@ export class OnlineGame extends React.Component {
                         squares={current.squares}
                         //passing down the winning line info for highlighting winningLine
                         winningLine={this.state.winningLine}
-                        onClick={(i) => this.handleClick(i)}
+                        onClick={(i) => { if (this.state.myTurn) { this.handleClick(i) } }}
                         tokenX={this.props.tokenX}
                         tokenO={this.props.tokenO}
                     />
