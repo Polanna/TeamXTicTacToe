@@ -8,7 +8,6 @@ import { OneNamePrompt } from './OneNamePrompt';
 //import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
-
 export class OnePlayerPage extends Component {
     static displayName = OnePlayerPage.name;
     state = {
@@ -25,11 +24,11 @@ export class OnePlayerPage extends Component {
         });
     }
 
-    setPlayer = (nick1) => {
+     setPlayer = (nick1) => {
         this.setState({
             player1: nick1,
         });
-    }
+     }
 
     //chang the board theme to a user specified one
     setBoardTheme = (a) => {

@@ -23,11 +23,11 @@ export class TutorialPage extends Component {
         });
     }
 
-    setPlayer = (nick1) => {
-        this.setState({
-            player1: nick1,
-        });
-    }
+        setPlayer = (nick1) => {
+            this.setState({
+                player1: nick1,
+            });
+        }
 
     //chang the board theme to a user specified one
     setBoardTheme = (a) => {
