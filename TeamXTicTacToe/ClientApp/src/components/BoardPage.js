@@ -30,6 +30,7 @@ export class BoardPage extends Component {
         this.setState({
             namePromptSeen: !this.state.namePromptSeen
         });
+
     }
 
     updatePlayers = (result) => {

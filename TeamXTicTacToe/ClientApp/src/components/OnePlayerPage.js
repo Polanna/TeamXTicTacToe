@@ -36,6 +36,7 @@ export class OnePlayerPage extends Component {
         this.setState({
             boardTheme: a
         });
+
     }
 
     render() {

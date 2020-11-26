@@ -34,6 +34,7 @@ export class TutorialPage extends Component {
         this.setState({
             boardTheme: a
         });
+
     }
 
     render() {
