@@ -1,9 +1,10 @@
-﻿import React from 'react';
+﻿import React, { Component } from 'react';
 import MiniMaxAI from './MiniMaxAI';
 // import the pictures used as pieces on board
 import pieceX from '../img/pig.png';
 import pieceO from '../img/chick.png';
 import blank from '../img/blank.png';
+import suggest from '../img/suggestion.png';
 import './Game.css';
 
 
@@ -171,6 +172,14 @@ export class OnePlayer extends React.Component {
         });
     }
 
+    // Implementation of undo button
+    goBack() {
+        if (this.state.stepNumber === 0) {
+            return;
+        }
+        { this.jumpTo(this.state.stepNumber-1)}
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -182,7 +191,7 @@ export class OnePlayer extends React.Component {
             winningLine = result.match;
         }
 
-        const moves = history.map((step, move) => {
+        /*const moves = history.map((step, move) => {
             const desc = move ?
                 'Go to move #' + move :
                 'Go to game start';
@@ -191,7 +200,7 @@ export class OnePlayer extends React.Component {
                     <button className="move" onClick={() => this.jumpTo(move)}>{desc}</button>
                 </li>
             );
-        });
+        });*/
 
         let status;
         if (winner) {
@@ -216,7 +225,11 @@ export class OnePlayer extends React.Component {
                 </div>
                 <div className="game-info">
                     <div className="status">{status}</div>
-                    <ol>{moves}</ol>
+                </div>
+                <div class="row align-items-center h-50 ">
+                    <div class="col-md-12 text-center mt-4">
+                        <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.goBack()}>Undo</button>
+                    </div>
                 </div>
             </div>
         );

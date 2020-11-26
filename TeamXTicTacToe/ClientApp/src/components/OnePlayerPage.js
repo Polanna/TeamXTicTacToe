@@ -22,11 +22,11 @@ export class OnePlayerPage extends Component {
         });
     }
 
-    setPlayer = (nick1) => {
+     setPlayer = (nick1) => {
         this.setState({
             player1: nick1,
         });
-    }
+     }
 
     render() {
         return (
@@ -67,7 +67,7 @@ export class OnePlayerPage extends Component {
                         <h2></h2>
                     </div>
                     <div class="col-md-2 text-center">
-                        <h2><img className="player2" require src={require('../img/'+this.props.tokenO+'.png')} alt="pieceO" /></h2>
+                        <h2><img className="player2" require src={require('../img/' + this.props.tokenO + '.png')} alt="pieceO" /></h2>
                     </div>
                 </div>
                 <div class="row">
@@ -75,7 +75,7 @@ export class OnePlayerPage extends Component {
                         <h3>Information here </h3>
                     </div>
                     <div class="col-md-8 text-center align-items-center">
-                        <OnePlayer tokenX={this.props.tokenX} tokenO={this.props.tokenO}/>
+                        <OnePlayer tokenX={this.props.tokenX} tokenO={this.props.tokenO} />
                     </div>
                     <div class="col-md-2">
                         <h3>Information here </h3>
