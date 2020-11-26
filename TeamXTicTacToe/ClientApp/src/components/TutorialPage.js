@@ -3,29 +3,38 @@ import { Link } from 'react-router-dom';
 import { Tutorial } from './Tutorial';
 import pieceX from '../img/pig.png';
 import pieceO from '../img/chick.png';
+import { OneNamePrompt } from './OneNamePrompt';
 
 
 export class TutorialPage extends Component {
     static displayName = TutorialPage.name;
     state = {
         player1: '',
-        player2: ''
+        player2: 'AI',
+        namePromptSeen: true,
     }
 
-    componentDidMount() {
-        const nick1 = window.prompt('Player 1:', 'Player1');
-        if (nick1) {
-            const nick2 = 'AI';
-            this.setState({ player1: nick1, player2: nick2 })
-        }
-        else {
-            window.location.href = '/';
-        }
+    toggleNamePrompt = () => {
+        console.log("flip state!!!")
+        this.setState({
+            namePromptSeen: !this.state.namePromptSeen
+        });
     }
+
+        setPlayer = (nick1) => {
+            this.setState({
+                player1: nick1,
+            });
+        }
 
     render() {
         return (
             <Fragment>
+                <div className="row">
+                    <div className="col">
+                        <OneNamePrompt isOpen={this.state.namePromptSeen} toggle={this.toggleNamePrompt} onSubmit={this.setPlayer} />
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-md-12 text-center">
                         <h1>Tutorial</h1>

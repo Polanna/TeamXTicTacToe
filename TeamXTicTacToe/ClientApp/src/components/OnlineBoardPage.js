@@ -103,7 +103,10 @@ export class OnlineBoardPage extends Component {
                     </div>
 
                     <div className="col-md-8 text-center align-items-center">
-                        <OnlineGame updatePlayers={this.updatePlayers} tokenX={this.props.tokenX} tokenO={this.props.tokenO}/>
+                        {this.state.player1.name && this.state.player2.name ?
+                            (<OnlineGame player1={this.state.player1.name} player2={ this.state.player2.name } updatePlayers={this.updatePlayers} tokenX={this.props.tokenX} tokenO={this.props.tokenO} />)
+                            : null}
+                        
                     </div>
                     <div className="col-md-2">
                         <h3>Player scores  component here </h3>

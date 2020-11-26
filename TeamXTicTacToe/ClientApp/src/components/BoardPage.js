@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { Game } from './Game';
 import Client from './Client';
+import { TwoNamePrompt } from './TwoNamePrompt';
 
 export class BoardPage extends Component {
     static displayName = BoardPage.name;
@@ -10,27 +11,16 @@ export class BoardPage extends Component {
         super(props);
         this.state = {
             player1: {},
-            player2: {}
+            player2: {},
+            namePromptSeen: true,
         }
     }
 
-    componentDidMount() {
-        console.log(this.props.location);
-        const nick1 = window.prompt('Player 1:', 'Player1');
-        if (nick1) {
-            const nick2 = window.prompt('Player 2:', 'Player2');
-            if (nick2) {
-                Client.getPlayer(nick1, (player) => { this.setState({ player1: player }) })
-                Client.getPlayer(nick2, (player) => { this.setState({ player2: player }) })
-            }
-            else {
-                window.location.href = '/';
-            }
-        }
-        else {
-            window.location.href = '/';
-        }
-        
+    toggleNamePrompt = () => {
+        console.log("flip state!!!")
+        this.setState({
+            namePromptSeen: !this.state.namePromptSeen
+        });
     }
 
     updatePlayers = (result) => {
@@ -64,9 +54,19 @@ export class BoardPage extends Component {
         });
     };
 
+    setPlayers = (nick1, nick2) => {
+        Client.getPlayer(nick1, (player) => { this.setState({ player1: player }) });
+        Client.getPlayer(nick2, (player) => { this.setState({ player2: player }) });
+    }
+
     render() {
         return (
             <Fragment>
+                <div className="row">
+                    <div className="col">
+                        <TwoNamePrompt isOpen={this.state.namePromptSeen} toggle={this.toggleNamePrompt} onSubmit={this.setPlayers} />
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-md-2 text-center">
                         <h2>{this.state.player1.name}</h2>

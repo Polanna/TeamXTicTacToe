@@ -222,7 +222,7 @@ export class OnePlayer extends React.Component {
                 </div>
                 <div class="row align-items-center h-50 ">
                     <div class="col-md-12 text-center mt-4">
-                        <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.goBack()}>undo</button>
+                        <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.goBack()}>Undo</button>
                     </div>
                 </div>
             </div>
