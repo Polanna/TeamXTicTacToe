@@ -39,6 +39,12 @@ export class OnePlayerPage extends Component {
 
     }
 
+     setPlayer = (nick1) => {
+        this.setState({
+            player1: nick1,
+        });
+     }
+
     render() {
         return (
             <Fragment>
@@ -90,7 +96,7 @@ export class OnePlayerPage extends Component {
                     </div>
 
                     <div class="col-md-2 text-center">
-                        <h2><img className="player2" require src={require('../img/'+this.props.tokenO+'.png')} alt="pieceO" /></h2>
+                        <h2><img className="player2" require src={require('../img/' + this.props.tokenO + '.png')} alt="pieceO" /></h2>
                     </div>
                 </div>
                 <div class="row">
