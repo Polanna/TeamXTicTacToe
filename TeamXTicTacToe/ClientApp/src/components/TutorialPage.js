@@ -4,6 +4,7 @@ import { Tutorial } from './Tutorial';
 import pieceX from '../img/pig.png';
 import pieceO from '../img/chick.png';
 import { OneNamePrompt } from './OneNamePrompt';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 
 export class TutorialPage extends Component {
@@ -12,6 +13,7 @@ export class TutorialPage extends Component {
         player1: '',
         player2: 'AI',
         namePromptSeen: true,
+        boardTheme: '1',
     }
 
     toggleNamePrompt = () => {
@@ -24,6 +26,13 @@ export class TutorialPage extends Component {
     setPlayer = (nick1) => {
         this.setState({
             player1: nick1,
+        });
+    }
+
+    //chang the board theme to a user specified one
+    setBoardTheme = (a) => {
+        this.setState({
+            boardTheme: a
         });
     }
 
@@ -64,8 +73,18 @@ export class TutorialPage extends Component {
                     <div className="col-md-2 text-center">
                         <h2><img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="pieceX" /></h2>
                     </div>
-                    <div className="col-md-8 text-center">
-                        <h2></h2>
+                    <div class="col-md-8 text-center">
+                        <UncontrolledDropdown>
+                            <DropdownToggle caret>
+                                Board Themes
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem onClick={() => this.setBoardTheme('1')}>Default Light Theme</DropdownItem>
+                                <DropdownItem onClick={() => this.setBoardTheme('2')}>Coder Theme</DropdownItem>
+                                <DropdownItem onClick={() => this.setBoardTheme('3')}>Harvest Theme</DropdownItem>
+                                <DropdownItem onClick={() => this.setBoardTheme('4')}>Spring Theme</DropdownItem>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
                     </div>
                     <div className="col-md-2 text-center">
                         <h2><img className="player2" require src={require('../img/' + this.props.tokenO + '.png')} alt="pieceO" /></h2>
@@ -77,7 +96,7 @@ export class TutorialPage extends Component {
                         <h3>Information here </h3>
                     </div>
                     <div className="col-md-8 text-center align-items-center">
-                        <Tutorial tokenX={this.props.tokenX} tokenO={this.props.tokenO}/>
+                        <Tutorial tokenX={this.props.tokenX} tokenO={this.props.tokenO} boardTheme={this.state.boardTheme}/>
                     </div>
                     <div className="col-md-2">
                         <h3>Information here </h3>

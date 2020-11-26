@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Game } from './Game';
 import Client from './Client';
 import { TwoNamePrompt } from './TwoNamePrompt';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 export class BoardPage extends Component {
     static displayName = BoardPage.name;
@@ -13,7 +14,15 @@ export class BoardPage extends Component {
             player1: {},
             player2: {},
             namePromptSeen: true,
+            boardTheme: '1',
         }
+    }
+
+    //chang the board theme to a user specified one
+    setBoardTheme = (a) => {
+        this.setState({
+            boardTheme: a
+        });
     }
 
     toggleNamePrompt = () => {
@@ -90,8 +99,18 @@ export class BoardPage extends Component {
                     <div className="col-md-2 text-center">
                         <h2><img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="pieceX" /></h2>
                     </div>
-                    <div className="col-md-8 text-center">
-                        <h2></h2>
+                    <div class="col-md-8 text-center">
+                        <UncontrolledDropdown>
+                            <DropdownToggle caret>
+                                Board Themes
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem onClick={() => this.setBoardTheme('1')}>Default Light Theme</DropdownItem>
+                                <DropdownItem onClick={() => this.setBoardTheme('2')}>Coder Theme</DropdownItem>
+                                <DropdownItem onClick={() => this.setBoardTheme('3')}>Harvest Theme</DropdownItem>
+                                <DropdownItem onClick={() => this.setBoardTheme('4')}>Spring Theme</DropdownItem>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
                     </div>
                     <div className="col-md-2 text-center">
                         <h2><img className="player2" src={require('../img/' + this.props.tokenO + '.png')} alt="pieceO" /></h2>
@@ -103,7 +122,7 @@ export class BoardPage extends Component {
                         <h3>Player scores component here </h3>
                     </div>
                     <div className="col-md-8 text-center align-items-center">
-                        <Game updatePlayers={this.updatePlayers} tokenX={this.props.tokenX} tokenO={this.props.tokenO} />
+                        <Game updatePlayers={this.updatePlayers} tokenX={this.props.tokenX} tokenO={this.props.tokenO} boardTheme={this.state.boardTheme}/>
                     </div>
                     <div className="col-md-2">
                         <h3>Player scores  component here </h3>

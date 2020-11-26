@@ -31,6 +31,22 @@
     width: 100px;
 }
 
+/*user dynamically choose theme*/
+button.squareInGame[data-boardtheme='2'] {
+    background: #2C3E50;
+    border: 1.6px solid #2ECC71;
+}
+
+button.squareInGame[data-boardtheme='3'] {
+    background: #A04000;
+    border: 1.6px solid #B7950B;
+}
+
+button.squareInGame[data-boardtheme='4'] {
+    background: #D0F1B0;
+    border: 1.6px solid #F9E79F;
+}
+
 /*change winning line's background color*/
 button.squareInGame[data-win=true] {
     background: #F1C40F;

@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { OnlineGame } from './OnlineGame';
 import Client from './Client';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 
 // 1. create a socket and successfully connect to the server: DONE
@@ -16,11 +17,17 @@ export class OnlineBoardPage extends Component {
         super(props);
         this.state = {
             player1: {},
-            player2: {}
+            player2: {},
+            boardTheme: '1',
         }
     }
 
-
+    //chang the board theme to a user specified one
+    setBoardTheme = (a) => {
+        this.setState({
+            boardTheme: a
+        });
+    }
 
 
     componentDidMount() {
@@ -89,8 +96,18 @@ export class OnlineBoardPage extends Component {
                     <div className="col-md-2 text-center">
                         <h2><img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="pieceX" /></h2>
                     </div>
-                    <div className="col-md-8 text-center">
-                        <h2></h2>
+                    <div class="col-md-8 text-center">
+                        <UncontrolledDropdown>
+                        <DropdownToggle caret>
+                                Board Themes
+                        </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem onClick={() => this.setBoardTheme('1')}>Default Light Theme</DropdownItem>
+                                <DropdownItem onClick={() => this.setBoardTheme('2')}>Coder Theme</DropdownItem>
+                                <DropdownItem onClick={() => this.setBoardTheme('3')}>Harvest Theme</DropdownItem>
+                                <DropdownItem onClick={() => this.setBoardTheme('4')}>Spring Theme</DropdownItem>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
                     </div>
                     <div className="col-md-2 text-center">
                         <h2><img className="player2" require src={require('../img/' + this.props.tokenO + '.png')} alt="pieceO" /></h2>
@@ -104,7 +121,7 @@ export class OnlineBoardPage extends Component {
 
                     <div className="col-md-8 text-center align-items-center">
                         {this.state.player1.name && this.state.player2.name ?
-                            (<OnlineGame player1={this.state.player1.name} player2={ this.state.player2.name } updatePlayers={this.updatePlayers} tokenX={this.props.tokenX} tokenO={this.props.tokenO} />)
+                            (<OnlineGame player1={this.state.player1.name} player2={ this.state.player2.name } updatePlayers={this.updatePlayers} tokenX={this.props.tokenX} tokenO={this.props.tokenO} boardTheme={this.state.boardTheme}/>)
                             : null}
                         
                     </div>
