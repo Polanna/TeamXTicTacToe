@@ -2,6 +2,12 @@
     font: 14px "Century Gothic", Futura, sans-serif;
 }
 
+.game {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
 .squareInGame {
     background: #FCF3CF;
     border: 1.6px solid #B2BABB;

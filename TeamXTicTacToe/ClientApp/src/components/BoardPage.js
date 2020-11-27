@@ -70,6 +70,8 @@ export class BoardPage extends Component {
     }
 
     render() {
+        const player1 = this.state.player1;
+        const player2 = this.state.player2;
         return (
             <Fragment>
                 <div className="row">

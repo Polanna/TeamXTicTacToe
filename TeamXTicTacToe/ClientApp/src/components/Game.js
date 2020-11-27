@@ -4,6 +4,7 @@ import React from 'react';
 import blank from '../img/blank.png';
 import './Game.css';
 import { Link } from 'react-router-dom';
+import Scoreboard from './Scoreboard';
 
 class Square extends React.Component {
     constructor(props) {
@@ -80,6 +81,16 @@ export class Game extends React.Component {
             }],
             stepNumber: 0,
             xIsNext: true,
+            player1Score: [{
+                win: 0,
+                loss: 0,
+                draw: 0
+            }],
+            player2Score: [{
+                win: 0,
+                loss: 0,
+                draw: 0
+            }],
             winner: null,
             winningLine: null
         };
@@ -181,6 +192,7 @@ export class Game extends React.Component {
 
         return (
             <div className="game">
+                <Scoreboard win={this.state.player1Score} loss="" draw="" playerName={this.props.player1} playerShape="X" />
                 <div className="game-board">
                     <Board
                         squares={current.squares}
@@ -192,6 +204,9 @@ export class Game extends React.Component {
                         //pass down indicator for different theme
                         boardTheme={this.props.boardTheme}
                     />
+                    <div className="game-info">
+                        <div className="status">{status}</div>
+                    </div>
                 </div>
                 <div className="game-info">
                     <div className="status">{status}</div>
