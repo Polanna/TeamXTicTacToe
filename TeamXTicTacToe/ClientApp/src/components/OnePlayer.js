@@ -7,6 +7,7 @@ import blank from '../img/blank.png';
 import suggest from '../img/suggestion.png';
 import './Game.css';
 import { Link } from 'react-router-dom';
+import Scoreboard from './Scoreboard';
 
 
 class Square extends React.Component {
@@ -101,6 +102,9 @@ export class OnePlayer extends React.Component {
 
         let isWinner = false;
         let isDraw = false;
+        let p1Win = false;
+        let p2Win = false;
+        let draw = false;
     }
 
     /*
@@ -193,7 +197,45 @@ export class OnePlayer extends React.Component {
         if (this.state.stepNumber === 0) {
             return;
         }
+        this.p1Win = false;
+        this.p2Win = false;
+        this.draw = false;
+
         this.jumpTo(0);
+    }
+
+    calculateScore() {
+
+        if (this.p2Win) {
+            let p1 = this.state.p1Score.slice();
+            let p2 = this.state.p2Score.slice();
+            p1[1] += 1;
+            p2[0] += 1;
+            this.setState({
+                p1Score: p1,
+                p2Score: p2,
+            });
+        }
+        else if (this.p1Win) {
+            let p1 = this.state.p1Score.slice();
+            let p2 = this.state.p2Score.slice();
+            p1[0] += 1;
+            p2[1] += 1;
+            this.setState({
+                p1Score: p1,
+                p2Score: p2,
+            });
+        }
+        else if (this.draw) {
+            let p1 = this.state.p1Score.slice();
+            let p2 = this.state.p2Score.slice();
+            p1[2] += 1;
+            p2[2] += 1;
+            this.setState({
+                p1Score: p1,
+                p2Score: p2,
+            });
+        }
     }
 
     playerAction(i) {
@@ -210,6 +252,19 @@ export class OnePlayer extends React.Component {
         if (result) {
             this.isWinner = true;
             winner = result.winner;
+            if (winner === "O" && !this.p2Win) {
+                this.p2Win = true;
+                this.calculateScore();
+            }
+            else if (winner === "X" && !this.p1Win) {
+                this.p1win = true;
+                this.calculateScore();
+            }
+            else if (winner === "Draw" && !this.draw) {
+                this.draw = true;
+                this.calculateScore();
+            }
+
             if (winner) {
                 winningLine = result.match;
             } else if (!winner && isFilled) {
@@ -240,6 +295,7 @@ export class OnePlayer extends React.Component {
 
         return (
             <div className="game">
+                <Scoreboard score={this.state.p1Score} />
                 <div className="game-board">
                     <Board
                         squares={current.squares}
@@ -254,6 +310,7 @@ export class OnePlayer extends React.Component {
                         boardTheme={this.props.boardTheme}
                     />
                 </div>
+                <Scoreboard score={this.state.p2Score} />
                 <div className="game-info">
                     <div className="status">{status}</div>
                 </div>
@@ -264,10 +321,9 @@ export class OnePlayer extends React.Component {
                             <Link to='/'>
                                 <button type="button" class="btn btn-lrg btn-primary active  shadow-large  rounded-pill w-25 h-50">Concede</button>
                             </Link>
-                        </div> : null}
-                    <div class="col-md-12 text-center mt-4">
-                        <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.goBack()}>Undo</button>
-                    </div>
+                        </div> : <div class="col-md-12 text-center mt-4">
+                            <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.goBack()}>Undo</button>
+                        </div>}
                 </div>
             </div >
         );

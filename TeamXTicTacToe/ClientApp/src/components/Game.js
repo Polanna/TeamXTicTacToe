@@ -3,6 +3,7 @@ import React from 'react';
 // import the pictures used as pieces on board
 import blank from '../img/blank.png';
 import './Game.css';
+import { Link } from 'react-router-dom';
 
 class Square extends React.Component {
     constructor(props) {
@@ -82,6 +83,9 @@ export class Game extends React.Component {
             winner: null,
             winningLine: null
         };
+
+        let isWinner = false;
+        let isDraw = false;
     }
 
     handleClick(i) {
@@ -132,6 +136,18 @@ export class Game extends React.Component {
         { this.jumpTo(this.state.stepNumber - 1) }
     }
 
+    // Clear the and restart the board
+    clearBoard() {
+        if (this.state.stepNumber === 0) {
+            return;
+        }
+        this.jumpTo(0);
+    }
+
+    playerAction(i) {
+        this.handleClick(i);
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -151,12 +167,16 @@ export class Game extends React.Component {
         if (this.state.winner) {
             if (this.state.winner === "D") {
                 status = 'Draw';
+                this.isDraw = true;
             }
             else {
                 status = 'Winner: ' + this.state.winner;
+                this.isWinner = true;
             }
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'Player 1' : 'Player 2');
+            this.isDraw = false;
+            this.isWinner = false;
         }
 
         return (
@@ -166,7 +186,7 @@ export class Game extends React.Component {
                         squares={current.squares}
                         //passing down the winning line info for highlighting winningLine
                         winningLine={this.state.winningLine}
-                        onClick={(i) => this.handleClick(i)}
+                        onClick={(i) => this.playerAction(i)}
                         tokenX={this.props.tokenX}
                         tokenO={this.props.tokenO}
                         //pass down indicator for different theme
@@ -177,6 +197,13 @@ export class Game extends React.Component {
                     <div className="status">{status}</div>
                 </div>
                 <div class="row align-items-center h-50 ">
+                    {this.isWinner || this.isDraw ?
+                        <div className="col-md-12 text-center mt-4">
+                            <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.clearBoard()}>Restart</button>
+                            <Link to='/'>
+                                <button type="button" class="btn btn-lrg btn-primary active  shadow-large  rounded-pill w-25 h-50">Concede</button>
+                            </Link>
+                        </div> : null}
                     <div class="col-md-12 text-center mt-4">
                         <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.goBack()}>Undo</button>
                     </div>
