@@ -8,7 +8,7 @@ import suggest from '../img/suggestion.png';
 import './Game.css';
 import { Link } from 'react-router-dom';
 import Scoreboard from './Scoreboard';
-
+import './OnePlayer.css';
 
 class Square extends React.Component {
     constructor(props) {
@@ -294,37 +294,50 @@ export class OnePlayer extends React.Component {
         }
 
         return (
-            <div className="game">
-                <Scoreboard score={this.state.p1Score} />
-                <div className="game-board">
-                    <Board
-                        squares={current.squares}
-                        //passing down the winning line info for highlighting winningLine
-                        winningLine={winningLine}
-                        onClick={(i) => this.playerAction(i)}
-                        //no need to pass suggestion since we already updated the current state of the board
-                        //suggestion={this.state.suggestion}
-                        tokenX={this.props.tokenX}
-                        tokenO={this.props.tokenO}
-                        //pass down indicator for different theme
-                        boardTheme={this.props.boardTheme}
-                    />
+            <div className="row">
+                <div className="col-md-1">
+                    <Scoreboard score={this.state.p1Score} />
                 </div>
-                <Scoreboard score={this.state.p2Score} />
-                <div className="game-info">
-                    <div className="status">{status}</div>
+                <div className="col-md-10 text center">
+                    <div className="game-board">
+                        <Board
+                            squares={current.squares}
+                            //passing down the winning line info for highlighting winningLine
+                            winningLine={winningLine}
+                            onClick={(i) => this.playerAction(i)}
+                            //no need to pass suggestion since we already updated the current state of the board
+                            //suggestion={this.state.suggestion}
+                            tokenX={this.props.tokenX}
+                            tokenO={this.props.tokenO}
+                            //pass down indicator for different theme
+                            boardTheme={this.props.boardTheme}
+                        />
+                        <div className="game-info">
+                            <div className="status">{status}</div>
+                        </div>
+                        <div class="row align-items-center h-50">
+                            {this.isWinner ?
+                                <div className="col-md-12 text-center mt-4">
+                                    <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.clearBoard()}>Restart</button>
+                                    <Link to='/'>
+                                        <button type="button" class="btn btn-lrg btn-primary active  shadow-large  rounded-pill w-25 h-50">Quit</button>
+                                    </Link>
+                                </div> : <div class="col-md-12 text-center mt-4">
+                                    <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.goBack()}>Undo</button>
+                                </div>}
+                        </div>
+                    </div>
                 </div>
-                <div class="row align-items-center h-50 ">
-                    {this.isWinner ?
-                        <div className="col-md-12 text-center mt-4">
-                            <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.clearBoard()}>Restart</button>
-                            <Link to='/'>
-                                <button type="button" class="btn btn-lrg btn-primary active  shadow-large  rounded-pill w-25 h-50">Concede</button>
-                            </Link>
-                        </div> : <div class="col-md-12 text-center mt-4">
-                            <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.goBack()}>Undo</button>
-                        </div>}
+                <div className="col-md-1">
+                    <Scoreboard score={this.state.p2Score} />
                 </div>
+                {this.isWinner ? null :
+                    <div class="col-md-12 text-center mt-4">
+                        <Link to='/'>
+                            <button type="button" class="btn btn-lrg btn-primary active  shadow-large  rounded-pill w-25 h-50">Concede</button>
+                        </Link>
+                    </div>
+                }
             </div >
         );
     }

@@ -99,22 +99,8 @@ export class OnePlayerPage extends Component {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2">
-                        <h3>Information here </h3>
-                    </div>
                     <div class="col-md-8 text-center align-items-center">
                         <OnePlayer tokenX={this.props.tokenX} tokenO={this.props.tokenO} boardTheme={this.state.boardTheme} />
-                    </div>
-                    <div class="col-md-2">
-                        <h3>Information here </h3>
-                    </div>
-                </div>
-
-                <div class="row align-items-center h-50 ">
-                    <div class="col-md-12 text-center mt-4">
-                        <Link to='/'>
-                            <button type="button" class="btn btn-lrg btn-primary active  shadow-large  rounded-pill w-25 h-50">Quit</button>
-                        </Link>
                     </div>
                 </div>
             </Fragment>
