@@ -6,6 +6,7 @@ import pieceO from '../img/chick.png';
 import blank from '../img/blank.png';
 import suggest from '../img/suggestion.png';
 import './Game.css';
+import { Link } from 'react-router-dom';
 
 
 class Square extends React.Component {
@@ -92,8 +93,14 @@ export class OnePlayer extends React.Component {
             }],
             stepNumber: 0,
             xIsNext: true,
-            suggestion: 0
+            suggestion: 0,
+            p1Score: [0, 0, 0],
+            p2Score: [0, 0, 0],
+            showRestartBtn: false
         };
+
+        let isWinner = false;
+        let isDraw = false;
     }
 
     /*
@@ -147,7 +154,7 @@ export class OnePlayer extends React.Component {
         var AIMove = MiniMaxAI.minimax(squares.slice(), AIPlayer, AIPlayer).index;
         if (AIMove != undefined) {
             suggestion = AIMove;
-        } 
+        }
 
         // not only change suggestion, also change history to actually put the AI piece and acutally update current state
         squares[suggestion] = !this.state.xIsNext ? "X" : "O"
@@ -178,18 +185,39 @@ export class OnePlayer extends React.Component {
         if (this.state.stepNumber === 0) {
             return;
         }
-        { this.jumpTo(this.state.stepNumber-1)}
+        { this.jumpTo(this.state.stepNumber - 1) }
+    }
+
+    // Clear the and restart the board
+    clearBoard() {
+        if (this.state.stepNumber === 0) {
+            return;
+        }
+        this.jumpTo(0);
+    }
+
+    playerAction(i) {
+        this.handleClick(i);
     }
 
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
         const result = calculateWinner(current.squares);
+        const isFilled = areAllBoxesClicked(current.squares);
         let winner = null;
         let winningLine = null;
         if (result) {
+            this.isWinner = true;
             winner = result.winner;
-            winningLine = result.match;
+            if (winner) {
+                winningLine = result.match;
+            } else if (!winner && isFilled) {
+                winner = "Draw";
+            }
+        }
+        else {
+            this.isWinner = false;
         }
 
         /*const moves = history.map((step, move) => {
@@ -217,7 +245,7 @@ export class OnePlayer extends React.Component {
                         squares={current.squares}
                         //passing down the winning line info for highlighting winningLine
                         winningLine={winningLine}
-                        onClick={(i) => this.handleClick(i)}
+                        onClick={(i) => this.playerAction(i)}
                         //no need to pass suggestion since we already updated the current state of the board
                         //suggestion={this.state.suggestion}
                         tokenX={this.props.tokenX}
@@ -230,11 +258,18 @@ export class OnePlayer extends React.Component {
                     <div className="status">{status}</div>
                 </div>
                 <div class="row align-items-center h-50 ">
+                    {this.isWinner ?
+                        <div className="col-md-12 text-center mt-4">
+                            <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.clearBoard()}>Restart</button>
+                            <Link to='/'>
+                                <button type="button" class="btn btn-lrg btn-primary active  shadow-large  rounded-pill w-25 h-50">Concede</button>
+                            </Link>
+                        </div> : null}
                     <div class="col-md-12 text-center mt-4">
                         <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.goBack()}>Undo</button>
                     </div>
                 </div>
-            </div>
+            </div >
         );
     }
 }
@@ -253,9 +288,35 @@ function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            console.log("WINNER");
             return { winner: squares[a], match: lines[i] };
         }
     }
-    return null;
+    for (let i = 0; i < squares.length; i++) {
+        if (squares[i] !== "X" && squares[i] !== "O")
+            return null;
+    }
+    console.log("DRAW")
+    return { winner: "Draw", match: null };
 }
 
+export function areAllBoxesClicked(boxes) {
+    // Declare variable to store number of clicked boxes.
+    let count = 0
+
+    // Iterate over all boxes
+    boxes.forEach(function (item) {
+        // Check if box is clicked (not null)
+        if (item !== null) {
+            // If yes, increase the value of count by 1
+            count++
+        }
+    })
+
+    // Check if all boxes are clicked (filled)
+    if (count === 9) {
+        return true
+    } else {
+        return false
+    }
+}
