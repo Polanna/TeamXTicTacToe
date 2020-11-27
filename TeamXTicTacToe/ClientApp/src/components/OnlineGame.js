@@ -19,7 +19,7 @@ class Square extends React.Component {
         }
 
         return (
-            <button className="squareInGame" data-pro={this.props.value} data-win={this.props.win} onClick={this.props.onClick}>
+            <button className="squareInGame" data-pro={this.props.value} data-win={this.props.win} data-boardtheme={this.props.boardTheme} onClick={this.props.onClick}>
                 {piece}
             </button>
         );
@@ -42,6 +42,7 @@ class Board extends React.Component {
                 win={win}
                 tokenX={this.props.tokenX}
                 tokenO={this.props.tokenO}
+                boardTheme={this.props.boardTheme}
             />
         );
     }
@@ -276,6 +277,8 @@ export class OnlineGame extends React.Component {
                         onClick={(i) => { if (this.state.myTurn) { this.handleClick(i) } }}
                         tokenX={this.props.tokenX}
                         tokenO={this.props.tokenO}
+                        //pass down indicator for different theme
+                        boardTheme={this.props.boardTheme}
                     />
                 </div>
                 <div>

@@ -5,7 +5,8 @@ import pieceX from '../img/pig.png';
 import pieceO from '../img/chick.png';
 import { OnePlayer } from './OnePlayer';
 import { OneNamePrompt } from './OneNamePrompt';
-
+//import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 export class OnePlayerPage extends Component {
     static displayName = OnePlayerPage.name;
@@ -13,6 +14,7 @@ export class OnePlayerPage extends Component {
         player1: '',
         player2: 'AI',
         namePromptSeen: true,
+        boardTheme: '1',
     }
 
     toggleNamePrompt = () => {
@@ -20,6 +22,20 @@ export class OnePlayerPage extends Component {
         this.setState({
             namePromptSeen: !this.state.namePromptSeen
         });
+    }
+
+     setPlayer = (nick1) => {
+        this.setState({
+            player1: nick1,
+        });
+     }
+
+    //chang the board theme to a user specified one
+    setBoardTheme = (a) => {
+        this.setState({
+            boardTheme: a
+        });
+
     }
 
      setPlayer = (nick1) => {
@@ -63,9 +79,21 @@ export class OnePlayerPage extends Component {
                     <div class="col-md-2 text-center">
                         <h2><img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="pieceX" /></h2>
                     </div>
+                    
                     <div class="col-md-8 text-center">
-                        <h2></h2>
+                    <UncontrolledDropdown>
+                        <DropdownToggle caret>
+                            Board Themes
+                        </DropdownToggle>
+                        <DropdownMenu>
+                                <DropdownItem onClick={() => this.setBoardTheme('1')}>Default Light Theme</DropdownItem>
+                                <DropdownItem onClick={() => this.setBoardTheme('2')}>Coder Theme</DropdownItem>
+                                <DropdownItem onClick={() => this.setBoardTheme('3')}>Harvest Theme</DropdownItem>
+                                <DropdownItem onClick={() => this.setBoardTheme('4')}>Spring Theme</DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
                     </div>
+
                     <div class="col-md-2 text-center">
                         <h2><img className="player2" require src={require('../img/' + this.props.tokenO + '.png')} alt="pieceO" /></h2>
                     </div>
@@ -75,7 +103,7 @@ export class OnePlayerPage extends Component {
                         <h3>Information here </h3>
                     </div>
                     <div class="col-md-8 text-center align-items-center">
-                        <OnePlayer tokenX={this.props.tokenX} tokenO={this.props.tokenO} />
+                        <OnePlayer tokenX={this.props.tokenX} tokenO={this.props.tokenO} boardTheme={this.state.boardTheme} />
                     </div>
                     <div class="col-md-2">
                         <h3>Information here </h3>
