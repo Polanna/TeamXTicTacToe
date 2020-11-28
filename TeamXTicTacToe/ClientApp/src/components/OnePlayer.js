@@ -145,28 +145,6 @@ export class OnePlayer extends React.Component {
         let winner = null;
         if (result) {
             winner = result.winner;
-            if (winner === "O") {
-                let p1 = this.state.p1Score.slice();
-                let p2 = this.state.p2Score.slice();
-                p1[1] += 1;
-                p2[0] += 1;
-
-                this.setState({ 
-                    p1Score: p1,
-                    p2Score: p2 
-                });
-            }
-            else if (winner === "X") {
-                let p1 = this.state.p1Score.slice();
-                let p2 = this.state.p2Score.slice();
-                p1[0] += 1;
-                p2[1] += 1;
-
-                this.setState({ 
-                    p1Score: p1,
-                    p2Score: p2 
-                });
-            }
         }
 
         if (winner || squares[i]) {
@@ -379,7 +357,6 @@ function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            console.log("WINNER");
             return { winner: squares[a], match: lines[i] };
         }
     }
@@ -387,7 +364,6 @@ function calculateWinner(squares) {
         if (squares[i] !== "X" && squares[i] !== "O")
             return null;
     }
-    console.log("DRAW")
     return { winner: "Draw", match: null };
 }
 
