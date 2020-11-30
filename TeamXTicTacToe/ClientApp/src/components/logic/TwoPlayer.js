@@ -36,7 +36,7 @@
             stepNumber: history.length,
             xIsNext: !state.xIsNext,
             winner: winner,
-            winningLine: winningLine
+            winningLine: winningLine,
         });
     }
 }

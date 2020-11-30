@@ -8,6 +8,7 @@ import Client from './Client';
 import { OneNamePrompt } from './OneNamePrompt';
 import { TwoNamePrompt } from './TwoNamePrompt';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import Scoreboard from './Scoreboard';
 
 export class BoardPage extends Component {
     static displayName = BoardPage.name;
@@ -19,6 +20,8 @@ export class BoardPage extends Component {
             player2: {},
             namePromptSeen: true,
             boardTheme: '1',
+            p1Score: [0,0,0],
+            p2Score: [0,0,0],
         }
     }
 
@@ -75,6 +78,18 @@ export class BoardPage extends Component {
         }
     };
 
+    handleCallbackP1 = (scoreData) => {
+        this.setState({
+            p1Score: scoreData
+        })
+    }
+
+    handleCallbackP2 = (scoreData) => {
+        this.setState({
+            p2Score: scoreData
+        })
+    }
+
     setTwoPlayers = (nick1, nick2) => {
         Client.getPlayer(nick1, (player) => { this.setState({ player1: player }) });
         Client.getPlayer(nick2, (player) => { this.setState({ player2: player }) });
@@ -96,8 +111,6 @@ export class BoardPage extends Component {
     }
 
     render() {
-        const player1 = this.state.player1;
-        const player2 = this.state.player2;
         let prompt = this.props.mode === 'TwoPlayer'
             ? <TwoNamePrompt isOpen={this.state.namePromptSeen} toggle={this.toggleNamePrompt} onSubmit={this.setTwoPlayers} />
             : <OneNamePrompt isOpen={this.state.namePromptSeen} toggle={this.toggleNamePrompt} onSubmit={this.setOnePlayer} />;
@@ -162,7 +175,9 @@ export class BoardPage extends Component {
                 </div>
                 <div className="row">
                     <div className="col-md-2">
-                        <h3>Player scores component here </h3>
+                        <Scoreboard 
+                            score={this.state.p1Score}
+                        />
                     </div>
                     <div className="col-md-8 text-center align-items-center">
                         <Game
@@ -172,10 +187,14 @@ export class BoardPage extends Component {
                             tokenX={this.props.tokenX}
                             tokenO={this.props.tokenO}
                             boardTheme={this.state.boardTheme}
-                        />
+                            parentCallbackP1 = {this.handleCallbackP1}
+                            parentCallbackP2 = {this.handleCallbackP2}
+                            />
                     </div>
                     <div className="col-md-2">
-                        <h3>Player scores  component here </h3>
+                        <Scoreboard 
+                            score={this.state.p2Score}
+                        />
                     </div>
                 </div>
 

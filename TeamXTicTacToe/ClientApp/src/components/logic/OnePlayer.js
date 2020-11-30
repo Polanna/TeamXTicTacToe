@@ -54,7 +54,7 @@ export class OnePlayer {
             ]),
             stepNumber: history.length,
             winner: winner,
-            winningLine: winningLine
+            winningLine: winningLine,
         });
     }
 }
