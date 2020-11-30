@@ -4,11 +4,3 @@
     justify-content: center;
     align-content: center;
 }
-
-.itemA {
-    align-self: flex-start;
-}
-
-.itemB {
-    align-self: flex-end;
-}

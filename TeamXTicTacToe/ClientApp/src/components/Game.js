@@ -163,17 +163,6 @@ export class Game extends React.Component {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
 
-        /*const moves = history.map((step, move) => {
-            const desc = move ?
-                'Go to move #' + move :
-                'Go to game start';
-            return (
-                <li key={move}>
-                    <button className="move" onClick={() => this.jumpTo(move)}>{desc}</button>
-                </li>
-            );
-        });*/
-
         let status;
         if (this.state.winner) {
             if (this.state.winner === "D") {
