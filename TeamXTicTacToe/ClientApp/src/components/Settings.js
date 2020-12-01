@@ -9,7 +9,7 @@ export class Settings extends Component {
     static displayName = Settings.name;
 
     state = {
-        activeTab: 'X'
+        activeTab: 'Theme'
     }
 
     render() {
@@ -17,6 +17,13 @@ export class Settings extends Component {
         return (
             <Fragment>
                 <Nav tabs>
+                    <NavItem>
+                        <NavLink className={this.state.activeTab === 'Theme' ? "active" : ""}
+                            onClick={() => this.setState({ activeTab: 'Theme' })}
+                        >
+                            Theme
+                        </NavLink>
+                    </NavItem>
                     <NavItem>
                         <NavLink className={this.state.activeTab === 'X' ? "active":""}
                             onClick={() => this.setState({ activeTab: 'X' })}
@@ -29,13 +36,6 @@ export class Settings extends Component {
                             onClick={() => this.setState({ activeTab: 'O' })}
                         >
                             O Token
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink className={this.state.activeTab === 'Theme' ? "active" : ""}
-                            onClick={() => this.setState({ activeTab: 'Theme' })}
-                        >
-                            Theme
                         </NavLink>
                     </NavItem>
                 </Nav>
