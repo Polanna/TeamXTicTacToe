@@ -21,7 +21,7 @@ export class NewGame extends Component {
         return (
             <Fragment>
                 <div className="jumbotron">
-                    <h1 className="display-1 text-center"> Tic Tac Toe </h1>
+                    <h1 className="display-1 text-center"> Tic Tac Toe</h1>
                 </div>
 
                 <div className="row">
