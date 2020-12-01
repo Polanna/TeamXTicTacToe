@@ -43,6 +43,8 @@ export class BoardPage extends Component {
 
     }
 
+   
+
     updatePlayers = (result) => {
         console.log("updatePlayers:" + result);
 
@@ -85,7 +87,7 @@ export class BoardPage extends Component {
         //update player1 and player2 state (left is label, right is object)
         this.setState({
             player1: player1,
-            player2: player2, 
+            player2: player2,
             p1Score: p1Score,
             p2Score: p2Score,
         });
@@ -124,7 +126,7 @@ export class BoardPage extends Component {
         } else if (this.props.mode === 'Tutorial') {
             gameLogic = new Tutorial();
         }
-            
+
 
         return (
             <Fragment>
@@ -198,7 +200,7 @@ export class BoardPage extends Component {
                 </div>
 
                 <div className="row align-items-center h-50 ">
-                    <div className="col-md-12 text-center mt-4">
+                      <div className="col-md-12 text-center mt-4">       
                         <Link to='/'>
                             <button type="button" className="btn btn-lrg btn-primary active  shadow-large  rounded-pill w-25 h-50">Quit</button>
                         </Link>
