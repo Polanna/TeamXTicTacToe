@@ -28,57 +28,57 @@ export class TokenChoice extends Component {
             <Fragment>
                 <div className="row">
                     <div className="col-md-4 text-center">
-                        <Button type='button' outline active={this.props.token === 'panda'} onClick={() => this.props.setToken('panda')}>
+                        <Button type='button' outline active={this.props.token === 'panda'} disabled={this.props.tokenDisable==='panda'} onClick={() => this.props.setToken('panda')}>
                             <img className="blankPiece" src={panda} alt='panda' />
                         </Button>
                     </div>
                     <div className="col-md-4 text-center">
-                        <Button type='button' outline active={this.props.token === 'cat'} onClick={() => this.props.setToken('cat')}>
+                        <Button type='button' outline active={this.props.token === 'cat'} disabled={this.props.tokenDisable === 'cat'} onClick={() => this.props.setToken('cat')}>
                             <img className="blankPiece" src={cat} alt='cat' />
                         </Button>
                     </div>
                     <div className="col-md-4 text-center">
-                        <Button type='button' outline active={this.props.token === 'fox'} onClick={() => this.props.setToken('fox')}>
+                        <Button type='button' outline active={this.props.token === 'fox'} disabled={this.props.tokenDisable === 'fox'} onClick={() => this.props.setToken('fox')}>
                             <img className="blankPiece" src={fox} alt='fox' />
                         </Button>
                     </div>
                     <div className="col-md-4 text-center">
-                        <Button type='button' outline active={this.props.token === 'cow'} onClick={() => this.props.setToken('cow')}>
+                        <Button type='button' outline active={this.props.token === 'cow'} disabled={this.props.tokenDisable === 'cow'} onClick={() => this.props.setToken('cow')}>
                             <img className="blankPiece" value='cow' src={cow} alt='cow' />
                         </Button>
                     </div>
                     <div className="col-md-4 text-center">
-                        <Button type='button' outline active={this.props.token === 'rabbit'} onClick={() => this.props.setToken('rabbit')}>
+                        <Button type='button' outline active={this.props.token === 'rabbit'} disabled={this.props.tokenDisable === 'rabbit'} onClick={() => this.props.setToken('rabbit')}>
                             <img className="blankPiece" value='rabbit' src={rabbit} alt='rabbit' />
                         </Button>
                     </div>
                     <div className="col-md-4 text-center">
-                        <Button type='button' outline active={this.props.token === 'dog'} onClick={() => this.props.setToken('dog')}>
+                        <Button type='button' outline active={this.props.token === 'dog'} disabled={this.props.tokenDisable === 'dog'} onClick={() => this.props.setToken('dog')}>
                             <img className="blankPiece" value='dog' src={dog} alt='dog' />
                         </Button>
                     </div>
                     <div className="col-md-4 text-center">
-                        <Button type='button' outline active={this.props.token === 'pig'} onClick={() => this.props.setToken('pig')}>
+                        <Button type='button' outline active={this.props.token === 'pig'} disabled={this.props.tokenDisable === 'pig'} onClick={() => this.props.setToken('pig')}>
                             <img className="blankPiece" value='pig' src={pig} alt='pig' />
                         </Button>
                     </div><div className="col-md-4 text-center">
-                        <Button type='button' outline active={this.props.token === 'chick'} onClick={() => this.props.setToken('chick')}>
+                        <Button type='button' outline active={this.props.token === 'chick'} disabled={this.props.tokenDisable === 'chick'} onClick={() => this.props.setToken('chick')}>
                             <img className="blankPiece" value='chick' src={chick} alt='chick' />
                         </Button>
                     </div><div className="col-md-4 text-center">
-                        <Button type='button' outline active={this.props.token === 'bear'} onClick={() => this.props.setToken('bear')}>
+                        <Button type='button' outline active={this.props.token === 'bear'} disabled={this.props.tokenDisable === 'bear'} onClick={() => this.props.setToken('bear')}>
                             <img className="blankPiece" value='bear' src={bear} alt='bear' />
                         </Button>
                     </div><div className="col-md-4 text-center">
-                        <Button type='button' outline active={this.props.token === 'deer'} onClick={() => this.props.setToken('deer')}>
+                        <Button type='button' outline active={this.props.token === 'deer'} disabled={this.props.tokenDisable === 'deer'} onClick={() => this.props.setToken('deer')}>
                             <img className="blankPiece" value='deer' src={deer} alt='deer' />
                         </Button>
                     </div><div className="col-md-4 text-center">
-                        <Button type='button' outline active={this.props.token === 'goat'} onClick={() => this.props.setToken('goat')}>
+                        <Button type='button' outline active={this.props.token === 'goat'} disabled={this.props.tokenDisable === 'goat'} onClick={() => this.props.setToken('goat')}>
                             <img className="blankPiece" value='goat' src={goat} alt='goat' />
                         </Button>
                     </div><div className="col-md-4 text-center">
-                        <Button type='button' outline active={this.props.token === 'mouse'} onClick={() => this.props.setToken('mouse')}>
+                        <Button type='button' outline active={this.props.token === 'mouse'} disabled={this.props.tokenDisable === 'mouse'} onClick={() => this.props.setToken('mouse')}>
                             <img className="blankPiece" value='mouse' src={mouse} alt='mouse' />
                         </Button>
                     </div>

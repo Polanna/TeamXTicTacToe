@@ -8,6 +8,7 @@ import Client from './Client';
 import { OneNamePrompt } from './OneNamePrompt';
 import { TwoNamePrompt } from './TwoNamePrompt';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import Scoreboard from './Scoreboard';
 
 export class BoardPage extends Component {
     static displayName = BoardPage.name;
@@ -19,6 +20,8 @@ export class BoardPage extends Component {
             player2: {},
             namePromptSeen: true,
             boardTheme: '1',
+            p1Score: [0, 0, 0],
+            p2Score: [0, 0, 0],
         }
     }
 
@@ -26,7 +29,7 @@ export class BoardPage extends Component {
         console.log("mode:" + this.props.mode)
     }
 
-    //chang the board theme to a user specified one
+    //change the board theme to a user specified one
     setBoardTheme = (a) => {
         this.setState({
             boardTheme: a
@@ -43,36 +46,49 @@ export class BoardPage extends Component {
     updatePlayers = (result) => {
         console.log("updatePlayers:" + result);
 
+        //make copy of state.player1
+        let player1 = Object.assign({}, this.state.player1);
+        let player2 = Object.assign({}, this.state.player2);
+
+        let p1Score = this.state.p1Score.slice();
+        let p2Score = this.state.p2Score.slice();
+
+        if (result === 'X') {
+            //increase player 1 wins, inc player 2 losses
+            player1.winCount++;
+            p1Score[0]++;
+            player2.loseCount++;
+            p2Score[1]++;
+        }
+        else if (result === 'O') {
+            //increase player 2 wins, inc player 1 losses
+            player2.winCount++;
+            p2Score[0]++;
+            player1.loseCount++;
+            p1Score[1]++;
+        }
+        else {
+            //increase both draws
+            player1.drawCount++;
+            player2.drawCount++;
+            p1Score[2]++;
+            p2Score[2]++;
+        }
+
         if (this.props.mode === 'TwoPlayer') {
             console.log("updating players on backend");
-            //make copy of state.player1
-            let player1 = Object.assign({}, this.state.player1);
-            let player2 = Object.assign({}, this.state.player2);
 
-            if (result === 'X') {
-                //increase player 1 wins, inc player 2 losses
-                player1.winCount++;
-                player2.loseCount++;
-            }
-            else if (result === 'O') {
-                //increase player 2 wins, inc player 1 losses
-                player2.winCount++;
-                player1.loseCount++;
-            }
-            else {
-                //increase both draws
-                player1.drawCount++;
-                player2.drawCount++;
-            }
             //save new data
             Client.updatePlayer(player1);
             Client.updatePlayer(player2);
-            //update player1 and player2 state (left is label, right is object)
-            this.setState({
-                player1: player1,
-                player2: player2
-            });
         }
+        //update player1 and player2 state (left is label, right is object)
+        this.setState({
+            player1: player1,
+            player2: player2, 
+            p1Score: p1Score,
+            p2Score: p2Score,
+        });
     };
 
     setTwoPlayers = (nick1, nick2) => {
@@ -160,7 +176,9 @@ export class BoardPage extends Component {
                 </div>
                 <div className="row">
                     <div className="col-md-2">
-                        <h3>Player scores component here </h3>
+                        <Scoreboard
+                            score={this.state.p1Score}
+                        />
                     </div>
                     <div className="col-md-8 text-center align-items-center">
                         <Game
@@ -173,7 +191,9 @@ export class BoardPage extends Component {
                         />
                     </div>
                     <div className="col-md-2">
-                        <h3>Player scores  component here </h3>
+                        <Scoreboard
+                            score={this.state.p2Score}
+                        />
                     </div>
                 </div>
 
