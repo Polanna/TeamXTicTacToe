@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Configuration;
 using System;
 using TeamXTicTacToe.DAO;
 using TeamXTicTacToe.Models;
@@ -24,9 +25,9 @@ namespace TeamXTicTacToe
         {
 
             services.AddControllersWithViews();
-            string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+            string connectionString = GetConnectionString();
             services.AddSingleton(new TicTacBlobClient<Player>(connectionString, "players"));
-            services.AddSingleton<IPlayerDAO, PlayerDAO>();  
+            services.AddSingleton<IPlayerDAO, PlayerDAO>();
 
 
             // In production, the React files will be served from this directory
@@ -34,6 +35,18 @@ namespace TeamXTicTacToe
             {
                 configuration.RootPath = "ClientApp/build";
             });
+        }
+
+        private string GetConnectionString()
+        {
+            // Getting from local environment variables
+            string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+            if (connectionString == null)
+            {
+                // Used when application is deployed in Azure App Service environment
+                connectionString = Environment.GetEnvironmentVariable("CUSTOMCONNSTR_AZURE_STORAGE_CONNECTION_STRING");
+            }
+            return connectionString;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +65,7 @@ namespace TeamXTicTacToe
 
             app.UseHttpsRedirection(); //makes it encrypted - redirect to https
             app.UseStaticFiles();   //services serves up static website files
-            app.UseSpaStaticFiles();    
+            app.UseSpaStaticFiles();
 
             app.UseRouting();   //define how to route requests to controllers
 

@@ -8,8 +8,6 @@ import { Settings } from './components/Settings';
 import { FAQPage } from './components/FAQPage';
 import { BoardPage } from './components/BoardPage';
 import { OnlineBoardPage } from './components/OnlineBoardPage';
-import { TutorialPage } from './components/TutorialPage';
-import { OnePlayerPage } from './components/OnePlayerPage';
 import { About } from './components/About';
 
 export default class App extends Component {
@@ -41,14 +39,14 @@ export default class App extends Component {
                     )} />
                     <Route path='/faq' component={FAQPage} />
                     <Route path='/boardpage' render={() => (
-                        <BoardPage tokenX={this.state.tokenX} tokenO={this.state.tokenO} />
+                        <BoardPage tokenX={this.state.tokenX} tokenO={this.state.tokenO} mode="TwoPlayer"/>
                     )} />
                     <Route path='/tutorialpage' render={() => (
-                        <TutorialPage tokenX={this.state.tokenX} tokenO={this.state.tokenO} />
+                        <BoardPage tokenX={this.state.tokenX} tokenO={this.state.tokenO} mode="Tutorial" />
                     )} />
                     <Route path='/about' component={About} />
                     <Route path='/oneplayerpage' render={() => (
-                        <OnePlayerPage tokenX={this.state.tokenX} tokenO={this.state.tokenO} />
+                        <BoardPage tokenX={this.state.tokenX} tokenO={this.state.tokenO} mode="OnePlayer" />
                     )} />
                     <Route path='/onlinepage' render={() => (
                         <OnlineBoardPage tokenX={this.state.tokenX} tokenO={this.state.tokenO} />
