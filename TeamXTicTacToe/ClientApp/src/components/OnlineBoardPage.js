@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import { OnlineGame } from './OnlineGame';
 import Client from './Client';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { OneNamePrompt } from './OneNamePrompt';
 
 
-// 1. create a socket and successfully connect to the server: DONE
-// 2. 
 
 
 export class OnlineBoardPage extends Component {
@@ -16,6 +15,7 @@ export class OnlineBoardPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            namePromptSeen: true,
             player1: {},
             player2: {},
             boardTheme: '1',
@@ -30,13 +30,7 @@ export class OnlineBoardPage extends Component {
     }
 
 
-    componentDidMount() {
 
-        const nick1 = window.prompt('Player 1:', 'Player1');
-        const nick2 = window.prompt('Player 2:', 'Player2');
-        Client.getPlayer(nick1, (player) => { this.setState({ player1: player }) })
-        Client.getPlayer(nick2, (player) => { this.setState({ player2: player }) })
-    }
 
     updatePlayers = (result) => {
         console.log("updatePlayers:" + result);
@@ -68,11 +62,47 @@ export class OnlineBoardPage extends Component {
             player2: player2
         });
     };
+    setOnePlayer = (nick1) => {
+        let player1 = {
+            name: nick1
+        }
 
+        let player2 = {
+            name: 'Not Yet determined'
+        }
+
+        this.setState({
+            player1: player1,
+            player2: player2
+        });
+    }
+    toggleNamePrompt = () => {
+        this.setState({
+            namePromptSeen: !this.state.namePromptSeen
+        });
+
+    }
+    updateNames = (e) => {
+        let arr = e.split('/')
+        let n2 = {
+            name: 'Not Yet determined'
+        }
+        console.log(this.state.player1.name)
+        console.log(this.state.player1.name === arr[0])
+        if (this.state.player1.name === arr[0]) { n2.name = arr[1] }
+        else { n2.name = arr[0] }
+        this.setState({ player2: n2 })
+    }
     render() {
+        let prompt = <OneNamePrompt isOpen={this.state.namePromptSeen} toggle={this.toggleNamePrompt} onSubmit={this.setOnePlayer} />;
+            
         return (
             <Fragment>
-
+                <div className="row">
+                    <div className="col">
+                        {prompt}
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-md-2 text-center">
                         <h2>{this.state.player1.name}</h2>
@@ -121,7 +151,14 @@ export class OnlineBoardPage extends Component {
 
                     <div className="col-md-8 text-center align-items-center">
                         {this.state.player1.name && this.state.player2.name ?
-                            (<OnlineGame player1={this.state.player1.name} player2={ this.state.player2.name } updatePlayers={this.updatePlayers} tokenX={this.props.tokenX} tokenO={this.props.tokenO} boardTheme={this.state.boardTheme}/>)
+                            (<OnlineGame
+                                updateName={(e) => { this.updateNames (e) }}
+                                player1={this.state.player1.name}
+                                player2={this.state.player2.name}
+                                updatePlayers={this.updatePlayers}
+                                tokenX={this.props.tokenX}
+                                tokenO={this.props.tokenO}
+                                boardTheme={this.state.boardTheme} />)
                             : null}
                         
                     </div>

@@ -66,6 +66,10 @@ export class OnlineGame extends React.Component {
                     let inviterStatus = str[3]
                     let invitee = str[4]
                     let inviteeStatus = str[5]
+
+                    let name1 = this.state.LobbyNames[this.state.LobbyIDs.indexOf(inviter)];
+                    let name2 = this.state.LobbyNames[this.state.LobbyIDs.indexOf(invitee)];
+                    if (inviteeStatus === "In-Game" && inviterStatus === "In-Game") { this.props.updateName(name1 + "/" + name2); }
                     this.state.LobbyStatuses[this.state.LobbyIDs.indexOf(inviter)] = inviterStatus
                     this.state.LobbyStatuses[this.state.LobbyIDs.indexOf(invitee)] = inviteeStatus
                     let arr = this.state.LobbyStatuses;
