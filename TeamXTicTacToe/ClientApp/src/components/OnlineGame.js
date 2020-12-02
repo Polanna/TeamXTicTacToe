@@ -16,7 +16,7 @@ export class OnlineGame extends React.Component {
         console.log(this.props.player1)
         this.LobbyContainer = [];
         this.state = {
-            
+
             showLobby: true,
             LobbyIDs: [],
             LobbyNames: [],
@@ -77,7 +77,7 @@ export class OnlineGame extends React.Component {
                         LobbyStatuses: arr
                     })
                 }
-                
+
             }
         });
 
@@ -134,6 +134,24 @@ export class OnlineGame extends React.Component {
             stepNumber: step,
             xIsNext: (step % 2) === 0,
         });
+    }
+
+    // Clear the and restart the board
+    clearBoard() {
+        if (this.state.stepNumber === 0) {
+            return;
+        }
+        this.setState({
+            history: [{
+                squares: Array(9).fill(null),
+            }],
+            stepNumber: 0,
+            xIsNext: true,
+            winner: null,
+            winningLine: null,
+            suggestion: -1
+        });
+        //this.props.gameLogic.initialize(this.props, this.state, this.updateStateCallback);
     }
 
     handleKeyDown(e) {
@@ -214,12 +232,16 @@ export class OnlineGame extends React.Component {
                     LobbyIDs={this.state.LobbyIDs}
                     LobbyStatuses={this.state.LobbyStatuses}
                     inviteClicked={this.inviteClicked} />
-                
+
 
                 <div className="game-info">
                     <div className="status">{status}</div>
                     <ol>{moves}</ol>
                 </div>
+                {this.state.winner !== null ?
+                    <div className="col-md-12 text-center mt-4">
+                        <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.clearBoard()}>Restart</button>
+                    </div> : null}
             </div>
         );
     }
