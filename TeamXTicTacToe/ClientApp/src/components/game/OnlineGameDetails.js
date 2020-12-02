@@ -9,16 +9,7 @@ export class OnlineGameDetails extends React.Component {
         let buttonText = this.props.showLobby ? "Hide Lobby" : "Show Lobby";
         return (
             <Fragment>
-                <div>
-                    <p>Your ID: {this.props.myID}</p>
-                </div>
-                {this.props.friendID === "unknown" ?
-                    (<input placeholder="type Friend ID"
-                        name="FriendID"
-                        onKeyDown={this.props.handleKeyDown} />)
-                    : (<p>Friend ID: {this.props.friendID}</p>)
-                }
-
+                
                 <div>
                     <button onClick={this.props.toggleLobby}>{buttonText}</button>
                 </div>
