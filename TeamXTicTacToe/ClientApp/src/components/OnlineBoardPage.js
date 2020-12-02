@@ -53,6 +53,13 @@ export class OnlineBoardPage extends Component {
             player1.drawCount++;
             player2.drawCount++;
         }
+        //console.log("player1.winCount: ")
+        //console.log(player1)
+        //console.log("player2.loseCount: ")
+        //console.log(player2)
+
+        
+
         //save new data
         Client.updatePlayer(player1);
         Client.updatePlayer(player2);
@@ -84,14 +91,20 @@ export class OnlineBoardPage extends Component {
     }
     updateNames = (e) => {
         let arr = e.split('/')
-        let n2 = {
-            name: 'Not Yet determined'
+        let n1 = {
+            name: ''
         }
-        console.log(this.state.player1.name)
-        console.log(this.state.player1.name === arr[0])
-        if (this.state.player1.name === arr[0]) { n2.name = arr[1] }
-        else { n2.name = arr[0] }
-        this.setState({ player2: n2 })
+        let n2 = {
+            name: ''
+        }
+        console.log(arr)
+        //console.log(this.state.player1.name)
+        //console.log(this.state.player1.name === arr[0])
+        //if (this.state.player1.name === arr[0]) { n2.name = arr[1] }
+        //else { n2.name = arr[0] }
+        n1.name = arr[0];
+        n2.name = arr[1];
+        this.setState({ player1:n1 , player2: n2 })
     }
     render() {
         let prompt = <OneNamePrompt isOpen={this.state.namePromptSeen} toggle={this.toggleNamePrompt} onSubmit={this.setOnePlayer} />;
