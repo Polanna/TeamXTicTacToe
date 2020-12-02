@@ -23,6 +23,9 @@ export class OnlineGame extends React.Component {
             LobbyStatuses: [],
             myTurn: false,
 
+            tokenX: null,
+            tokenO: null,
+
             socket: new WebSocket(wsUri),
             myID: "",
             friendID: "unknown",
@@ -69,15 +72,24 @@ export class OnlineGame extends React.Component {
 
                     let name1 = this.state.LobbyNames[this.state.LobbyIDs.indexOf(inviter)];
                     let name2 = this.state.LobbyNames[this.state.LobbyIDs.indexOf(invitee)];
-                    if (inviteeStatus === "In-Game" && inviterStatus === "In-Game" && this.state.myID === invitee) { this.props.updateName(name2 + "/" + name1); }
+                    //if (inviteeStatus === "In-Game" && inviterStatus === "In-Game" && this.state.myID === invitee) {
+                    //    this.props.updateName(name2 + "/" + name1);
+                    //}
 
-                    else if (inviteeStatus === "In-Game" && inviterStatus === "In-Game" && this.state.myID === inviter) { this.props.updateName(name1 + "/" + name2); }
+                    //else if (inviteeStatus === "In-Game" && inviterStatus === "In-Game" && this.state.myID === inviter) {
+                    //    this.props.updateName(name1 + "/" + name2);
+                    //}
+                    if (inviteeStatus === "In-Game" && inviterStatus === "In-Game") { this.props.updateName(name2 + "/" + name1);}
+                    
 
                     this.state.LobbyStatuses[this.state.LobbyIDs.indexOf(inviter)] = inviterStatus
                     this.state.LobbyStatuses[this.state.LobbyIDs.indexOf(invitee)] = inviteeStatus
                     let arr = this.state.LobbyStatuses;
                     this.setState({
-                        LobbyStatuses: arr
+                        LobbyStatuses: arr,
+                        tokenX: (this.state.myID === invitee ? this.props.tokenO : this.props.tokenX),
+                        tokenO: (this.state.myID === invitee ? this.props.tokenX : this.props.tokenO)
+
                     })
                 }
                 
