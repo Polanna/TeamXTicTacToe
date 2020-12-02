@@ -49,9 +49,13 @@ export class OnlineGame extends React.Component {
                 this.setState({ myID: str[1] })
             }
             if (str[0] === "playGame" && str.length == 2) {
-                var move = str[1].split("/")
-                var opponentChoose = parseInt(move[0])
-                this.handleClick(opponentChoose)
+                if (str[1] === "restart") {
+                    this.clearBoardRequest();
+                } else {
+                    var move = str[1].split("/")
+                    var opponentChoose = parseInt(move[0])
+                    this.handleClick(opponentChoose)
+                }
             }
             if (str[0] === "Lobby") {
                 if (str[1] === "Add") {
@@ -145,13 +149,33 @@ export class OnlineGame extends React.Component {
             history: [{
                 squares: Array(9).fill(null),
             }],
+            myTurn: !this.state.myTurn,
             stepNumber: 0,
             xIsNext: true,
             winner: null,
             winningLine: null,
             suggestion: -1
         });
+
+        this.state.socket.send("playGame" + ":" + this.state.myID + ":" + this.state.friendID + ":" + "restart");
         //this.props.gameLogic.initialize(this.props, this.state, this.updateStateCallback);
+    }
+
+    clearBoardRequest() {
+        if (this.state.stepNumber === 0) {
+            return;
+        }
+        this.setState({
+            history: [{
+                squares: Array(9).fill(null),
+            }],
+            myTurn: !this.state.myTurn,
+            stepNumber: 0,
+            xIsNext: true,
+            winner: null,
+            winningLine: null,
+            suggestion: -1
+        });
     }
 
     handleKeyDown(e) {
