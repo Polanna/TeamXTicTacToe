@@ -43,6 +43,7 @@ export class OnlineBoardPage extends Component {
 
     updatePlayers = (result) => {
         console.log("updatePlayers:" + result);
+        console.log(this.state.player1.token);
         //make copy of state.player1
         let player1 = Object.assign({}, this.state.player1);
         let player2 = Object.assign({}, this.state.player2);
@@ -50,14 +51,14 @@ export class OnlineBoardPage extends Component {
         let p1Score = this.state.p1Score.slice();
         let p2Score = this.state.p2Score.slice();
 
-        if (result === this.state.player1.token) {
+        if (result === this.state.myIcon) {
             //increase player 1 wins, inc player 2 losses
             player1.winCount++;
             p1Score[0]++;
             player2.loseCount++;
             p2Score[1]++;
         }
-        else if (result === this.state.player2.token) {
+        else if (result === this.state.friendIcon) {
             //increase player 2 wins, inc player 1 losses
             player2.winCount++;
             p2Score[0]++;
