@@ -244,7 +244,7 @@ export class OnlineGame extends React.Component {
                 status = 'Winner: ' + this.state.winner;
             }
         } else {
-            status = 'Next player: ' + (this.state.xIsNext ? 'Player 1' : 'Player 2');
+            status = 'Next player: ' + (this.state.xIsNext ? 'Player X' : 'Player O');
         }
 
         return (
