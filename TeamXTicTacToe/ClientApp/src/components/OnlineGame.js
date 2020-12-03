@@ -16,7 +16,7 @@ export class OnlineGame extends React.Component {
         
         this.LobbyContainer = [];
         this.state = {
-            
+
             showLobby: true,
             LobbyIDs: [],
             LobbyNames: [],
@@ -52,9 +52,13 @@ export class OnlineGame extends React.Component {
                 this.setState({ myID: str[1] })
             }
             if (str[0] === "playGame" && str.length == 2) {
-                var move = str[1].split("/")
-                var opponentChoose = parseInt(move[0])
-                this.handleClick(opponentChoose)
+                if (str[1] === "restart") {
+                    this.clearBoardRequest();
+                } else {
+                    var move = str[1].split("/")
+                    var opponentChoose = parseInt(move[0])
+                    this.handleClick(opponentChoose)
+                }
             }
             if (str[0] === "Lobby") {
                 if (str[1] === "Add") {
@@ -92,7 +96,7 @@ export class OnlineGame extends React.Component {
 
                     })
                 }
-                
+
             }
         });
 
@@ -148,6 +152,44 @@ export class OnlineGame extends React.Component {
         this.setState({
             stepNumber: step,
             xIsNext: (step % 2) === 0,
+        });
+    }
+
+    // Clear the and restart the board
+    clearBoard() {
+        if (this.state.stepNumber === 0) {
+            return;
+        }
+        this.setState({
+            history: [{
+                squares: Array(9).fill(null),
+            }],
+            myTurn: !this.state.myTurn,
+            stepNumber: 0,
+            xIsNext: true,
+            winner: null,
+            winningLine: null,
+            suggestion: -1
+        });
+
+        this.state.socket.send("playGame" + ":" + this.state.myID + ":" + this.state.friendID + ":" + "restart");
+        //this.props.gameLogic.initialize(this.props, this.state, this.updateStateCallback);
+    }
+
+    clearBoardRequest() {
+        if (this.state.stepNumber === 0) {
+            return;
+        }
+        this.setState({
+            history: [{
+                squares: Array(9).fill(null),
+            }],
+            myTurn: !this.state.myTurn,
+            stepNumber: 0,
+            xIsNext: true,
+            winner: null,
+            winningLine: null,
+            suggestion: -1
         });
     }
 
@@ -229,12 +271,16 @@ export class OnlineGame extends React.Component {
                     LobbyIDs={this.state.LobbyIDs}
                     LobbyStatuses={this.state.LobbyStatuses}
                     inviteClicked={this.inviteClicked} />
-                
+
 
                 <div className="game-info">
                     <div className="status">{status}</div>
                     <ol>{moves}</ol>
                 </div>
+                {this.state.winner !== null ?
+                    <div className="col-md-12 text-center mt-4">
+                        <button className="btn btn-lrg btn-primary active shadow-large rounded-pill w-25 h-50" onClick={() => this.clearBoard()}>Restart</button>
+                    </div> : null}
             </div>
         );
     }
