@@ -19,8 +19,15 @@ export class OnlineBoardPage extends Component {
             player1: {},
             player2: {},
             boardTheme: '1',
+
+            tokenX: this.props.tokenX,
+            tokenO: this.props.tokenO,
+            myIcon: "X",
+            friendIcon:"O",
+
             p1Score: [0, 0, 0],
             p2Score: [0, 0, 0],
+
         }
     }
 
@@ -64,6 +71,13 @@ export class OnlineBoardPage extends Component {
             p1Score[2]++;
             p2Score[2]++;
         }
+        //console.log("player1.winCount: ")
+        //console.log(player1)
+        //console.log("player2.loseCount: ")
+        //console.log(player2)
+
+        
+
         //save new data
         Client.updatePlayer(player1);
         Client.updatePlayer(player2);
@@ -97,14 +111,37 @@ export class OnlineBoardPage extends Component {
     }
     updateNames = (e) => {
         let arr = e.split('/')
-        let n2 = {
-            name: 'Not Yet determined'
+        let n1 = {
+            name: ''
         }
-        console.log(this.state.player1.name)
-        console.log(this.state.player1.name === arr[0])
-        if (this.state.player1.name === arr[0]) { n2.name = arr[1] }
-        else { n2.name = arr[0] }
-        this.setState({ player2: n2 })
+        let n2 = {
+            name: ''
+        }
+        
+        //console.log(this.state.player1.name)
+        //console.log(this.state.player1.name === arr[0])
+        //if (this.state.player1.name === arr[0]) { n2.name = arr[1] }
+        //else { n2.name = arr[0] }
+
+        let swap = false;
+        if (this.state.player1.name === arr[1]) {
+            swap = true
+            n1.name = arr[1];
+            n2.name = arr[0];
+        }
+        else {
+            n1.name = arr[0];
+            n2.name = arr[1];
+        }
+        
+        this.setState({
+            player1: n1,
+            player2: n2,
+            tokenX: (swap ? this.props.tokenO : this.props.tokenX),
+            tokenO: (swap ? this.props.tokenX : this.props.tokenO),
+            myIcon: (swap ? "O" : "X"),
+            friendIcon: (swap ? "X": "O")
+        })
     }
     render() {
         let prompt = <OneNamePrompt isOpen={this.state.namePromptSeen} toggle={this.toggleNamePrompt} onSubmit={this.setOnePlayer} />;
@@ -127,17 +164,17 @@ export class OnlineBoardPage extends Component {
                         <h2>{this.state.player2.name}</h2>
                     </div>
                     <div className="col-md-2 text-center">
-                        <h2>X</h2>
+                        <h2>{this.state.myIcon}</h2>
                     </div>
                     <div className="col-md-8 text-center">
                         <h2></h2>
                     </div>
                     <div className="col-md-2 text-center">
-                        <h2>O</h2>
+                        <h2>{this.state.friendIcon}</h2>
                     </div>
 
                     <div className="col-md-2 text-center">
-                        <h2><img className="player1" src={require('../img/' + this.props.tokenX + '.png')} alt="pieceX" /></h2>
+                        <h2><img className="player1" src={require('../img/' + this.state.tokenX + '.png')} alt="pieceX" /></h2>
                     </div>
                     <div class="col-md-8 text-center">
                         <UncontrolledDropdown>
@@ -153,7 +190,7 @@ export class OnlineBoardPage extends Component {
                         </UncontrolledDropdown>
                     </div>
                     <div className="col-md-2 text-center">
-                        <h2><img className="player2" require src={require('../img/' + this.props.tokenO + '.png')} alt="pieceO" /></h2>
+                        <h2><img className="player2" require src={require('../img/' + this.state.tokenO + '.png')} alt="pieceO" /></h2>
                     </div>
 
                 </div>
