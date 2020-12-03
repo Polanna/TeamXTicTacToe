@@ -50,14 +50,14 @@ export class OnlineBoardPage extends Component {
         let p1Score = this.state.p1Score.slice();
         let p2Score = this.state.p2Score.slice();
 
-        if (result === 'X') {
+        if (result === this.state.player1.token) {
             //increase player 1 wins, inc player 2 losses
             player1.winCount++;
             p1Score[0]++;
             player2.loseCount++;
             p2Score[1]++;
         }
-        else if (result === 'O') {
+        else if (result === this.state.player2.token) {
             //increase player 2 wins, inc player 1 losses
             player2.winCount++;
             p2Score[0]++;
@@ -71,10 +71,10 @@ export class OnlineBoardPage extends Component {
             p1Score[2]++;
             p2Score[2]++;
         }
-        //console.log("player1.winCount: ")
-        //console.log(player1)
-        //console.log("player2.loseCount: ")
-        //console.log(player2)
+        console.log("player1: ")
+        console.log(player1)
+        console.log("player2: ")
+        console.log(player2)
 
         
 
@@ -91,11 +91,13 @@ export class OnlineBoardPage extends Component {
     };
     setOnePlayer = (nick1) => {
         let player1 = {
-            name: nick1
+            name: nick1,
+            token: "X"
         }
 
         let player2 = {
-            name: 'Not Yet determined'
+            name: 'Not Yet determined',
+            token: "O"
         }
 
         this.setState({
@@ -109,13 +111,19 @@ export class OnlineBoardPage extends Component {
         });
 
     }
+    setTwoPlayers = (nick1, nick2) => {
+        Client.getPlayer(nick1, (player) => { this.setState({ player1: player }) });
+        Client.getPlayer(nick2, (player) => { this.setState({ player2: player }) });
+    }
     updateNames = (e) => {
         let arr = e.split('/')
         let n1 = {
-            name: ''
+            name: '',
+            token: ''
         }
         let n2 = {
-            name: ''
+            name: '',
+            token: ''
         }
         
         //console.log(this.state.player1.name)
@@ -127,13 +135,18 @@ export class OnlineBoardPage extends Component {
         if (this.state.player1.name === arr[1]) {
             swap = true
             n1.name = arr[1];
+            n1.token = "O";
             n2.name = arr[0];
+            n2.token = "X";
+
         }
         else {
+            n1.token = "X";
+            n2.token = "O";
             n1.name = arr[0];
             n2.name = arr[1];
         }
-        
+        this.setTwoPlayers(n1.name,n2.name);
         this.setState({
             player1: n1,
             player2: n2,
