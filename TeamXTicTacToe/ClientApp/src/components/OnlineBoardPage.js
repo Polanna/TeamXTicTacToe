@@ -16,17 +16,15 @@ export class OnlineBoardPage extends Component {
         super(props);
         this.state = {
             namePromptSeen: true,
-            player1: {},
-            player2: {},
+            playerX: {},
+            playerO: {},
             boardTheme: '1',
 
             tokenX: this.props.tokenX,
             tokenO: this.props.tokenO,
-            myIcon: "X",
-            friendIcon:"O",
 
-            p1Score: [0, 0, 0],
-            p2Score: [0, 0, 0],
+            pXScore: [0, 0, 0],
+            pOScore: [0, 0, 0],
 
         }
     }
@@ -44,32 +42,32 @@ export class OnlineBoardPage extends Component {
     updatePlayers = (result) => {
         console.log("updatePlayers:" + result);
         //make copy of state.player1
-        let player1 = Object.assign({}, this.state.player1);
-        let player2 = Object.assign({}, this.state.player2);
+        let playerX = Object.assign({}, this.state.playerX);
+        let playerO = Object.assign({}, this.state.playerO);
 
-        let p1Score = this.state.p1Score.slice();
-        let p2Score = this.state.p2Score.slice();
+        let pXScore = this.state.pXScore.slice();
+        let pOScore = this.state.pOScore.slice();
 
         if (result === 'X') {
             //increase player 1 wins, inc player 2 losses
-            player1.winCount++;
-            p1Score[0]++;
-            player2.loseCount++;
-            p2Score[1]++;
+            playerX.winCount++;
+            pXScore[0]++;
+            playerO.loseCount++;
+            pOScore[1]++;
         }
         else if (result === 'O') {
             //increase player 2 wins, inc player 1 losses
-            player2.winCount++;
-            p2Score[0]++;
-            player1.loseCount++;
-            p1Score[1]++;
+            playerO.winCount++;
+            pOScore[0]++;
+            playerX.loseCount++;
+            pXScore[1]++;
         }
         else {
             //increase both draws
-            player1.drawCount++;
-            player2.drawCount++;
-            p1Score[2]++;
-            p2Score[2]++;
+            playerX.drawCount++;
+            playerO.drawCount++;
+            pXScore[2]++;
+            pOScore[2]++;
         }
         //console.log("player1.winCount: ")
         //console.log(player1)
@@ -79,14 +77,14 @@ export class OnlineBoardPage extends Component {
         
 
         //save new data
-        Client.updatePlayer(player1);
-        Client.updatePlayer(player2);
+        Client.updatePlayer(playerX);
+        Client.updatePlayer(playerO);
         //update player1 and player2 state (left is label, right is object)
         this.setState({
-            player1: player1,
-            player2: player2,
-            p1Score: p1Score,
-            p2Score: p2Score,
+            playerX: playerX,
+            playerO: playerO,
+            pXScore: pXScore,
+            pOScore: pOScore,
         });
     };
     setOnePlayer = (nick1) => {
@@ -99,8 +97,8 @@ export class OnlineBoardPage extends Component {
         }
 
         this.setState({
-            player1: player1,
-            player2: player2
+            playerX: player1,
+            playerO: player2
         });
     }
     toggleNamePrompt = () => {
@@ -110,38 +108,11 @@ export class OnlineBoardPage extends Component {
 
     }
     updateNames = (e) => {
-        let arr = e.split('/')
-        let n1 = {
-            name: ''
-        }
-        let n2 = {
-            name: ''
-        }
-        
-        //console.log(this.state.player1.name)
-        //console.log(this.state.player1.name === arr[0])
-        //if (this.state.player1.name === arr[0]) { n2.name = arr[1] }
-        //else { n2.name = arr[0] }
-
-        let swap = false;
-        if (this.state.player1.name === arr[1]) {
-            swap = true
-            n1.name = arr[1];
-            n2.name = arr[0];
-        }
-        else {
-            n1.name = arr[0];
-            n2.name = arr[1];
-        }
-        
-        this.setState({
-            player1: n1,
-            player2: n2,
-            tokenX: (swap ? this.props.tokenO : this.props.tokenX),
-            tokenO: (swap ? this.props.tokenX : this.props.tokenO),
-            myIcon: (swap ? "O" : "X"),
-            friendIcon: (swap ? "X": "O")
-        })
+        let arr = e.split('/');
+        let inviter = arr[0];
+        let invitee = arr[1];
+        Client.getPlayer(inviter, (player) => { this.setState({ playerX: player }) });
+        Client.getPlayer(invitee, (player) => { this.setState({ playerO: player }) });
     }
     render() {
         let prompt = <OneNamePrompt isOpen={this.state.namePromptSeen} toggle={this.toggleNamePrompt} onSubmit={this.setOnePlayer} />;
@@ -155,13 +126,13 @@ export class OnlineBoardPage extends Component {
                 </div>
                 <div className="row">
                     <div className="col-md-2 text-center">
-                        <h2>{this.state.player1.name}</h2>
+                        <h2>{this.state.playerX.name}</h2>
                     </div>
                     <div className="col-md-8 text-center">
                         <h2>vs</h2>
                     </div>
                     <div className="col-md-2 text-center">
-                        <h2>{this.state.player2.name}</h2>
+                        <h2>{this.state.playerO.name}</h2>
                     </div>
                     <div className="col-md-2 text-center">
                         <h2>{this.state.myIcon}</h2>
@@ -197,16 +168,16 @@ export class OnlineBoardPage extends Component {
                 <div className="row">
                     <div className="col-md-2">
                         <Scoreboard
-                            score={this.state.p1Score}
+                            score={this.state.pXScore}
                         />
                     </div>
 
                     <div className="col-md-8 text-center align-items-center">
-                        {this.state.player1.name && this.state.player2.name ?
+                        {this.state.playerX.name && this.state.playerO.name ?
                             (<OnlineGame
                                 updateName={(e) => { this.updateNames(e) }}
-                                player1={this.state.player1.name}
-                                player2={this.state.player2.name}
+                                player1={this.state.playerX.name}
+                                player2={this.state.playerO.name}
                                 updatePlayers={this.updatePlayers}
                                 tokenX={this.props.tokenX}
                                 tokenO={this.props.tokenO}
@@ -216,7 +187,7 @@ export class OnlineBoardPage extends Component {
                     </div>
                     <div className="col-md-2">
                         <Scoreboard
-                            score={this.state.p2Score}
+                            score={this.state.pOScore}
                         />
                     </div>
                 </div>
