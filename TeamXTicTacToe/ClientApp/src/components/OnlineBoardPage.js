@@ -4,7 +4,7 @@ import { OnlineGame } from './OnlineGame';
 import Client from './Client';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { OneNamePrompt } from './OneNamePrompt';
-
+import Scoreboard from './Scoreboard';
 
 
 
@@ -19,6 +19,8 @@ export class OnlineBoardPage extends Component {
             player1: {},
             player2: {},
             boardTheme: '1',
+            p1Score: [0, 0, 0],
+            p2Score: [0, 0, 0],
         }
     }
 
@@ -38,20 +40,29 @@ export class OnlineBoardPage extends Component {
         let player1 = Object.assign({}, this.state.player1);
         let player2 = Object.assign({}, this.state.player2);
 
+        let p1Score = this.state.p1Score.slice();
+        let p2Score = this.state.p2Score.slice();
+
         if (result === 'X') {
             //increase player 1 wins, inc player 2 losses
             player1.winCount++;
+            p1Score[0]++;
             player2.loseCount++;
+            p2Score[1]++;
         }
         else if (result === 'O') {
             //increase player 2 wins, inc player 1 losses
             player2.winCount++;
+            p2Score[0]++;
             player1.loseCount++;
+            p1Score[1]++;
         }
         else {
             //increase both draws
             player1.drawCount++;
             player2.drawCount++;
+            p1Score[2]++;
+            p2Score[2]++;
         }
         //save new data
         Client.updatePlayer(player1);
@@ -59,7 +70,9 @@ export class OnlineBoardPage extends Component {
         //update player1 and player2 state (left is label, right is object)
         this.setState({
             player1: player1,
-            player2: player2
+            player2: player2,
+            p1Score: p1Score,
+            p2Score: p2Score,
         });
     };
     setOnePlayer = (nick1) => {
@@ -95,7 +108,7 @@ export class OnlineBoardPage extends Component {
     }
     render() {
         let prompt = <OneNamePrompt isOpen={this.state.namePromptSeen} toggle={this.toggleNamePrompt} onSubmit={this.setOnePlayer} />;
-            
+
         return (
             <Fragment>
                 <div className="row">
@@ -128,7 +141,7 @@ export class OnlineBoardPage extends Component {
                     </div>
                     <div class="col-md-8 text-center">
                         <UncontrolledDropdown>
-                        <DropdownToggle caret>
+                            <DropdownToggle caret>
                                 Board Themes
                         </DropdownToggle>
                             <DropdownMenu>
@@ -144,15 +157,17 @@ export class OnlineBoardPage extends Component {
                     </div>
 
                 </div>
-                <div className="row">                   
+                <div className="row">
                     <div className="col-md-2">
-                        <h3>Player scores component here </h3>
+                        <Scoreboard
+                            score={this.state.p1Score}
+                        />
                     </div>
 
                     <div className="col-md-8 text-center align-items-center">
                         {this.state.player1.name && this.state.player2.name ?
                             (<OnlineGame
-                                updateName={(e) => { this.updateNames (e) }}
+                                updateName={(e) => { this.updateNames(e) }}
                                 player1={this.state.player1.name}
                                 player2={this.state.player2.name}
                                 updatePlayers={this.updatePlayers}
@@ -160,10 +175,12 @@ export class OnlineBoardPage extends Component {
                                 tokenO={this.props.tokenO}
                                 boardTheme={this.state.boardTheme} />)
                             : null}
-                        
+
                     </div>
                     <div className="col-md-2">
-                        <h3>Player scores  component here </h3>
+                        <Scoreboard
+                            score={this.state.p2Score}
+                        />
                     </div>
                 </div>
 
